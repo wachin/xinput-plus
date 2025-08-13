@@ -1,4 +1,4 @@
-# 🖱️ xinput-tuner
+# 🖱️ xinput-plus
 
 # Ajusta la velocidad de tu mouse o touchpad (¡muy fácil!)
 
