@@ -1,118 +1,115 @@
 # 🖱️ xinput-plus
 
-# Ajusta la velocidad de tu mouse o touchpad (¡muy fácil!)
+# Adjust your mouse or touchpad speed (very easy!)
 
-Este programa es para **Linux** y te permite **cambiar la velocidad del puntero** (el cursor del mouse o touchpad) de forma gráfica para usarlo en X11 Window Manager como en: Openbox, JWM, iceWM, Fluxbox, y otros Gestores o Administradores de ventana minimalistas en los cuales no hay un programa con GUI para hacerlo, sin tener que escribir comandos complicados. Es ideal si usas teclados externos que traen **teclado con touchpad integrado**, como el **Logitech K400**, o incluso para el touchpad de tu laptop si sientes que el cursor va muy lento.
-
----
-
-## 🎯 ¿Para qué sirve?
-
-- ✅ Aumentar o disminuir la velocidad del mouse o touchpad.
-- ✅ Guardar la configuración para que no se pierda al reiniciar.
-- ✅ Funciona con dispositivos como:
-  - Teclados con touchpad (ej: Logitech K400)
-  - Mouses USB
-  - Touchpads de laptop
+This program is for **Linux** and allows you to **change the pointer speed** (mouse or touchpad cursor) graphically for use in X11 Window Managers such as: Openbox, JWM, iceWM, Fluxbox, and other minimalist window managers where there's no GUI program to do this, without having to type complicated commands. It's ideal if you use external keyboards that come with **integrated touchpad keyboard**, like the **Logitech K400**, or even for your laptop's touchpad if you feel the cursor moves too slowly.
 
 ---
 
-## 🖥️ Requisitos
+## 🎯 What is it for?
 
-Antes de usarlo, asegúrate de tener instalado lo siguiente en tu computadora con Linux:
+- ✅ Increase or decrease mouse or touchpad speed.
+- ✅ Save configuration so it doesn't get lost when restarting.
+- ✅ Works with devices like:
+  - Keyboards with touchpad (e.g.: Logitech K400)
+  - USB mice
+  - Laptop touchpads
+
+---
+
+## 🖥️ Requirements
+
+Before using it, make sure you have the following installed on your Linux computer:
 
 ```bash
 sudo apt install xinput git libinput-tools python3-pyqt6
 ```
 
-1. ⚠️ Este programa solo funciona en **X11**, no en Wayland.  
-2. Es sólo para X11 WM como Openbox, JWM, iceWM, Fluxbox, Xubuntu, etc
-3. En el 2025 ejemplo en GNOME, KDE antes de hacer login se puede seleccionar X11 para entrar en vez de con Wayland.
-
+1. ⚠️ This program only works on **X11**, not on Wayland.  
+2. It's only for X11 WM like Openbox, JWM, iceWM, Fluxbox, Xubuntu, etc
+3. In 2025, for example in GNOME, KDE, before logging in you can select X11 to enter instead of Wayland.
 
 ---
 
-## 🚀 Cómo usar el programa
+## 🚀 How to use the program
 
-### **1era OPCIÓN: Descargar el repositorio**
-En:
+### **1st OPTION: Download the repository**
+At:
 
 [https://github.com/wachin/xinput-plus](https://github.com/wachin/xinput-plus)
 
-da clic en la especie de flecha abajo en Code:
+click on the arrow-like dropdown in Code:
 
 **<>  Code ▼**
 
-y clic en:
+and click on:
 
 **Download ZIP**
 
- descompríme, y allí dentro de la carpeta está el archivo `xinput-plus.py`.
+decompress it, and there inside the folder is the `xinput-plus.py` file.
 
-o lo puedes clonar:
+or you can clone it:
 
-### **2da OPCIÓN: Clonar el repositorio**
+### **2nd OPTION: Clone the repository**
 
-**1.-** Como ya tenemos instalado a git poner en una terminal en una carpeta donde tenga programas de Linux:
+**1.-** Since we already have git installed, enter in a terminal in a folder where you have Linux programs:
 
 ```bash
 git clone https://github.com/wachin/xinput-plus
 ```
 
-**2.-** Dale permisos de ejecución
+**2.-** Give it execution permissions
 
-Puede ser con clic derecho en el **administrador de archivos** y en la pestaña "**Permisos**" verificar que esté marcado como ejecutatable
+It can be done by right-clicking in the **file manager** and in the "**Permissions**" tab verify that it's marked as executable
 
-o desde la terminal con:
+or from the terminal with:
 
 ```bash
 chmod +x xinput-plus.py
 ```
 
+## Running with Launcher.sh
 
-## Ejecutando con Launcher.sh
+Make sure the `Launcher.sh` script is executable, in the file manager right-click on it and in the "**Permissions**" tab make sure "**is executable**" is checked
 
-Asegúrate que el script `Launcher.sh`está como ejecutable, en el administrador de archivos dele clic derecho y en la pestaña "**Permisos**" asegúrese de que "**es ejecutable**"
+Double-click the `Launcher.sh` script and click `Execute`
 
-Dele doble clic al script `Launcher.sh` y clic en `Ejecutar`
-
-👉 Se abrirá una ventana con dos controles:
+👉 A window will open with two controls:
 
 ![](vx_images/403085416299084.png)
 
-## Ejecutando a xinput-plus
+## Running xinput-plus
 
-**1.-** **Abre una terminal**
-**2.-** **Ve a la carpeta** donde está el archivo `xinput-plus.py`, o abre una terminal allí desde tu administrador de archivos
-**3.-** **Ejecuta el programa** con este comando:
+**1.-** **Open a terminal**
+**2.-** **Go to the folder** where the `xinput-plus.py` file is, or open a terminal there from your file manager
+**3.-** **Run the program** with this command:
 
 ```bash
 python3 xinput-plus.py
 ```
 
-y se abrirá.
+and it will open.
 
-
-> 💡 En algunos Linux puedes dar clic derecho en el archivo `xinput-plus.py` y abrir con python.
-
----
-
-## 🎛️ Cómo usarlo
-
-1. Al abrir el programa.
-2. En la lista de la izquierda, **haz clic en tu dispositivo** (por ejemplo: "Logitech K400").
-3. Usa la barra deslizante para cambiar la velocidad:
-   - ← Más lento
-   - → Más rápido (¡hasta 2 veces más rápido!)
-4. Cuando encuentres la velocidad perfecta, haz clic en **"Guardar configuración"**.
-
-✅ ¡Listo! El cambio se aplica al instante y se guarda para la próxima vez. Per una vez que hayas encendido otra vez el ordenador y abierto el programa debes de darle clic a la ventana para que se apliquen los cambios guardados.
+> 💡 On some Linux distributions you can right-click on the `xinput-plus.py` file and open with python.
 
 ---
 
-## 💾 ¿Dónde se guarda la configuración?
+## 🎛️ How to use it
 
-El programa guarda tus ajustes en este archivo (no lo borres si no quieres perder la configuración):
+1. When opening the program.
+2. In the left list, **click on your device** (for example: "Logitech K400").
+3. Use the slider to change the speed:
+   - ← Slower
+   - → Faster (up to 2 times faster!)
+4. When you find the perfect speed, click **"Save configuration"**.
+
+✅ Done! The change applies instantly and is saved for next time. But once you've turned on the computer again and opened the program, you must click on the window for the saved changes to be applied.
+
+---
+
+## 💾 Where is the configuration saved?
+
+The program saves your settings in this file (don't delete it if you don't want to lose the configuration):
 
 ```
 ~/.config/libinput-gui.json
@@ -120,36 +117,35 @@ El programa guarda tus ajustes en este archivo (no lo borres si no quieres perde
 
 ---
 
-## 🤓 ¿Cómo funciona por dentro?
+## 🤓 How does it work internally?
 
-Usa comandos de Linux con `xinput` para cambiar la velocidad del dispositivo en tiempo real.  
-Pero para usarlo: ¡la interfaz lo hace todo por ti!
-
----
-
-## 🛠️ ¿Quieres mejorar este programa?
-
-Este código está hecho en Python con PyQt6, perfecto para estudiantes que quieren aprender sobre:
-- Interfaces gráficas
-- Automatización en Linux
-- Control de hardware
-
-¡Siéntete libre de modificarlo, mejorarlo o usarlo en tus proyectos!
+It uses Linux commands with `xinput` to change the device speed in real time.  
+But to use it: the interface does everything for you!
 
 ---
 
-## 🙌 Sobre este programa
+## 🛠️ Want to improve this program?
 
-Creado por: **Washington Indacochea** (wachin.id@gmail.com)  
-Licencia: **GNU GPL3** (gratis y open source)
+This code is made in Python with PyQt6, perfect for students who want to learn about:
+- Graphical interfaces
+- Linux automation
+- Hardware control
 
-✨ Gracias por usar `xinput-plus`!  
-
-Para los que aman X11 y los gestores de ventana minimalistas. 👀💙
+Feel free to modify it, improve it, or use it in your projects!
 
 ---
 
-> 🌟 Si te sirvió, dale una estrella ⭐ en GitHub. ¡Ayuda mucho!
-```
+## 🙌 About this program
 
-Dios te bendiga
+Created by: **Washington Indacochea** (wachin.id@gmail.com)  
+License: **GNU GPL3** (free and open source)
+
+✨ Thanks for using `xinput-plus`!  
+
+For those who love X11 and minimalist window managers. 👀💙
+
+---
+
+> 🌟 If it helped you, give it a star ⭐ on GitHub. It helps a lot!
+
+God bless you
