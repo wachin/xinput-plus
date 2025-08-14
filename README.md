@@ -2,7 +2,7 @@
 
 # Ajusta la velocidad de tu mouse o touchpad (¡muy fácil!)
 
-Este programa te permite **cambiar la velocidad del puntero** (el cursor del mouse o touchpad) en Linux de forma gráfica para usarlo en X11 Window Manager como en: Openbox, JWM, iceWM, Fluxbox, sin tener que escribir comandos complicados. Es ideal si usas teclados externos que traen **teclado con touchpad integrado**, como el **Logitech K400**, y sientes que el cursor va muy lento.
+Este programa es para **Linux** y te permite **cambiar la velocidad del puntero** (el cursor del mouse o touchpad) de forma gráfica para usarlo en X11 Window Manager como en: Openbox, JWM, iceWM, Fluxbox, y otros Gestores o Administradores de ventana minimalistas en los cuales no hay un programa con GUI para hacerlo, sin tener que escribir comandos complicados. Es ideal si usas teclados externos que traen **teclado con touchpad integrado**, como el **Logitech K400**, o incluso para el touchpad de tu laptop si sientes que el cursor va muy lento.
 
 ---
 
