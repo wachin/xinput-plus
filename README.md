@@ -22,7 +22,7 @@ Este programa te permite **cambiar la velocidad del puntero** (el cursor del mou
 Antes de usarlo, asegúrate de tener instalado lo siguiente en tu computadora con Linux:
 
 ```bash
-sudo apt install xinput libinput-tools python3-pyqt6
+sudo apt install xinput git libinput-tools python3-pyqt6
 ```
 
 1. ⚠️ Este programa solo funciona en **X11**, no en Wayland.  
@@ -34,23 +34,53 @@ sudo apt install xinput libinput-tools python3-pyqt6
 
 ## 🚀 Cómo instalarlo
 
-1. Descarga el archivo `xinput-plus.py`.
-2. Ábrelo con un editor de texto o Python.
-3. Dale permisos de ejecución:
+### **1era OPCIÓN: Descargar el repositorio**
+En:
+
+[https://github.com/wachin/xinput-plus](https://github.com/wachin/xinput-plus)
+
+da clic en la especie de flecha abajo en Code:
+
+<>  Code ▼
+
+y clic en:
+
+Download ZIP
+
+ descompríme, y allí dentro de la carpeta está el archivo `xinput-plus.py`.
+
+
+### **2da OPCIÓN: Clonar el repositorio**
+
+**1.-** Como ya tenemos instalado a git poner en una terminal en una carpeta donde tenga programas de Linux:
+
+```bash
+git clone https://github.com/wachin/xinput-plus
+```
+
+**2.-** Dale permisos de ejecución
+
+Puede ser con clic derecho en el **administrador de archivos** y en la pestaña "**Permisos**" verificar que esté marcado como ejecutatable
+
+o desde la terminal con:
 
 ```bash
 chmod +x xinput-plus.py
 ```
 
-4. Ejecútalo así:
+## Ejecutando a xinput-plus
+
+Ejecútalo así:
 
 ```bash
 python3 xinput-plus.py
 ```
 
+y se abrirá:
+
 ![](vx_images/403085416299084.png)
 
-> 💡 Puedes hacer doble clic en el archivo `xinput-plus.py` si ya tienes Python instalado, esto en algunos Escritorios de Linux es posible, pero no en todos
+> 💡 Puedes hacer doble clic en el archivo `xinput-plus.py`, esto en algunos Escritorios de Linux es posible, pero no en todos, y abrir con python.
 
 ---
 
@@ -63,7 +93,7 @@ python3 xinput-plus.py
    - → Más rápido (¡hasta 2 veces más rápido!)
 4. Cuando encuentres la velocidad perfecta, haz clic en **"Guardar configuración"**.
 
-✅ ¡Listo! El cambio se aplica al instante y se guarda para la próxima vez.
+✅ ¡Listo! El cambio se aplica al instante y se guarda para la próxima vez. Per una vez que hayas encendido otra vez el ordenador y abierto el programa debes de darle clic a la ventana para que se apliquen los cambios guardados.
 
 ---
 
@@ -79,7 +109,7 @@ El programa guarda tus ajustes en este archivo (no lo borres si no quieres perde
 
 ## 🤓 ¿Cómo funciona por dentro?
 
-Usa comandos de Linux como `xinput` para cambiar la velocidad del dispositivo en tiempo real.  
+Usa comandos de Linux con `xinput` para cambiar la velocidad del dispositivo en tiempo real.  
 Pero para usarlo: ¡la interfaz lo hace todo por ti!
 
 ---
@@ -91,7 +121,7 @@ Este código está hecho en Python con PyQt6, perfecto para estudiantes que quie
 - Automatización en Linux
 - Control de hardware
 
-¡Siéntete libre de modificarlo, mejorarlo o usarlo en tus proyectos escolares!
+¡Siéntete libre de modificarlo, mejorarlo o usarlo en tus proyectos!
 
 ---
 
