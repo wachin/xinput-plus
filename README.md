@@ -69,17 +69,29 @@ o desde la terminal con:
 chmod +x xinput-plus.py
 ```
 
+
+## Ejecutando con Launcher.sh
+
+Asegúrate que el script `Launcher.sh`está como ejecutable, en el administrador de archivos dele clic derecho y en la pestaña "**Permisos**" asegúrese de que "**es ejecutable**"
+
+Dele doble clic al script `Launcher.sh` y clic en `Ejecutar`
+
+👉 Se abrirá una ventana con dos controles:
+
+![](vx_images/403085416299084.png)
+
 ## Ejecutando a xinput-plus
 
-Ejecútalo así:
+**1.-** **Abre una terminal**
+**2.-** **Ve a la carpeta** donde está el archivo `xinput-plus.py`, o abre una terminal allí desde tu administrador de archivos
+**3.-** **Ejecuta el programa** con este comando:
 
 ```bash
 python3 xinput-plus.py
 ```
 
-y se abrirá:
+y se abrirá.
 
-![](vx_images/403085416299084.png)
 
 > 💡 En algunos Linux puedes dar clic derecho en el archivo `xinput-plus.py` y abrir con python.
 
