@@ -140,7 +140,7 @@ Este código está hecho en Python con PyQt6, perfecto para estudiantes que quie
 
 ## 🙌 Sobre este programa
 
-Creado por: **Washington Indacochea** (wachin.id@gmail.com)  
+Creado por: **Washington Indacochea Delgado**
 Licencia: **GNU GPL3** (gratis y open source)
 
 ✨ Gracias por usar `xinput-plus`!  

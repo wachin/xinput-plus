@@ -137,7 +137,7 @@ Feel free to modify it, improve it, or use it in your projects!
 
 ## 🙌 About this program
 
-Created by: **Washington Indacochea** (wachin.id@gmail.com)  
+Created by: **Washington Indacochea Delgado**
 License: **GNU GPL3** (free and open source)
 
 ✨ Thanks for using `xinput-plus`!  
