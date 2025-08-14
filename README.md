@@ -32,7 +32,7 @@ sudo apt install xinput git libinput-tools python3-pyqt6
 
 ---
 
-## 🚀 Cómo instalarlo
+## 🚀 Cómo usar el programa
 
 ### **1era OPCIÓN: Descargar el repositorio**
 En:
@@ -41,14 +41,15 @@ En:
 
 da clic en la especie de flecha abajo en Code:
 
-<>  Code ▼
+**<>  Code ▼**
 
 y clic en:
 
-Download ZIP
+**Download ZIP**
 
  descompríme, y allí dentro de la carpeta está el archivo `xinput-plus.py`.
 
+o lo puedes clonar:
 
 ### **2da OPCIÓN: Clonar el repositorio**
 
@@ -80,7 +81,7 @@ y se abrirá:
 
 ![](vx_images/403085416299084.png)
 
-> 💡 Puedes hacer doble clic en el archivo `xinput-plus.py`, esto en algunos Escritorios de Linux es posible, pero no en todos, y abrir con python.
+> 💡 En algunos Linux puedes dar clic derecho en el archivo `xinput-plus.py` y abrir con python.
 
 ---
 
