@@ -105,7 +105,7 @@ and it will open.
    - → Faster (up to 2 times faster!)
 4. When you find the perfect speed, click **"Save configuration"**.
 
-✅ Done! The change applies instantly and is saved for next time. But once you've turned on the computer again and opened the program, you must click on the window for the saved changes to be applied.
+✅ Done! The change applies instantly and is saved for next time. But once you've turned your computer back on and opened the program, you must click on the program window and click on the device you're going to use to apply the saved changes.
 
 ---
 

@@ -106,7 +106,7 @@ y se abrirá.
    - → Más rápido (¡hasta 2 veces más rápido!)
 4. Cuando encuentres la velocidad perfecta, haz clic en **"Guardar configuración"**.
 
-✅ ¡Listo! El cambio se aplica al instante y se guarda para la próxima vez. Per una vez que hayas encendido otra vez el ordenador y abierto el programa debes de darle clic a la ventana para que se apliquen los cambios guardados.
+✅ ¡Listo! El cambio se aplica al instante y se guarda para la próxima vez. Pero una vez que hayas encendido otra vez el ordenador y abierto el programa, debes de darle clic a la ventana del mismo, y clic en el dispositivo que vayas a usar para que se apliquen los cambios guardados.
 
 ---
 
