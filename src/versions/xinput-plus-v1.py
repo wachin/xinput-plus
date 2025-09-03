@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# xinput-plus.py
+# libinput-gui.py
 # Prototipo mejorado para gestionar velocidad del mouse/touchpad con PyQt6
 # Autor: Adaptado desde xinput-gui por Washington Indacochea Delgado
 
@@ -9,11 +9,11 @@ import simplejson as json
 from pathlib import Path
 from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QListWidget,
-    QLabel, QSlider, QPushButton, QMessageBox, QCheckBox
+    QLabel, QSlider, QPushButton, QMessageBox
 )
 from PyQt6.QtCore import Qt
 
-CONFIG_FILE = Path.home() / ".config/xinput-plus.json"
+CONFIG_FILE = Path.home() / ".config/libinput-gui.json"
 
 
 class LibinputGUI(QWidget):
@@ -53,16 +53,11 @@ class LibinputGUI(QWidget):
         right_panel.addWidget(self.label_speed)
 
         self.slider_speed = QSlider(Qt.Orientation.Horizontal)
-        self.slider_speed.setMinimum(-100)  # -1.0 por defecto
-        self.slider_speed.setMaximum(100)   # 1.0 por defecto
+        self.slider_speed.setMinimum(-100)  # -1.0
+        self.slider_speed.setMaximum(100)   # 1.0
         self.slider_speed.setValue(0)
         self.slider_speed.valueChanged.connect(self.on_speed_changed)
         right_panel.addWidget(self.slider_speed)
-
-        # Casilla para modo de velocidad extendida
-        self.extended_speed_cb = QCheckBox("Habilitar velocidad extendida (hasta 2.0)")
-        self.extended_speed_cb.stateChanged.connect(self.on_extended_speed_changed)
-        right_panel.addWidget(self.extended_speed_cb)
 
         # Botón guardar
         btn_save = QPushButton("Guardar configuración")
@@ -97,6 +92,7 @@ class LibinputGUI(QWidget):
                 current_cap = None
             elif "Capabilities:" in line:
                 current_cap = line.split("Capabilities:")[1].strip()
+                # Solo añadimos si es tipo "pointer"
                 if "pointer" in current_cap.lower():
                     self.devices.append(current_name)
                     self.device_list.addItem(current_name)
@@ -108,31 +104,9 @@ class LibinputGUI(QWidget):
         name = selected_items[0].text()
         self.selected_device = name
         self.label_device.setText(f"Dispositivo: {name}")
-        # Cargar configuración del dispositivo
-        device_config = self.config.get(name, {"speed": 0.0, "extended": False})
-        speed = device_config["speed"]
-        extended = device_config["extended"]
-        # Actualizar slider y casilla
-        self.extended_speed_cb.setChecked(extended)
-        self.slider_speed.setMinimum(-200 if extended else -100)
-        self.slider_speed.setMaximum(200 if extended else 100)
+        speed = self.config.get(name, 0.0)
         self.slider_speed.setValue(int(speed * 100))
         self.label_speed.setText(f"Velocidad: {speed:.2f}")
-
-    def on_extended_speed_changed(self, state):
-        extended = state == Qt.CheckState.Checked.value
-        if self.selected_device:
-            # Actualizar rango del slider
-            self.slider_speed.setMinimum(-200 if extended else -100)
-            self.slider_speed.setMaximum(200 if extended else 100)
-            # Actualizar velocidad actual
-            current_speed = self.slider_speed.value() / 100.0
-            self.on_speed_changed(self.slider_speed.value())
-            # Guardar estado de la casilla en la configuración
-            self.config[self.selected_device] = {
-                "speed": current_speed,
-                "extended": extended
-            }
 
     def on_speed_changed(self, value):
         speed = value / 100.0
@@ -140,19 +114,9 @@ class LibinputGUI(QWidget):
         if self.selected_device:
             device_id = self.get_device_id(self.selected_device)
             if device_id:
-                extended = self.extended_speed_cb.isChecked()
-                if extended:
-                    # Usar Coordinate Transformation Matrix para velocidades > 1.0
-                    matrix = f"{speed} 0 0 0 {speed} 0 0 0 1"
-                    result = self.run_cmd(f"xinput --set-prop {device_id} 'Coordinate Transformation Matrix' {matrix}")
-                else:
-                    # Usar libinput Accel Speed para rango estándar
-                    result = self.run_cmd(f"xinput --set-prop {device_id} 'libinput Accel Speed' {speed}")
+                result = self.run_cmd(f"xinput --set-prop {device_id} 'libinput Accel Speed' {speed}")
                 if result == "":
-                    self.config[self.selected_device] = {
-                        "speed": speed,
-                        "extended": extended
-                    }
+                    self.config[self.selected_device] = speed
                 else:
                     QMessageBox.warning(self, "Error",
                                         f"No se pudo cambiar la velocidad de {self.selected_device}")
@@ -183,16 +147,7 @@ class LibinputGUI(QWidget):
         with open(CONFIG_FILE, "w") as f:
             json.dump(self.config, f, indent=2)
         QMessageBox.information(self, "Guardado", "Configuración guardada correctamente.")
-        
-    def run_cmd(self, cmd):
-        try:
-            print(f"Ejecutando: {cmd}")
-            output = subprocess.check_output(cmd, shell=True, text=True)
-            print(f"Salida: {output.strip()}")
-            return output.strip()
-        except subprocess.CalledProcessError as e:
-            print(f"Error al ejecutar {cmd}: {e}")
-            return ""
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
