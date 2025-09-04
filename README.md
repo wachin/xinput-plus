@@ -101,11 +101,12 @@ and it will open.
 1. When opening the program.
 2. In the left list, **click on your device** (for example: "Logitech K400").
 3. Use the slider to change the speed:
-   - ← Slower
-   - → Faster (up to 2 times faster!)
-4. When you find the perfect speed, click **"Save configuration"**.
+   - ← Slower (down to -1.0)
+   - → Faster (up to 1.0 by default)
+4. **Enable extended speed (optional)**: Check the box labeled "Enable extended speed (up to 2.0)" to allow the slider to go up to 2.0, which provides significantly faster cursor movement for devices like the Logitech K400. This mode uses the `Coordinate Transformation Matrix` to scale pointer movement beyond the standard range.
+5. When you find the perfect speed, click **"Save configuration"**.
 
-✅ Done! The change applies instantly and is saved for next time. But once you've turned your computer back on and opened the program, you must click on the program window and click on the device you're going to use to apply the saved changes.
+✅ Done! The change applies instantly and is saved for next time. The program remembers whether extended speed mode is enabled for each device. After restarting your computer, open the program, select your device, and the saved settings (including extended speed mode) will be applied automatically.
 
 ---
 
@@ -121,8 +122,7 @@ The program saves your settings in this file (don't delete it if you don't want 
 
 ## 🤓 How does it work internally?
 
-It uses Linux commands with `xinput` to change the device speed in real time.  
-But to use it: the interface does everything for you!
+It uses Linux commands with `xinput` to change the device speed in real time. For standard speed adjustments, it modifies the `libinput Accel Speed` property. For extended speed mode (up to 2.0), it uses the `Coordinate Transformation Matrix` to scale pointer movement, allowing higher sensitivity for devices that need it. The interface does everything for you!
 
 ---
 
@@ -134,6 +134,37 @@ This code is made in Python with PyQt6, perfect for students who want to learn a
 - Hardware control
 
 Feel free to modify it, improve it, or use it in your projects!
+
+---
+
+## 🛑 Troubleshooting
+
+### **"Permission denied" errors when running the program**
+
+If the program not working when running from terminal you see errors like:
+
+`Failed to open /dev/input/eventX (Permission denied)`
+
+when running `xinput-plus.py`, it means your user lacks permission to access input devices. This is common in minimal Linux installations (e.g., Debian netinstall). To fix it:
+    
+1. **Add your user to the `input` group**:
+
+```bash
+sudo usermod -aG input $USER
+```
+
+   Log out and back in, or reboot, to apply the change.
+
+2. **Verify permissions**:
+   Check that `/dev/input/event*` files are accessible:
+   
+```bash
+ls -l /dev/input/event*
+```
+
+   They should have group `input` and permissions like 
+   
+**Restart**
 
 ---
 
