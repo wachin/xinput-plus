@@ -12,15 +12,23 @@ from PyQt6.QtWidgets import (
     QLabel, QSlider, QPushButton, QMessageBox, QCheckBox
 )
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon
 
 CONFIG_FILE = Path.home() / ".config/xinput-plus.json"
 
+ICON_PATH = Path(__file__).parent / "src" / "emucon.svg"
 
 class LibinputGUI(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("xinput-plus")
         self.resize(600, 400)
+
+        # Establecer el ícono de la ventana
+        if ICON_PATH.exists():
+            self.setWindowIcon(QIcon(str(ICON_PATH)))
+        else:
+            print(f"Advertencia: No se encontró el ícono en {ICON_PATH}")
 
         # Estado
         self.devices = []
