@@ -90,7 +90,9 @@ Double-click the `Launcher.sh` script and click `Execute`
 python3 xinput-plus.py
 ```
 
-and it will open.
+and it will open:
+
+![](vx_images/383390508299180.png)
 
 > 💡 On some Linux distributions you can right-click on the `xinput-plus.py` file and open with python.
 
