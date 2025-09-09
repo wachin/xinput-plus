@@ -117,7 +117,7 @@ and it will open:
 The program saves your settings in this file (don't delete it if you don't want to lose the configuration):
 
 ```
-~/.config/libinput-gui.json
+~/.config/xinput-plus.json
 ```
 
 ---
