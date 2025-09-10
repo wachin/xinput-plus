@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>xinput-plus.desktop</id>
+  <name>xinput-plus</name>
+  <summary>Adjust pointer speed per device (Xorg) via xinput</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license> <!-- TODO: confirm license -->
+  <description>
+    <p>
+      xinput-plus provides a simple PyQt6 GUI to manage per-device pointer acceleration
+      on Xorg, with per-ID/name profiles, whitelisting, and CTM fallback.
+    </p>
+  </description>
+  <launchable type="desktop-id">xinput-plus.desktop</launchable>
+  <provides>
+    <binary>xinput-plus</binary>
+  </provides>
+  <categories>
+    <category>Utility</category>
+    <category>Settings</category>
+  </categories>
+</component>
