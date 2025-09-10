@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=xinput-plus
+Comment=Adjust pointer speed per device (Xorg) via xinput
+Exec=xinput-plus
+Icon=xinput-plus
+Terminal=false
+Categories=Settings;Utility;Qt;
+Keywords=mouse;touchpad;pointer;speed;acceleration;xinput;Xorg;
