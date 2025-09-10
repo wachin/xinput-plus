@@ -77,15 +77,15 @@ class WhitelistDialog(QDialog):
     """Dialog to edit the visible-devices whitelist (entries are (name, id))."""
     def __init__(self, parent: QWidget, devices: List[dict], whitelist: Set[Tuple[str, str]]):
         super().__init__(parent)
-        self.setWindowTitle("Editar lista blanca de dispositivos")
+        self.setWindowTitle("Edit device whitelist")
         self.setMinimumWidth(520)
         self._devices = devices
         self._initial = whitelist
 
         layout = QVBoxLayout(self)
 
-        info = QLabel("Selecciona los dispositivos que deseas mantener visibles.\n"
-                      "Si dejas la lista vacía, se mostrarán todos.")
+        info = QLabel("Select the devices you want to keep visible.\n"
+                      "If you leave the list empty, all will be displayed..")
         layout.addWidget(info)
 
         # Build a checkable list with all current devices; pre-check those in whitelist
@@ -131,7 +131,7 @@ class LibinputGUI(QWidget):
         if ICON_PATH.exists():
             self.setWindowIcon(QIcon(str(ICON_PATH)))
         else:
-            debug(f"Advertencia: No se encontró el ícono en {ICON_PATH}")
+            debug(f"Warning: Icon not found in {ICON_PATH}")
             try:
                 self.setWindowIcon(QIcon.fromTheme("input-mouse"))
             except Exception:
@@ -163,7 +163,7 @@ class LibinputGUI(QWidget):
                 raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
                 return _migrate_old_config(raw)
         except Exception as e:
-            debug(f"Error leyendo config: {e}")
+            debug(f"Error reading config: {e}")
         return {"by_name": {}, "by_id": {}, "_whitelist": [], "_show_only_whitelist": False}
 
     def save_config(self) -> None:
@@ -172,7 +172,7 @@ class LibinputGUI(QWidget):
             CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
             CONFIG_PATH.write_text(json.dumps(self.config, indent=2, ensure_ascii=False), encoding="utf-8")
         except Exception as e:
-            debug(f"Error guardando config: {e}")
+            debug(f"Error saving config: {e}")
 
     # --------------------------
     # UI
@@ -189,17 +189,17 @@ class LibinputGUI(QWidget):
         # Right panel with controls
         right = QVBoxLayout()
 
-        self.label_device = QLabel("Seleccione un dispositivo")
+        self.label_device = QLabel("Select a device")
         right.addWidget(self.label_device)
 
-        self.extended_speed_cb = QCheckBox("Modo extendido (CTM)")
+        self.extended_speed_cb = QCheckBox("Extended mode (CTM)")
         self.extended_speed_cb.toggled.connect(self.on_extended_toggled)
         right.addWidget(self.extended_speed_cb)
 
-        self.profile_by_id_cb = QCheckBox("Guardar por ID (perfil específico)")
+        self.profile_by_id_cb = QCheckBox("Save by ID (specific profile)")
         right.addWidget(self.profile_by_id_cb)
 
-        self.label_speed = QLabel("Velocidad: 0.00")
+        self.label_speed = QLabel("Speed: 0.00")
         right.addWidget(self.label_speed)
 
         self.slider_speed = QSlider(Qt.Orientation.Horizontal)
@@ -212,21 +212,21 @@ class LibinputGUI(QWidget):
 
         # Buttons row
         btns = QHBoxLayout()
-        self.btn_refresh = QPushButton("🔄 Actualizar")
+        self.btn_refresh = QPushButton("🔄 Update")
         self.btn_refresh.clicked.connect(self.load_devices)
         btns.addWidget(self.btn_refresh)
 
-        self.btn_reapply = QPushButton("⚙️ Reaplicar todo")
+        self.btn_reapply = QPushButton("⚙️ Reapply everything")
         self.btn_reapply.clicked.connect(self.apply_all_configs)
         btns.addWidget(self.btn_reapply)
 
         # Whitelist controls
-        self.show_only_whitelist_cb = QCheckBox("Mostrar sólo whitelist")
+        self.show_only_whitelist_cb = QCheckBox("Show only whitelist")
         self.show_only_whitelist_cb.setChecked(bool(self.config.get("_show_only_whitelist", False)))
         self.show_only_whitelist_cb.toggled.connect(self.on_toggle_show_only_whitelist)
         btns.addWidget(self.show_only_whitelist_cb)
 
-        self.btn_edit_whitelist = QPushButton("✏️ Editar whitelist")
+        self.btn_edit_whitelist = QPushButton("✏️ Edit whitelist")
         self.btn_edit_whitelist.clicked.connect(self.open_whitelist_dialog)
         btns.addWidget(self.btn_edit_whitelist)
 
@@ -295,8 +295,8 @@ class LibinputGUI(QWidget):
             QMessageBox.warning(
                 self,
                 "xinput",
-                ("No se pudo obtener la lista de dispositivos."
-                 "\n¿Está disponible xinput?")
+                ("Failed to get device list."
+                 "\nIs xinput available?")
             )
             return
 
@@ -352,11 +352,11 @@ class LibinputGUI(QWidget):
     def run_cmd(self, cmd: list[str]) -> str:
         """Executes a command and returns stdout as text; logs errors to debug()."""
         try:
-            debug(f"Ejecutando: {' '.join(cmd)}")
+            debug(f"Running: {' '.join(cmd)}")
             out = subprocess.check_output(cmd, text=True, stderr=subprocess.STDOUT)
             return out.strip()
         except subprocess.CalledProcessError as e:
-            debug(f"Error ejecutando {' '.join(cmd)}:\n{e.output.strip()}")
+            debug(f"Error executing {' '.join(cmd)}:\n{e.output.strip()}")
             return ""
 
     def get_settings_for(self, name: str, dev_id: Optional[str]) -> Optional[Dict[str, Any]]:
@@ -378,7 +378,7 @@ class LibinputGUI(QWidget):
             if self.device_has_prop(device_id, "libinput Accel Speed"):
                 self.run_cmd(["xinput", "--set-prop", device_id, "libinput Accel Speed", f"{speed:.2f}"])
             else:
-                debug("Propiedad 'libinput Accel Speed' no disponible; usando CTM como alternativa.")
+                debug("'libinput Accel Speed' property unavailable; using CTM as a fallback.")
                 scale = max(speed, -5.0) if speed < 0 else max(min(speed, 5.0), 0.05)
                 matrix = f"{scale} 0 0 0 {scale} 0 0 0 1"
                 self.run_cmd(["xinput", "--set-prop", device_id, "Coordinate Transformation Matrix", *matrix.split()])
@@ -465,8 +465,8 @@ class LibinputGUI(QWidget):
         self.slider_speed.setValue(int(round(speed * 100)))
         self.slider_speed.blockSignals(False)
 
-        self.label_device.setText(f"Dispositivo: {name} (id {did})" if did else f"Dispositivo: {name}")
-        self.label_speed.setText(f"Velocidad: {speed:.2f}")
+        self.label_device.setText(f"Device: {name} (id {did})" if did else f"Device: {name}")
+        self.label_speed.setText(f"Speed: {speed:.2f}")
 
         # Apply immediately to give instant feedback when selecting
         if did:
@@ -496,7 +496,7 @@ class LibinputGUI(QWidget):
             self.config["by_id"][did]["extended"] = extended
 
         self.save_config()
-        self.label_speed.setText(f"Velocidad: {speed:.2f}")
+        self.label_speed.setText(f"Speed: {speed:.2f}")
 
         # Apply to selected device by exact ID when available
         if did:
