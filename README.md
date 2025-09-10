@@ -170,6 +170,115 @@ ls -l /dev/input/event*
 
 ---
 
+# Internationalization (i18n) Guide
+
+This app supports translations with Qt **`.ts` → `.qm`** files. Follow these steps to add **any language** (Spanish shown as example).
+
+---
+
+## Requirements
+
+* **Qt Creator** installed on your Linux OS
+* **PyQt6 dev tools** (provides `pylupdate6`):
+
+```bash
+sudo apt install pyqt6-dev-tools
+```
+* Qt Linguist & lrelease from Qt5 (work fine for app translations):
+
+```bash
+sudo apt install qttools5-dev-tools
+```
+* Create the translations folder:
+
+```bash
+mkdir -p i18n
+```
+
+> The app loads compiled files from **`./i18n/`** (same directory as `xinput-plus.py`), e.g. `i18n/xinput-plus_es.qm`.
+
+---
+
+## Spanish example (es)
+
+### 1) Extract source strings → `.ts`
+
+```bash
+pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py
+```
+
+### 2) Translate with Qt Linguist
+
+* **From Qt Creator**: right-click `xinput-plus_es.ts` → open with Linguist → translate → mark entries as **Finished** → Save.
+* **From terminal**:
+
+  ```bash
+  linguist i18n/xinput-plus_es.ts
+  ```
+
+### 3) Compile `.ts` → `.qm` in `i18n/`
+You can do this from the "Qt Linguist" tool from Qt Creator by clicking on "File - Distribute As" and saving as .qm, or from terminal:
+
+```bash
+# Use whichever lrelease exists on your system:
+LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt5/bin/lrelease)
+$LREL i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
+```
+
+### 4) Run the app in Spanish
+
+```bash
+python3 xinput-plus.py --lang=es
+```
+
+---
+
+## Any other language
+
+Replace the language code:
+
+```bash
+# French (fr)
+pylupdate6 --ts i18n/xinput-plus_fr.ts xinput-plus.py
+linguist i18n/xinput-plus_fr.ts
+$LREL i18n/xinput-plus_fr.ts -qm i18n/xinput-plus_fr.qm
+python3 xinput-plus.py --lang=fr
+
+# Brazilian Portuguese (pt_BR)
+pylupdate6 --ts i18n/xinput-plus_pt_BR.ts xinput-plus.py
+linguist i18n/xinput-plus_pt_BR.ts
+$LREL i18n/xinput-plus_pt_BR.ts -qm i18n/xinput-plus_pt_BR.qm
+python3 xinput-plus.py --lang=pt_BR
+```
+
+**File naming:** the loader tries common patterns like `xinput-plus_es.qm`, `xinput-plus_es_ES.qm`, and `xinput-plus_es-ES.qm`. Putting `xinput-plus_<lang>.qm` inside `./i18n` is sufficient.
+
+---
+
+## Tips & common pitfalls
+
+* **Do not translate placeholders.** Keep them exactly as in English:
+
+  * `{name}`, `{id}`, `{val:.2f}` must remain unchanged in all translations.
+* **Mark all entries “Finished”** in Qt Linguist before compiling to `.qm`.
+* If the UI stays in English:
+
+  1. Confirm `i18n/xinput-plus_<lang>.qm` exists.
+  2. Launch with `--lang=<lang>` (e.g. `--lang=es`).
+  3. Ensure UI strings in code are wrapped with `self.tr("…")` (already done).
+  4. On v6.5+ versions, the console prints i18n debug messages (e.g., `Loaded app translation: xinput-plus_es.qm`).
+* You can keep **English as source** and translate only the languages you need.
+* You can run `pylupdate6` multiple times; it updates the `.ts` files with new/changed strings.
+
+---
+
+## Developer note
+
+* Source strings in `xinput-plus.py` are wrapped in `self.tr("…")` so `pylupdate6` can extract them.
+* The app’s i18n loader **keeps `QTranslator` references alive** to avoid Python GC, ensuring translations apply from startup.
+
+---
+
 ## 🙌 About this program
 
 Created by: **Washington Indacochea Delgado**
