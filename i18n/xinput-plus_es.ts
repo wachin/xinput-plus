@@ -6,17 +6,17 @@
     <message>
         <location filename="../xinput-plus.py" line="282"/>
         <source>Select a device</source>
-        <translation></translation>
+        <translation>Seleccione un dispositivo</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="285"/>
         <source>Extended mode (CTM)</source>
-        <translation type="unfinished"></translation>
+        <translation>Modo extendido (CTM)</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="289"/>
         <source>Save by ID (specific profile)</source>
-        <translation type="unfinished"></translation>
+        <translation>Guardar por ID (perfil específico)</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="292"/>
@@ -26,28 +26,29 @@
     <message>
         <location filename="../xinput-plus.py" line="305"/>
         <source>🔄 Refresh</source>
-        <translation type="unfinished">🔄 Aactualizar</translation>
+        <translation>🔄 Actualizar</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="309"/>
         <source>⚙️ Re-apply all</source>
-        <translation type="unfinished"></translation>
+        <translation>⚙️ Vuelva a aplicar todo</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="314"/>
         <source>Show only whitelist</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar solo la lista blanca</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="319"/>
         <source>✏️ Edit whitelist</source>
-        <translation type="unfinished"></translation>
+        <translation>✏️ Editar lista blanca</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="388"/>
         <source>Could not obtain the device list.
 Is xinput available?</source>
-        <translation type="unfinished"></translation>
+        <translation>No se pudo obtener la lista de dispositivos.
+¿Está disponible xinput?</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="558"/>
@@ -71,13 +72,14 @@ Is xinput available?</source>
     <message>
         <location filename="../xinput-plus.py" line="148"/>
         <source>Edit device whitelist</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar la lista blanca de dispositivos</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="155"/>
         <source>Select the devices you want to keep visible.
 If you leave the list empty, all devices will be shown.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecciona los dispositivos que quieres mantener visibles.
+Si dejas la lista vacía, se mostrarán todos los dispositivos.</translation>
     </message>
 </context>
 </TS>
