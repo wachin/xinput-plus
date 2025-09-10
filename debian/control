@@ -1,0 +1,28 @@
+Source: xinput-plus
+Section: x11
+Priority: optional
+Maintainer: <Washington Indacochea Delgado> <wachin.id@gmail.com>
+Build-Depends:
+ debhelper-compat (= 13),
+ dh-sequence-python3,
+ python3-all,
+ pyqt6-dev-tools,
+ qt6-tools-dev-tools
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+Homepage: <https://example.com/xinput-plus>   # TODO: upstream URL (repo)
+Vcs-Git: <https://salsa.debian.org/yourname/xinput-plus.git>  # optional
+Vcs-Browser: <https://salsa.debian.org/yourname/xinput-plus>  # optional
+
+Package: xinput-plus
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt6, xinput, libqt6svg6
+Recommends: qt6-translations-l10n
+Description: PyQt6 GUI to adjust pointer speed per device (Xorg, via xinput)
+ xinput-plus is a simple GUI to manage per-device pointer acceleration for Xorg.
+ It supports device-specific profiles by ID or by name, a whitelist to hide
+ virtual/master/XTEST devices, and a CTM fallback when “libinput Accel Speed”
+ is not exposed by xinput. Translations are supported via Qt .qm files.
+ .
+ Note: xinput works on Xorg. On Wayland, this tool will not function.
+
