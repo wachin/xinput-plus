@@ -1,26 +1,22 @@
 #!/usr/bin/env python3
-# xinput-plus.py / v6.5 (full, corrected, i18n-ready)
-# PyQt6 GUI to tweak pointer speed via xinput (Xorg only).
+# xinput-plus.py / v6.4 (i18n-ready, English UI)
+# PyQt6 GUI to tweak cursor speed via xinput (Xorg)
 #
-# Key features:
-# - Whitelist of visible devices (by name+id), editable in a dialog.
-# - "Show only whitelist" toggle.
-# - Profiles by ID (device-specific) and by Name (fallback).
-# - Filters out Virtual/Master/XTEST pointers.
-# - Uses "libinput Accel Speed" when available; falls back to CTM matrix otherwise.
-# - Applies saved configs automatically on startup (after a short delay).
-# - English source strings with self.tr(...) for i18n; QTranslator loader keeps references.
+# Internationalization:
+# - All UI strings are wrapped with self.tr("...") for extraction by pylupdate6.
+# - Translations are loaded at startup via QTranslator (Qt base + app .qm files).
+# - Use: pylupdate6 xinput-plus.py -ts i18n/xinput-plus_es.ts i18n/xinput-plus_en.ts
+#        lrelease-qt6 i18n/xinput-plus_*.ts
 #
-# Config file (~/.config/xinput-plus.json):
+# Configuration (~/.config/xinput-plus.json) uses this structure:
 # {
-#   "by_name": { "<name>": {"speed": float, "extended": bool} },
-#   "by_id":   { "<id>":   {"speed": float, "extended": bool} },
-#   "_whitelist": [ {"name": "<name>", "id": "<id>"} ],
+#   "by_name": { "<name>": {"speed": float, "extended": bool}, ... },
+#   "by_id":   { "<id>":   {"speed": float, "extended": bool}, ... },
+#   "_whitelist": [ {"name": "<name>", "id": "<id>"}, ... ],
 #   "_show_only_whitelist": true/false
 # }
 #
-# NOTE: Wayland is not supported by xinput; run under Xorg.
-# NOTE: This script expects compiled translations in ./i18n (xinput-plus_<lang>.qm).
+# NOTE: Runtime requires Xorg (xinput). Wayland is not supported by xinput.
 
 import sys
 import subprocess
@@ -39,59 +35,26 @@ from PyQt6.QtGui import QIcon
 CONFIG_PATH = Path.home() / ".config" / "xinput-plus.json"
 ICON_PATH = Path(__file__).parent / "src" / "emucon.svg"
 
+from PyQt6.QtCore import QLocale, QTranslator, QLibraryInfo
+from pathlib import Path
 
-# --------------------------
-# Helpers & config migration
-# --------------------------
+from PyQt6.QtCore import QLocale, QTranslator, QLibraryInfo
+from pathlib import Path
 
-def debug(msg: str) -> None:
-    """Print a namespaced debug line to stdout."""
-    print(f"[xinput-plus] {msg}")
-
-
-def _migrate_old_config(cfg: Dict[str, Any]) -> Dict[str, Any]:
-    """Upgrade a legacy flat config into the new by_name/by_id schema."""
-    base = {"by_name": {}, "by_id": {}, "_whitelist": [], "_show_only_whitelist": False}
-    if not isinstance(cfg, dict):
-        return base
-
-    if "by_name" in cfg or "by_id" in cfg:
-        # Already new-ish format: ensure all keys exist.
-        base.update(cfg)
-        base.setdefault("by_name", {})
-        base.setdefault("by_id", {})
-        base.setdefault("_whitelist", [])
-        base.setdefault("_show_only_whitelist", False)
-        return base
-
-    # Legacy flat: {name: {speed, extended}}
-    by_name = {}
-    for k, v in cfg.items():
-        if isinstance(v, dict) and ("speed" in v or "extended" in v):
-            by_name[k] = {"speed": float(v.get("speed", 0.0)), "extended": bool(v.get("extended", False))}
-
-    out = base.copy()
-    out["by_name"] = by_name
-    return out
-
-
-# --------------------------
-# i18n loader (keeps refs)
-# --------------------------
-
-def install_translators(app: QApplication, forced_locale: Optional[str] = None, verbose: bool = False) -> None:
+def install_translators(app, forced_locale: str | None = None, verbose: bool = False) -> None:
     """
-    Install Qt base + app translators and KEEP references on `app` to avoid GC.
+    Install Qt base + app translators and KEEP references on `app` so they are not GC'd.
     Looks for app .qm files in ./i18n next to this script.
     """
+    # keep translators alive for the whole process
     if not hasattr(app, "_translators"):
-        app._translators: List[QTranslator] = []
+        app._translators: list[QTranslator] = []
 
     locale = QLocale(forced_locale) if forced_locale else QLocale.system()
     if verbose:
         print(f"[i18n] locale: {locale.name()} (forced={forced_locale})")
 
-    # Qt base (optional)
+    # 1) Qt base translations (optional)
     qt_tr = QTranslator()
     qt_dir = QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)
     if qt_tr.load(locale, "qtbase", "_", qt_dir):
@@ -99,25 +62,27 @@ def install_translators(app: QApplication, forced_locale: Optional[str] = None, 
         app._translators.append(qt_tr)
         if verbose:
             print(f"[i18n] Loaded Qt base from {qt_dir}")
-    elif verbose:
-        print(f"[i18n] Qt base NOT loaded for {locale.name()} in {qt_dir} (ok)")
+    else:
+        if verbose:
+            print(f"[i18n] Qt base not found for {locale.name()} in {qt_dir} (ok)")
 
-    # App translations
+    # 2) App translations
     i18n_dir = str(Path(__file__).parent / "i18n")
     if verbose:
         print(f"[i18n] i18n dir: {i18n_dir}")
 
-    # Candidates in order
+    # Try a few common filename variants explicitly
     candidates = [
         f"xinput-plus_{locale.name()}.qm",                 # es_ES
         f"xinput-plus_{locale.bcp47Name()}.qm",            # es-ES
         f"xinput-plus_{locale.name().split('_')[0]}.qm",   # es
     ]
+    # Always include the plain language file (your file is xinput-plus_es.qm)
     lang = locale.name().split('_')[0]
-    if lang:
+    if lang != "": 
         candidates.append(f"xinput-plus_{lang}.qm")
 
-    # Deduplicate
+    # De-dup while preserving order
     seen = set()
     candidates = [c for c in candidates if not (c in seen or seen.add(c))]
 
@@ -132,6 +97,7 @@ def install_translators(app: QApplication, forced_locale: Optional[str] = None, 
                 print(f"[i18n] Loaded app translation: {fn}")
             break
 
+    # Fallback to the locale-aware loader (searches multiple suffixes)
     if not loaded:
         tr = QTranslator()
         if tr.load(locale, "xinput-plus", "_", i18n_dir):
@@ -139,15 +105,41 @@ def install_translators(app: QApplication, forced_locale: Optional[str] = None, 
             app._translators.append(tr)
             loaded = True
             if verbose:
-                print(f"[i18n] Loaded app translation via locale loader for {locale.name()}")
+                print(f"[i18n] Loaded via locale loader for {locale.name()}")
 
     if not loaded and verbose:
-        print(f"[i18n] No app translation found for {locale.name()} in {i18n_dir}")
+        print(f"[i18n] No app translation loaded for {locale.name()} in {i18n_dir}")
+
+def debug(msg: str) -> None:
+    """Prints a namespaced debug line to stdout."""
+    print(f"[xinput-plus] {msg}")
 
 
-# --------------------------
-# Whitelist dialog
-# --------------------------
+def _migrate_old_config(cfg: Dict[str, Any]) -> Dict[str, Any]:
+    """Upgrades a legacy flat config into the new by_name/by_id schema."""
+    if not isinstance(cfg, dict):
+        return {"by_name": {}, "by_id": {}, "_whitelist": [], "_show_only_whitelist": False}
+
+    # Already in new format
+    if "by_name" in cfg or "by_id" in cfg:
+        cfg.setdefault("by_name", {})
+        cfg.setdefault("by_id", {})
+        cfg.setdefault("_whitelist", [])
+        cfg.setdefault("_show_only_whitelist", False)
+        return cfg
+
+    # Migrate from flat {name: {speed, extended}}
+    by_name = {}
+    for k, v in cfg.items():
+        if isinstance(v, dict) and ("speed" in v or "extended" in v):
+            by_name[k] = v
+    return {
+        "by_name": by_name,
+        "by_id": {},
+        "_whitelist": [],
+        "_show_only_whitelist": False,
+    }
+
 
 class WhitelistDialog(QDialog):
     """Dialog to edit the visible-devices whitelist (entries are (name, id))."""
@@ -186,7 +178,7 @@ class WhitelistDialog(QDialog):
         layout.addWidget(bb)
 
     def result_whitelist(self) -> List[dict]:
-        """Return the whitelist as [{'name':..., 'id':...}, ...]."""
+        """Returns the whitelist as a list of dicts [{'name':..., 'id':...}, ...]."""
         res = []
         for i in range(self.listw.count()):
             item = self.listw.item(i)
@@ -195,10 +187,6 @@ class WhitelistDialog(QDialog):
                             "id":   item.data(Qt.ItemDataRole.UserRole)})
         return res
 
-
-# --------------------------
-# Main window
-# --------------------------
 
 class LibinputGUI(QWidget):
     """Main window for xinput-plus."""
@@ -219,7 +207,7 @@ class LibinputGUI(QWidget):
 
         # State
         self.all_devices: List[dict] = []          # all slave pointers detected
-        self.visible_devices: List[dict] = []      # filtered by whitelist mode
+        self.visible_devices: List[dict] = []      # devices shown in the list (after whitelist filter)
         self.selected_device_name: str = ""
         self.selected_device_id: Optional[str] = None
 
@@ -234,10 +222,32 @@ class LibinputGUI(QWidget):
         QTimer.singleShot(1000, self.apply_all_configs)
 
     # --------------------------
+    # i18n helpers
+    # --------------------------
+    @staticmethod
+    def install_translators(app: QApplication, forced_locale: Optional[str] = None) -> None:
+        """Installs Qt base and app translators for a given or system locale."""
+        locale = QLocale(forced_locale) if forced_locale else QLocale.system()
+
+        # 1) Qt base (e.g., common dialogs), file like qtbase_es.qm
+        qt_translator = QTranslator()
+        qt_trans_dir = QLibraryInfo.path(QLibraryInfo.LibraryPath.TranslationsPath)
+        qt_loaded = qt_translator.load(locale, "qtbase", "_", qt_trans_dir)
+        if qt_loaded:
+            app.installTranslator(qt_translator)
+
+        # 2) App translator, file like xinput-plus_es.qm
+        app_translator = QTranslator()
+        i18n_dir = str(Path(__file__).parent / "i18n")
+        app_loaded = app_translator.load(locale, "xinput-plus", "_", i18n_dir)
+        if app_loaded:
+            app.installTranslator(app_translator)
+
+    # --------------------------
     # Persistence
     # --------------------------
     def load_config(self) -> Dict[str, Any]:
-        """Load config JSON and migrate legacy shape if needed."""
+        """Loads config JSON and migrates legacy shape if needed."""
         try:
             if CONFIG_PATH.exists():
                 raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
@@ -247,7 +257,7 @@ class LibinputGUI(QWidget):
         return {"by_name": {}, "by_id": {}, "_whitelist": [], "_show_only_whitelist": False}
 
     def save_config(self) -> None:
-        """Persist current config JSON to disk."""
+        """Persists current config JSON to disk."""
         try:
             CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
             CONFIG_PATH.write_text(json.dumps(self.config, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -258,7 +268,7 @@ class LibinputGUI(QWidget):
     # UI
     # --------------------------
     def build_ui(self) -> None:
-        """Construct the main layout and bind signals."""
+        """Constructs the main layout and binds signals."""
         layout = QHBoxLayout(self)
 
         # Device list (left column)
@@ -319,7 +329,7 @@ class LibinputGUI(QWidget):
     # Device discovery & list
     # --------------------------
     def _is_virtual_pointer_line(self, raw: str) -> bool:
-        """Return True for Virtual/Master/XTEST pointers we should hide/ignore."""
+        """Returns True for Virtual/Master/XTEST pointers we should hide/ignore."""
         low = raw.lower()
         if "master pointer" in low:
             return True
@@ -330,7 +340,7 @@ class LibinputGUI(QWidget):
         return False
 
     def _parse_id_from_short_line(self, line: str) -> Optional[str]:
-        """Parse 'id=<digits>' from one line of `xinput list --short` output."""
+        """Parses 'id=<digits>' from a line produced by `xinput list --short`."""
         try:
             left = line.split("id=", 1)[1]
             digits = ""
@@ -344,7 +354,7 @@ class LibinputGUI(QWidget):
             return None
 
     def _whitelist_set(self) -> Set[Tuple[str, str]]:
-        """Return whitelist as a set of (name, id) tuples for quick filtering."""
+        """Returns the whitelist as a set of (name, id) tuples for quick filtering."""
         wl = self.config.get("_whitelist", [])
         out: Set[Tuple[str, str]] = set()
         if isinstance(wl, list):
@@ -356,7 +366,7 @@ class LibinputGUI(QWidget):
         return out
 
     def _compute_visible(self) -> None:
-        """Compute visible_devices by applying the whitelist (if enabled and non-empty)."""
+        """Computes visible_devices by applying the whitelist (if enabled and non-empty)."""
         show_only = bool(self.config.get("_show_only_whitelist", False))
         wl = self._whitelist_set()
 
@@ -366,7 +376,7 @@ class LibinputGUI(QWidget):
             self.visible_devices = list(self.all_devices)
 
     def load_devices(self) -> None:
-        """Scan all slave pointers via xinput, then repopulate the visible list."""
+        """Scans all slave pointers via xinput, then repopulates the visible list."""
         self.all_devices = []
         self.device_list.clear()
 
@@ -424,12 +434,12 @@ class LibinputGUI(QWidget):
     # Config lookup & application
     # --------------------------
     def device_has_prop(self, device_id: str, prop_name: str) -> bool:
-        """Return True if the given property appears in `xinput list-props <id>` output."""
+        """Returns True if the given property appears in `xinput list-props <id>` output."""
         out = self.run_cmd(["xinput", "list-props", device_id])
         return (prop_name in out) if out else False
 
-    def run_cmd(self, cmd: List[str]) -> str:
-        """Execute a command and return stdout as text; log errors to debug()."""
+    def run_cmd(self, cmd: list[str]) -> str:
+        """Executes a command and returns stdout as text; logs errors to debug()."""
         try:
             debug(f"Running: {' '.join(cmd)}")
             out = subprocess.check_output(cmd, text=True, stderr=subprocess.STDOUT)
@@ -439,7 +449,7 @@ class LibinputGUI(QWidget):
             return ""
 
     def get_settings_for(self, name: str, dev_id: Optional[str]) -> Optional[Dict[str, Any]]:
-        """Fetch settings giving priority to ID profile, falling back to name profile."""
+        """Fetches settings giving priority to ID profile, falling back to name profile."""
         if dev_id and dev_id in self.config.get("by_id", {}):
             return self.config["by_id"][dev_id]
         if name in self.config.get("by_name", {}):
@@ -447,9 +457,9 @@ class LibinputGUI(QWidget):
         return None
 
     def _apply_to_device_id(self, device_id: str, speed: float, extended: bool) -> None:
-        """Apply either libinput Accel Speed or CTM matrix to a specific device id."""
+        """Applies either libinput Accel Speed or CTM matrix to a specific device id."""
         if extended:
-            # CTM scale clamped to avoid freezing (no zero/near-zero)
+            # CTM scale is clamped to prevent freezing (avoid zero/near-zero)
             scale = max(speed, -5.0) if speed < 0 else max(min(speed, 5.0), 0.05)
             matrix = f"{scale} 0 0 0 {scale} 0 0 0 1"
             self.run_cmd(["xinput", "--set-prop", device_id, "Coordinate Transformation Matrix", *matrix.split()])
@@ -463,7 +473,7 @@ class LibinputGUI(QWidget):
                 self.run_cmd(["xinput", "--set-prop", device_id, "Coordinate Transformation Matrix", *matrix.split()])
 
     def apply_config_to_device(self, name: str) -> None:
-        """Apply the 'by_name' profile to all devices currently reporting that name."""
+        """Applies the 'by_name' profile to all devices currently reporting that name."""
         cfg = self.get_settings_for(name, None)  # name profile
         if not cfg:
             return
@@ -482,7 +492,7 @@ class LibinputGUI(QWidget):
                 self._apply_to_device_id(dev_id, speed, extended)
 
     def apply_all_configs(self) -> None:
-        """Apply all known profiles (by id first, then by name) to connected devices."""
+        """Applies all known profiles (by id first, then by name) to connected devices."""
         if not self.all_devices:
             self.load_devices()
 
@@ -511,7 +521,7 @@ class LibinputGUI(QWidget):
     # UI slots
     # --------------------------
     def on_device_selected(self) -> None:
-        """Sync UI state when a device item is selected; apply stored profile."""
+        """Syncs UI state when a device list item becomes selected; applies stored profile."""
         items = self.device_list.selectedItems()
         if not items:
             return
@@ -550,12 +560,12 @@ class LibinputGUI(QWidget):
             self.label_device.setText(self.tr("Device: {name}").format(name=name))
         self.label_speed.setText(self.tr("Speed: {val:.2f}").format(val=speed))
 
-        # Apply immediately to give instant feedback
+        # Apply immediately to give instant feedback when selecting
         if did:
             self._apply_to_device_id(did, speed, extended)
 
     def on_speed_changed(self, value: int) -> None:
-        """Persist current slider value and apply it to the selected device."""
+        """Persists current slider value and applies it to the selected device."""
         if not self.selected_device_name:
             return
 
@@ -587,7 +597,7 @@ class LibinputGUI(QWidget):
             self.apply_config_to_device(name)
 
     def on_extended_toggled(self, checked: bool) -> None:
-        """Adjust slider range when toggling CTM mode; re-apply setting."""
+        """Adjusts slider range when toggling CTM mode; re-applies setting."""
         cur = self.slider_speed.value()
         if checked:
             self.slider_speed.setMinimum(-200)
@@ -609,13 +619,13 @@ class LibinputGUI(QWidget):
         self.on_speed_changed(self.slider_speed.value())
 
     def on_toggle_show_only_whitelist(self, checked: bool) -> None:
-        """Toggle 'show only whitelist' mode and refresh the device list."""
+        """Toggles the 'show only whitelist' mode and refreshes the device list."""
         self.config["_show_only_whitelist"] = bool(checked)
         self.save_config()
         self.load_devices()
 
     def open_whitelist_dialog(self) -> None:
-        """Open the whitelist editor dialog; save and reload on acceptance."""
+        """Opens the whitelist editor dialog; saves and reloads on acceptance."""
         wl_set = self._whitelist_set()
         dlg = WhitelistDialog(self, self.all_devices, wl_set)
         if dlg.exec() == QDialog.DialogCode.Accepted:
@@ -624,12 +634,8 @@ class LibinputGUI(QWidget):
             self.load_devices()
 
 
-# --------------------------
-# CLI & main
-# --------------------------
-
 def parse_forced_locale(argv: List[str]) -> Optional[str]:
-    """Parse --lang=<locale> from argv and return locale string or None."""
+    """Parses --lang=<locale> from argv and returns locale string or None."""
     for arg in argv[1:]:
         if arg.startswith("--lang="):
             return arg.split("=", 1)[1]
@@ -641,7 +647,7 @@ def main() -> int:
 
     # Install translators (Qt base + app), optionally forced via --lang=xx
     forced = parse_forced_locale(sys.argv)
-    install_translators(app, forced_locale=forced, verbose=True)
+    LibinputGUI.install_translators(app, forced)
 
     gui = LibinputGUI()
     gui.show()
