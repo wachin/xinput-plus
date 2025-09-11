@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.5] - 2025-09-10
+### Added
+- **Internationalization (i18n) end-to-end**: all UI strings use `self.tr(...)`, plus a robust runtime translator loader that **keeps `QTranslator` references alive** (prevents GC from dropping translations). Supports `--lang=<locale>`, loads Qt base translations when present, and accepts common filename patterns like `xinput-plus_es.qm`, `xinput-plus_es_ES.qm`, etc. :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1} :contentReference[oaicite:2]{index=2} :contentReference[oaicite:3]{index=3}
+- **Documentation**: added a practical i18n guide (requirements, `pylupdate6`, Linguist, `lrelease`, and run instructions).
+
+### Changed
+- UI text standardized to **English as source**; placeholders (`{name}`, `{id}`, `{val:.2f}`) clarified for translators. :contentReference[oaicite:4]{index=4}
+- Minor code tidy-ups and clearer debug messages.
+
+### Fixed
+- **Translations not applying** on some systems due to translator instances being garbage-collected; loader now preserves them for the lifetime of the app. :contentReference[oaicite:5]{index=5}
+
 ## [6.4] - 2025-09-09
 ### Added
 - **Whitelist of visible devices** with UI to edit and a **“Show only whitelist”** toggle.
@@ -36,8 +48,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.0] - 2025-09-09
 ### Fixed
 - Multi‑line **QMessageBox** string corrected using `\n` to prevent `SyntaxError` on some editors.
-
----
 
 ## Unreleased / Ideas
 - Option to **skip applying** to non‑whitelisted devices.

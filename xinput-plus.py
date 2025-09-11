@@ -309,6 +309,11 @@ class LibinputGUI(QWidget):
         self.btn_edit_whitelist = QPushButton(self.tr("✏️ Edit whitelist"))
         self.btn_edit_whitelist.clicked.connect(self.open_whitelist_dialog)
         btns.addWidget(self.btn_edit_whitelist)
+        
+        # NEW: About button
+        self.btn_about = QPushButton(self.tr("🛈 About"))
+        self.btn_about.clicked.connect(self.show_about)
+        btns.addWidget(self.btn_about)
 
         right.addLayout(btns)
         right.addStretch(1)
@@ -622,6 +627,31 @@ class LibinputGUI(QWidget):
             self.config["_whitelist"] = dlg.result_whitelist()
             self.save_config()
             self.load_devices()
+
+    def show_about(self) -> None:
+        """Show an About dialog with translatable HTML content."""
+        program = "xinput-plus.py"
+        year = "2025"
+        author = "Washington Indacochea Delgado"
+        email = "wachin.id@gmail.com"
+        license_text = self.tr("GPL-3 License")
+        url = "https://github.com/wachin/xinput-plus"
+
+        # All text is translatable; keep placeholders as-is.
+        about_html = self.tr(
+            "<h2><b>{program}</b></h2>"
+            "<p>🖱️ A simple GUI tool for adjusting mouse and touchpad speed in X11 Linux "
+            "window managers like Openbox, JWM, iceWM, and Fluxbox. Perfect for external, "
+            "keyboards with integrated touchpads (like Logitech K400) and laptop touchpads.</p>"
+            "<p>&copy; {year} {author}.<br>"
+            "{email}<br>"
+            "{license}</p>"
+            "<p>More info:</p>"
+            '<a href="{url}">{url}</a>'
+        ).format(program=program, year=year, author=author, email=email, license=license_text, url=url)
+
+        # Rich-text About dialog (links clickable)
+        QMessageBox.about(self, self.tr("About xinput-plus"), about_html)
 
 
 # --------------------------
