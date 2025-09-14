@@ -278,11 +278,6 @@ class LibinputGUI(QWidget):
 
         self.profile_by_id_cb = QCheckBox(self.tr("Save by ID (specific profile)"))
         right.addWidget(self.profile_by_id_cb)
-        
-        # NEW: Natural scrolling (reverse) toggle
-        self.natural_scroll_cb = QCheckBox(self.tr("Natural scrolling (reverse)"))
-        self.natural_scroll_cb.toggled.connect(self.on_natural_toggled)
-        right.addWidget(self.natural_scroll_cb)
 
         self.label_speed = QLabel(self.tr("Speed: 0.00"))
         right.addWidget(self.label_speed)
@@ -468,17 +463,8 @@ class LibinputGUI(QWidget):
             return self.config["by_name"][name]
         return None
 
-    def _apply_to_device_id(self, device_id: str, speed: float, extended: bool, natural: bool) -> None:
-        """Apply libinput Accel Speed or CTM, and (if available) natural scrolling."""
-        # 1) Natural scrolling (reverse)
-        if self.device_has_prop(device_id, "libinput Natural Scrolling Enabled"):
-            self.run_cmd([
-                "xinput", "--set-prop", device_id,
-                "libinput Natural Scrolling Enabled",
-                "1" if natural else "0"
-            ])
-
-        # 2) Speed: libinput Accel Speed or CTM fallback
+    def _apply_to_device_id(self, device_id: str, speed: float, extended: bool) -> None:
+        """Apply either libinput Accel Speed or CTM matrix to a specific device id."""
         if extended:
             # CTM scale clamped to avoid freezing (no zero/near-zero)
             scale = max(speed, -5.0) if speed < 0 else max(min(speed, 5.0), 0.05)
@@ -500,18 +486,17 @@ class LibinputGUI(QWidget):
             return
         speed = float(cfg.get("speed", 0.0))
         extended = bool(cfg.get("extended", False))
-        natural = bool(cfg.get("natural", False))
 
         # Apply to all matching name devices (from the full device set)
         for dev in self.all_devices:
             if dev["name"] == name:
-                self._apply_to_device_id(dev["id"], speed, extended, natural)
+                self._apply_to_device_id(dev["id"], speed, extended)
 
         # Fallback: try pointer:<name> to resolve current ids if discovery hasn't caught up
         out = self.run_cmd(["xinput", "list", "--id-only", f"pointer:{name}"])
         if out:
             for dev_id in out.split():
-                self._apply_to_device_id(dev_id, speed, extended, natural)
+                self._apply_to_device_id(dev_id, speed, extended)
 
     def apply_all_configs(self) -> None:
         """Apply all known profiles (by id first, then by name) to connected devices."""
@@ -523,12 +508,7 @@ class LibinputGUI(QWidget):
             did = dev["id"]
             cfg = self.config.get("by_id", {}).get(did)
             if cfg:
-                self._apply_to_device_id(
-                    did,
-                    float(cfg.get("speed", 0.0)),
-                    bool(cfg.get("extended", False)),
-                    bool(cfg.get("natural", False))
-                )
+                self._apply_to_device_id(did, float(cfg.get("speed", 0.0)), bool(cfg.get("extended", False)))
 
         # 2) Apply per-name profiles to devices that didn't get an ID profile
         applied_ids = {d["id"] for d in self.all_devices if d["id"] in self.config.get("by_id", {})}
@@ -538,12 +518,7 @@ class LibinputGUI(QWidget):
             name = dev["name"]
             cfg = self.config.get("by_name", {}).get(name)
             if cfg:
-                self._apply_to_device_id(
-                    dev["id"],
-                    float(cfg.get("speed", 0.0)),
-                    bool(cfg.get("extended", False)),
-                    bool(cfg.get("natural", False))
-                )
+                self._apply_to_device_id(dev["id"], float(cfg.get("speed", 0.0)), bool(cfg.get("extended", False)))
 
         # Ensure something is selected in the UI
         if self.device_list.currentRow() < 0 and self.device_list.count() > 0:
@@ -567,11 +542,9 @@ class LibinputGUI(QWidget):
         if cfg:
             speed = float(cfg.get("speed", 0.0))
             extended = bool(cfg.get("extended", False))
-            natural = bool(cfg.get("natural", False))
         else:
             speed = 0.0
             extended = False
-            natural = False
 
         # Auto-check "Save by ID" if we already have a per-ID profile for this device
         self.profile_by_id_cb.blockSignals(True)
@@ -581,10 +554,6 @@ class LibinputGUI(QWidget):
         self.extended_speed_cb.blockSignals(True)
         self.extended_speed_cb.setChecked(extended)
         self.extended_speed_cb.blockSignals(False)
-
-        self.natural_scroll_cb.blockSignals(True)
-        self.natural_scroll_cb.setChecked(natural)
-        self.natural_scroll_cb.blockSignals(False)
 
         self.slider_speed.blockSignals(True)
         self.slider_speed.setMinimum(-200 if extended else -100)
@@ -600,7 +569,7 @@ class LibinputGUI(QWidget):
 
         # Apply immediately to give instant feedback
         if did:
-            self._apply_to_device_id(did, speed, extended, natural)
+            self._apply_to_device_id(did, speed, extended)
 
     def on_speed_changed(self, value: int) -> None:
         """Persist current slider value and apply it to the selected device."""
@@ -608,7 +577,6 @@ class LibinputGUI(QWidget):
             return
 
         extended = self.extended_speed_cb.isChecked()
-        natural = self.natural_scroll_cb.isChecked()
         speed = value / 100.0
         did = self.selected_device_id
         name = self.selected_device_name
@@ -618,7 +586,6 @@ class LibinputGUI(QWidget):
         self.config["by_name"].setdefault(name, {})
         self.config["by_name"][name]["speed"] = speed
         self.config["by_name"][name]["extended"] = extended
-        self.config["by_name"][name]["natural"] = natural
 
         # Optionally store by ID
         if self.profile_by_id_cb.isChecked() and did:
@@ -626,14 +593,13 @@ class LibinputGUI(QWidget):
             self.config["by_id"].setdefault(did, {})
             self.config["by_id"][did]["speed"] = speed
             self.config["by_id"][did]["extended"] = extended
-            self.config["by_id"][did]["natural"] = natural
 
         self.save_config()
         self.label_speed.setText(self.tr("Speed: {val:.2f}").format(val=speed))
 
         # Apply to selected device by exact ID when available
         if did:
-            self._apply_to_device_id(did, speed, extended, natural)
+            self._apply_to_device_id(did, speed, extended)
         else:
             self.apply_config_to_device(name)
 
@@ -657,11 +623,6 @@ class LibinputGUI(QWidget):
         self.slider_speed.blockSignals(False)
 
         # Re-apply with the new mode
-        self.on_speed_changed(self.slider_speed.value())
-        
-    def on_natural_toggled(self, checked: bool) -> None:
-        """Re-apply settings when toggling natural scrolling."""
-        # Reuse the same persistence/apply path:
         self.on_speed_changed(self.slider_speed.value())
 
     def on_toggle_show_only_whitelist(self, checked: bool) -> None:
