@@ -255,20 +255,104 @@ python3 xinput-plus.py --lang=pt_BR
 
 ---
 
-## Tips & common pitfalls
+Here’s a ready-to-paste addition for your **README.md**. It extends the i18n section with filename requirements and safe placeholder translation guidance.
 
-* **Do not translate placeholders.** Keep them exactly as in English:
+---
 
-  * `{name}`, `{id}`, `{val:.2f}` must remain unchanged in all translations.
-* **Mark all entries “Finished”** in Qt Linguist before compiling to `.qm`.
-* If the UI stays in English:
+## Important notes for translations
 
-  1. Confirm `i18n/xinput-plus_<lang>.qm` exists.
-  2. Launch with `--lang=<lang>` (e.g. `--lang=es`).
-  3. Ensure UI strings in code are wrapped with `self.tr("…")` (already done).
-  4. On v6.5+ versions, the console prints i18n debug messages (e.g., `Loaded app translation: xinput-plus_es.qm`).
-* You can keep **English as source** and translate only the languages you need.
-* You can run `pylupdate6` multiple times; it updates the `.ts` files with new/changed strings.
+### 1) Use the canonical filename when extracting strings
+
+The extraction command assumes your main file is named **`xinput-plus.py`**:
+
+```bash
+pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py
+```
+
+* **Do NOT** change `xinput-plus.py` to another filename while developing the program.
+  During development, new UI strings are added frequently; if you point `pylupdate6` at some other file, those new strings **won’t** be picked up and **won’t** appear in the `.ts` for translation.
+* If you really want to experiment with a differently named file (e.g., a versioned copy), do it in a **separate folder** and treat it as a separate exercise—not the one you use to develop and extract strings from.
+
+**If you must use multiple source files**, pass **all** of them to `pylupdate6`:
+
+```bash
+pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py other_module.py optional_extras.py
+```
+
+This ensures every translatable string is included in the `.ts`.
+
+---
+
+### 2) Translating safely in Qt Linguist (placeholders!)
+
+When you open the `.ts` in **Qt Linguist (Qt 5 Linguist)**, be careful with strings that include **placeholders**. You may **translate only the normal words**, **not** the placeholders inside braces.
+
+**Examples:**
+
+* Source:
+
+  ```
+  Device: {name} (id {id})
+  ```
+
+  ✅ Correct Spanish:
+
+  ```
+  Dispositivo: {name} (id {id})
+  ```
+
+  (translate only “Device” → “Dispositivo”; keep `{name}` and `{id}` exactly as they are)
+
+* Source:
+
+  ```
+  Device: {name}
+  ```
+
+  ✅ Correct Spanish:
+
+  ```
+  Dispositivo: {name}
+  ```
+
+* Source:
+
+  ```
+  Speed: {val:.2f}
+  ```
+
+  ✅ Correct Spanish:
+
+  ```
+  Velocidad: {val:.2f}
+  ```
+
+> **Never change** the content inside `{ ... }` (names, formats, punctuation).
+> If you alter `{name}`, `{id}`, or `{val:.2f}`, the program won’t work correctly at runtime.
+
+---
+
+### 3) Compile after translating
+
+After updating translations in Linguist (and marking them as **Finished**), compile to `.qm`:
+
+```bash
+# pick whichever lrelease exists on your system
+LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt5/bin/lrelease)
+$LREL i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
+```
+
+Then run the app:
+
+```bash
+python3 xinput-plus.py --lang=es
+```
+
+You should see Spanish UI and, on recent versions, a console line like:
+
+```
+[i18n] Loaded app translation: xinput-plus_es.qm
+```
 
 ---
 
