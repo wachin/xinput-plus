@@ -383,10 +383,22 @@ LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt5/bin/l
 $LREL i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
 ```
 
+or you can compile from Qt 5 Linguist  
+
+File - Distribute as...
+
+and save example to: xinput-plus_es.qm
+
 Then run the app:
 
 ```bash
 python3 xinput-plus.py --lang=es
+```
+
+also you can launch in other languages, example:
+
+```bash
+python3 xinput-plus.py --lang=en
 ```
 
 You should see Spanish UI and, on recent versions, a console line like:
