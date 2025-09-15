@@ -10,8 +10,8 @@
     </message>
     <message>
         <location filename="../xinput-plus.py" line="275"/>
-        <source>Extended mode (CTM)</source>
-        <translation>Modo extendido (CTM)</translation>
+        <source>Extended mode, double speed (CTM)</source>
+        <translation>Modo extendido, doble velocidad (CTM)</translation>
     </message>
     <message>
         <location filename="../xinput-plus.py" line="279"/>
@@ -95,6 +95,10 @@ Is xinput available?</source>
         <location filename="../xinput-plus.py" line="736"/>
         <source>About xinput-plus</source>
         <translation>Acerca de xinput-plus</translation>
+    </message>
+    <message>
+        <source>Extended mode (CTM)</source>
+        <translation type="vanished">Modo extendido (CTM)</translation>
     </message>
 </context>
 <context>

@@ -272,7 +272,7 @@ class LibinputGUI(QWidget):
         self.label_device = QLabel(self.tr("Select a device"))
         right.addWidget(self.label_device)
 
-        self.extended_speed_cb = QCheckBox(self.tr("Extended mode (CTM)"))
+        self.extended_speed_cb = QCheckBox(self.tr("Extended mode, double speed (CTM)"))
         self.extended_speed_cb.toggled.connect(self.on_extended_toggled)
         right.addWidget(self.extended_speed_cb)
 
