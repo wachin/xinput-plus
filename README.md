@@ -92,7 +92,7 @@ python3 xinput-plus.py
 
 and it will open:
 
-![](vx_images/186616083856704.png)
+![](assets/images/01-xinput-plus-light-theme.png)
 
 > 💡 On some Linux distributions you can right-click on the `xinput-plus.py` file and open with python.
 
@@ -122,7 +122,7 @@ The program saves your settings in this file (don't delete it if you don't want 
 
 ---
 
-## Using the system dark theme (Qt6 + Kvantum)
+## Using the system Dark Theme (Qt6 + Kvantum)
 
 **xinput-plus** is a **PyQt6** app, so it follows your **Qt6** theme. To use a dark theme system-wide via **Kvantum**:
 
@@ -144,7 +144,7 @@ sudo apt install qt6ct qt6-style-kvantum
 
 > **Note (LXQt on Debian 12):** As you observed, **no environment variables** were needed—LXQt already exposes the Qt6 platform theme correctly.
 
-![](vx_images/274471700299186.png)
+![](assets/images/02-xinput-plus%20dark%20theme.png)
 
 ### Other desktops / window managers
 
@@ -339,6 +339,8 @@ When you open the `.ts` in **Qt Linguist (Qt 5 Linguist)**, be careful with stri
   ```
   Dispositivo: {name} (id {id})
   ```
+  
+![](assets/images/03-Qt-5-Linguist-when-you-go-to-translate-the-program-to-the-spanish.png)
 
   (translate only “Device” → “Dispositivo”; keep `{name}` and `{id}` exactly as they are)
 
