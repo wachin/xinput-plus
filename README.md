@@ -122,6 +122,45 @@ The program saves your settings in this file (don't delete it if you don't want 
 
 ---
 
+## Using the system dark theme (Qt6 + Kvantum)
+
+**xinput-plus** is a **PyQt6** app, so it follows your **Qt6** theme. To use a dark theme system-wide via **Kvantum**:
+
+### Debian 12 (Bookworm)
+
+1. **Install Qt6 theming tools**
+
+```bash
+sudo apt install qt6ct qt6-style-kvantum
+```
+
+2. **Select the style in Qt6 Settings**
+
+* Open **qt6ct** → **Appearance / Style** → choose **Kvantum**.
+* (Optional) Open **Kvantum Manager** and pick your favorite **dark** theme.
+
+3. **Restart xinput-plus**
+   No app changes are required—xinput-plus will automatically adopt the system dark theme.
+
+> **Note (LXQt on Debian 12):** As you observed, **no environment variables** were needed—LXQt already exposes the Qt6 platform theme correctly.
+
+![](vx_images/274471700299186.png)
+
+### Other desktops / window managers
+
+Some environments don’t expose the Qt6 platform theme by default. If the dark theme doesn’t apply after the steps above, set these **environment variables** (pick *one* place, e.g. your `Launcher.sh`, `~/.profile`, or the app’s `.desktop` file):
+
+```bash
+export QT_QPA_PLATFORMTHEME=qt6ct
+export QT_STYLE_OVERRIDE=kvantum
+```
+
+Then log out/in or restart the app.
+
+> **Heads-up:** `qt5ct` only affects **Qt5** applications. For **PyQt6/Qt6** apps like xinput-plus, you need **qt6ct** (and `qt6-style-kvantum`).
+
+---
+
 ## 🤓 How does it work internally?
 
 It uses Linux commands with `xinput` to change the device speed in real time. For standard speed adjustments, it modifies the `libinput Accel Speed` property. For extended speed mode (up to 2.0), it uses the `Coordinate Transformation Matrix` to scale pointer movement, allowing higher sensitivity for devices that need it. The interface does everything for you!
