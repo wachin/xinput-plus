@@ -283,6 +283,12 @@ class LibinputGUI(QWidget):
         self.natural_scroll_cb = QCheckBox(self.tr("Natural scrolling (reverse)"))
         self.natural_scroll_cb.toggled.connect(self.on_natural_toggled)
         right.addWidget(self.natural_scroll_cb)
+        
+        # NEW: Tap-to-click (enable left-click on touchpads)
+        self.tapping_cb = QCheckBox(self.tr("Tap to click (enable left-click)"))
+        self.tapping_cb.setChecked(True)  # ← default ON
+        self.tapping_cb.toggled.connect(self.on_tapping_toggled)
+        right.addWidget(self.tapping_cb)
 
         self.label_speed = QLabel(self.tr("Speed: 0.00"))
         right.addWidget(self.label_speed)
@@ -468,8 +474,9 @@ class LibinputGUI(QWidget):
             return self.config["by_name"][name]
         return None
 
-    def _apply_to_device_id(self, device_id: str, speed: float, extended: bool, natural: bool) -> None:
-        """Apply libinput Accel Speed or CTM, and (if available) natural scrolling."""
+    def _apply_to_device_id(self, device_id: str, speed: float, extended: bool, natural: bool, tapping: bool) -> None:
+        """Apply natural scrolling, tap-to-click, and speed (libinput or CTM) to a specific device id."""
+
         # 1) Natural scrolling (reverse)
         if self.device_has_prop(device_id, "libinput Natural Scrolling Enabled"):
             self.run_cmd([
@@ -478,7 +485,15 @@ class LibinputGUI(QWidget):
                 "1" if natural else "0"
             ])
 
-        # 2) Speed: libinput Accel Speed or CTM fallback
+        # 2) Tap-to-click (left-click with touchpad tap)
+        if self.device_has_prop(device_id, "libinput Tapping Enabled"):
+            self.run_cmd([
+                "xinput", "--set-prop", device_id,
+                "libinput Tapping Enabled",
+                "1" if tapping else "0"
+            ])
+
+        # 3) Speed: libinput Accel Speed o CTM fallback
         if extended:
             # CTM scale clamped to avoid freezing (no zero/near-zero)
             scale = max(speed, -5.0) if speed < 0 else max(min(speed, 5.0), 0.05)
@@ -501,17 +516,18 @@ class LibinputGUI(QWidget):
         speed = float(cfg.get("speed", 0.0))
         extended = bool(cfg.get("extended", False))
         natural = bool(cfg.get("natural", False))
+        tapping = bool(cfg.get("tapping", False))
 
         # Apply to all matching name devices (from the full device set)
         for dev in self.all_devices:
             if dev["name"] == name:
-                self._apply_to_device_id(dev["id"], speed, extended, natural)
+                self._apply_to_device_id(dev["id"], speed, extended, natural, tapping)
 
         # Fallback: try pointer:<name> to resolve current ids if discovery hasn't caught up
         out = self.run_cmd(["xinput", "list", "--id-only", f"pointer:{name}"])
         if out:
             for dev_id in out.split():
-                self._apply_to_device_id(dev_id, speed, extended, natural)
+                self._apply_to_device_id(dev_id, speed, extended, natural, tapping)
 
     def apply_all_configs(self) -> None:
         """Apply all known profiles (by id first, then by name) to connected devices."""
@@ -527,7 +543,8 @@ class LibinputGUI(QWidget):
                     did,
                     float(cfg.get("speed", 0.0)),
                     bool(cfg.get("extended", False)),
-                    bool(cfg.get("natural", False))
+                    bool(cfg.get("natural", False)),
+                    bool(cfg.get("tapping", False))
                 )
 
         # 2) Apply per-name profiles to devices that didn't get an ID profile
@@ -542,7 +559,8 @@ class LibinputGUI(QWidget):
                     dev["id"],
                     float(cfg.get("speed", 0.0)),
                     bool(cfg.get("extended", False)),
-                    bool(cfg.get("natural", False))
+                    bool(cfg.get("natural", False)),
+                    bool(cfg.get("tapping", False))
                 )
 
         # Ensure something is selected in the UI
@@ -568,10 +586,12 @@ class LibinputGUI(QWidget):
             speed = float(cfg.get("speed", 0.0))
             extended = bool(cfg.get("extended", False))
             natural = bool(cfg.get("natural", False))
+            tapping = bool(cfg.get("tapping", False))
         else:
             speed = 0.0
             extended = False
             natural = False
+            tapping = True   # ← default ON
 
         # Auto-check "Save by ID" if we already have a per-ID profile for this device
         self.profile_by_id_cb.blockSignals(True)
@@ -585,6 +605,10 @@ class LibinputGUI(QWidget):
         self.natural_scroll_cb.blockSignals(True)
         self.natural_scroll_cb.setChecked(natural)
         self.natural_scroll_cb.blockSignals(False)
+
+        self.tapping_cb.blockSignals(True)
+        self.tapping_cb.setChecked(tapping)
+        self.tapping_cb.blockSignals(False)
 
         self.slider_speed.blockSignals(True)
         self.slider_speed.setMinimum(-200 if extended else -100)
@@ -600,7 +624,7 @@ class LibinputGUI(QWidget):
 
         # Apply immediately to give instant feedback
         if did:
-            self._apply_to_device_id(did, speed, extended, natural)
+            self._apply_to_device_id(did, speed, extended, natural, tapping)
 
     def on_speed_changed(self, value: int) -> None:
         """Persist current slider value and apply it to the selected device."""
@@ -609,6 +633,7 @@ class LibinputGUI(QWidget):
 
         extended = self.extended_speed_cb.isChecked()
         natural = self.natural_scroll_cb.isChecked()
+        tapping = self.tapping_cb.isChecked()
         speed = value / 100.0
         did = self.selected_device_id
         name = self.selected_device_name
@@ -619,6 +644,7 @@ class LibinputGUI(QWidget):
         self.config["by_name"][name]["speed"] = speed
         self.config["by_name"][name]["extended"] = extended
         self.config["by_name"][name]["natural"] = natural
+        self.config["by_name"][name]["tapping"] = tapping
 
         # Optionally store by ID
         if self.profile_by_id_cb.isChecked() and did:
@@ -627,13 +653,14 @@ class LibinputGUI(QWidget):
             self.config["by_id"][did]["speed"] = speed
             self.config["by_id"][did]["extended"] = extended
             self.config["by_id"][did]["natural"] = natural
+            self.config["by_id"][did]["tapping"] = tapping
 
         self.save_config()
         self.label_speed.setText(self.tr("Speed: {val:.2f}").format(val=speed))
 
         # Apply to selected device by exact ID when available
         if did:
-            self._apply_to_device_id(did, speed, extended, natural)
+            self._apply_to_device_id(did, speed, extended, natural, tapping)
         else:
             self.apply_config_to_device(name)
 
@@ -662,6 +689,10 @@ class LibinputGUI(QWidget):
     def on_natural_toggled(self, checked: bool) -> None:
         """Re-apply settings when toggling natural scrolling."""
         # Reuse the same persistence/apply path:
+        self.on_speed_changed(self.slider_speed.value())
+        
+    def on_tapping_toggled(self, checked: bool) -> None:
+        """Re-apply settings when toggling tap-to-click."""
         self.on_speed_changed(self.slider_speed.value())
 
     def on_toggle_show_only_whitelist(self, checked: bool) -> None:
