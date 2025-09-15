@@ -24,7 +24,7 @@ This program is for **Linux** and allows you to **change the pointer speed** (mo
 Before using it, make sure you have the following installed on your Linux computer:
 
 ```bash
-sudo apt install xinput git libinput-tools python3-pyqt6 python3-simplejson libqt6svg6
+sudo apt install xinput git python3-pyqt6 libqt6svg6
 ```
 
 1. ⚠️ This program only works on **X11**, not on Wayland.  
@@ -218,7 +218,8 @@ This app supports translations with Qt **`.ts` → `.qm`** files. Follow these s
 ## Requirements
 
 * **Qt Creator** installed on your Linux OS
-* **PyQt6 dev tools** (provides `pylupdate6`):
+* **PyQt6 dev tools** (provides `pylupdate6`)
+* **dh-sequence-python3**
 
 ```bash
 sudo apt install pyqt6-dev-tools
@@ -228,6 +229,12 @@ sudo apt install pyqt6-dev-tools
 ```bash
 sudo apt install qttools5-dev-tools
 ```
+* dh-sequence-python3 lo proporciona el paquete dh-python
+
+```bash
+sudo apt install dh-python
+```
+
 * Create the translations folder:
 
 ```bash
