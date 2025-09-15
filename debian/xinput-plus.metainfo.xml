@@ -1,22 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>xinput-plus.desktop</id>
+  <!-- Use an RDNS-style, globally unique ID (do NOT use the .desktop filename here) -->
+  <id>io.github.wachin.xinputplus</id>
+
   <name>xinput-plus</name>
   <summary>Adjust pointer speed per device (Xorg) via xinput</summary>
+
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-3.0-or-later</project_license> <!-- TODO: confirm license -->
+  <project_license>GPL-3.0-or-later</project_license>
+  <developer_name>Washington Indacochea Delgado</developer_name>
+  <url type="homepage">https://github.com/wachin/xinput-plus</url>
+
   <description>
     <p>
       xinput-plus provides a simple PyQt6 GUI to manage per-device pointer acceleration
-      on Xorg, with per-ID/name profiles, whitelisting, and CTM fallback.
+      on Xorg, with per-ID/name profiles, whitelisting, natural scrolling, tap-to-click,
+      and a CTM fallback when “libinput Accel Speed” is not available.
     </p>
   </description>
+
+  <!-- Keep this: it links the appstream component to your installed desktop file -->
   <launchable type="desktop-id">xinput-plus.desktop</launchable>
+
   <provides>
     <binary>xinput-plus</binary>
   </provides>
+
   <categories>
     <category>Utility</category>
     <category>Settings</category>
   </categories>
+
+  <!-- Add releases to satisfy 'releases-info-missing' -->
+  <releases>
+    <release version="6.6" date="2025-09-15"/>
+    <release version="6.5" date="2025-09-10"/>
+  </releases>
+
+  <!-- OARS 1.1 content rating: desktop utility -> all 'none' -->
+  <content_rating type="oars-1.1">
+    <content_attribute id="violence-cartoon">none</content_attribute>
+    <content_attribute id="violence-fantasy">none</content_attribute>
+    <content_attribute id="violence-realistic">none</content_attribute>
+    <content_attribute id="violence-bloodshed">none</content_attribute>
+    <content_attribute id="violence-sexual">none</content_attribute>
+
+    <content_attribute id="drugs-alcohol">none</content_attribute>
+    <content_attribute id="drugs-narcotics">none</content_attribute>
+    <content_attribute id="drugs-tobacco">none</content_attribute>
+
+    <content_attribute id="sex-nudity">none</content_attribute>
+    <content_attribute id="sex-themes">none</content_attribute>
+    <content_attribute id="sex-homosexuality">none</content_attribute>
+    <content_attribute id="sex-prostitution">none</content_attribute>
+    <content_attribute id="sex-adultery">none</content_attribute>
+    <content_attribute id="sex-appearance">none</content_attribute>
+
+    <content_attribute id="language-profanity">none</content_attribute>
+    <content_attribute id="language-humor">none</content_attribute>
+    <content_attribute id="language-discrimination">none</content_attribute>
+
+    <content_attribute id="social-chat">none</content_attribute>
+    <content_attribute id="social-info">none</content_attribute>
+    <content_attribute id="social-audio">none</content_attribute>
+    <content_attribute id="social-camera">none</content_attribute>
+    <content_attribute id="social-contacts">none</content_attribute>
+    <content_attribute id="social-location">none</content_attribute>
+    <content_attribute id="money-purchasing">none</content_attribute>
+  </content_rating>
 </component>

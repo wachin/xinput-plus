@@ -1,0 +1,90 @@
+# -----------------------------
+# Python / entorno
+# -----------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# -----------------------------
+# Qt / PyQt / Qt Creator
+# -----------------------------
+# Traducciones compiladas (se generan en el build)
+i18n/*.qm
+# Archivos temporales de Qt Creator / qmake
+*.pro.user
+*.qbs.user
+*.qbs.user.*
+*.qmlproject.user
+*.qmlproject.user.*
+*.qtcreator
+*.qtcreator.*
+.qmake.stash
+
+# -----------------------------
+# Artefactos de build Python
+# -----------------------------
+build/
+dist/
+*.egg-info/
+
+# -----------------------------
+# Debian packaging (artefactos)
+# -----------------------------
+# Ignorar todo lo generado dentro de debian/...
+debian/.debhelper/
+debian/*-stamp
+debian/debhelper-build-stamp
+debian/tmp/
+debian/files
+debian/*.log
+debian/*.substvars
+debian/*/
+# ...pero conservar archivos fuente de empaquetado:
+!debian/changelog
+!debian/control
+!debian/rules
+!debian/copyright
+!debian/source/
+!debian/source/format
+!debian/watch
+!debian/xinput-plus.desktop
+!debian/xinput-plus.metainfo.xml
+!debian/xinput-plus.1
+
+# -----------------------------
+# UsCan / orig tarballs / Debuild
+# (a veces quedan en el repo por error)
+# -----------------------------
+*.orig.tar.*
+*.debian.tar.*
+*.dsc
+*.build
+*.buildinfo
+*.changes
+# Tarball renombrado por uscan en el árbol de trabajo
+xinput-plus-*.tar.gz
+
+# -----------------------------
+# SO / editores
+# -----------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# -----------------------------
+# Imágenes de README públicas
+# (NO ignores assets/; se recomienda subirlas)
+# -----------------------------
+# (dejar vacío a propósito)

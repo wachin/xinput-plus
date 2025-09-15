@@ -33,4 +33,7 @@ override_dh_auto_install:
 	# Manpage
 	install -D -m 0644 debian/xinput-plus.1 debian/xinput-plus/usr/share/man/man1/xinput-plus.1
 
+override_dh_installchangelogs:
+	dh_installchangelogs src/CHANGELOG.md
+
 

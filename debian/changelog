@@ -1,56 +1,12 @@
-# Changelog
-All notable changes to this project will be documented in this file.
+xinput-plus (6.6-1) unstable; urgency=medium
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+  * New upstream release 6.6.
+    - Natural scrolling (reverse) per device.
+    - Tap to click per device (default ON for new devices).
+    - About dialog (translatable).
+    - UI: two rows of actions; Edit whitelist + About on row 2.
+    - Docs: Qt6 + Kvantum (qt6ct) dark theme section.
+  * AppStream: use RDNS ID, add releases and OARS rating.
+  * Packaging: clarify i18n workflow and canonical filename for pylupdate6.
 
-## [6.5] - 2025-09-10
-### Added
-- **Internationalization (i18n) end-to-end**: all UI strings use `self.tr(...)`, plus a robust runtime translator loader that **keeps `QTranslator` references alive** (prevents GC from dropping translations). Supports `--lang=<locale>`, loads Qt base translations when present, and accepts common filename patterns like `xinput-plus_es.qm`, `xinput-plus_es_ES.qm`, etc. :contentReference[oaicite:0]{index=0} :contentReference[oaicite:1]{index=1} :contentReference[oaicite:2]{index=2} :contentReference[oaicite:3]{index=3}
-- **Documentation**: added a practical i18n guide (requirements, `pylupdate6`, Linguist, `lrelease`, and run instructions).
-
-### Changed
-- UI text standardized to **English as source**; placeholders (`{name}`, `{id}`, `{val:.2f}`) clarified for translators. :contentReference[oaicite:4]{index=4}
-- Minor code tidy-ups and clearer debug messages.
-
-### Fixed
-- **Translations not applying** on some systems due to translator instances being garbage-collected; loader now preserves them for the lifetime of the app. :contentReference[oaicite:5]{index=5}
-
-## [6.4] - 2025-09-09
-### Added
-- **Whitelist of visible devices** with UI to edit and a **“Show only whitelist”** toggle.
-- **Profiles by ID** (in addition to by name). Per‑ID profiles take precedence when applying.
-- New config schema with `by_name`, `by_id`, `_whitelist`, `_show_only_whitelist`.
-- Button **Re‑apply all** to re‑enforce current profiles on connected devices.
-
-### Changed
-- Device list entries now display **`Name (id N)`** for clarity.
-- Config is **auto‑migrated** from the old (flat) format to the new structure.
-- README updated (EN): usage, whitelist, per‑ID profiles, CTM details.
-
-## [6.3] - 2025-09-09
-### Fixed
-- Hardened all **multi‑line messages** to avoid Python `SyntaxError: unterminated string literal` when editors wrap lines.
-
-## [6.0] - 2025-09-09
-### Added
-- **Icon restored** from `src/emucon.svg`.
-- **Hide virtual/master/XTEST** pointers; only physical **slave pointers** are listed.
-- **Disambiguation by ID**: the app resolves and stores the exact device ID; apply by ID.
-- **Property check**: if `libinput Accel Speed` is missing, **fallback to CTM** safely.
-- **Extended Mode (CTM)** with expanded range and clamping to prevent pointer freeze.
-- **Auto‑apply** all saved configs on startup; **Refresh** button to rescan devices.
-
-### Changed
-- Better device matching: fallback to `pointer:<name>` when needed.
-- UI sync improvements and safer command execution with debug logs.
-
-## [5.0] - 2025-09-09
-### Fixed
-- Multi‑line **QMessageBox** string corrected using `\n` to prevent `SyntaxError` on some editors.
-
-## Unreleased / Ideas
-- Option to **skip applying** to non‑whitelisted devices.
-- Per‑device **axis scaling/inversion**.
-- Import/Export profiles.
-
+ -- Washington Indacochea Delgado <wachin.id@gmail.com>  Mon, 15 Sep 2025 00:00:00 +0000
