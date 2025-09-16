@@ -11,6 +11,13 @@ Copyright:
 License: GPL-3+
  On Debian systems, the full text of the GNU General Public License
  version 3 can be found in /usr/share/common-licenses/GPL-3.
+ 
+ Files: debian/xinput-plus.metainfo.xml
+Copyright:
+  2025 Washington Indacochea Delgado <wachin.id@gmail.com>
+License: CC0-1.0
+ Creative Commons Zero v1.0 Universal (CC0 1.0).
+ Full license text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 
 Files: src/emucon.svg                            # the ONLY CC0 file
 Comment:
@@ -25,3 +32,4 @@ Copyright:
 License: CC0-1.0
  Creative Commons Zero v1.0 Universal (CC0 1.0).
  Full license text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+

@@ -1,3 +1,15 @@
+xinput-plus (6.6.2-1) unstable; urgency=medium
+
+  * New upstream release 6.6.2. Sync docs and metadata.
+
+ -- Washington Indacochea Delgado <wachin.id@gmail.com>  Mon, 15 Sep 2025 19:03:49 -0500
+
+xinput-plus (6.6.1-1) unstable; urgency=medium
+
+  * New upstream release 6.6.2. Sync docs and metadata.
+
+ -- Washington Indacochea Delgado <wachin.id@gmail.com>  Mon, 15 Sep 2025 18:51:25 -0500
+
 xinput-plus (6.6.1-1) unstable; urgency=medium
 
   * New upstream release 6.6.1. Sync docs and metadata.

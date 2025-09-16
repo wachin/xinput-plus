@@ -6,7 +6,7 @@
   <name>xinput-plus</name>
   <summary>Adjust pointer speed per device (Xorg) via xinput</summary>
 
-  <metadata_license>GPL-3.0-or-later</metadata_license>
+  <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <developer_name>Washington Indacochea Delgado</developer_name>
   <url type="homepage">https://github.com/wachin/xinput-plus</url>
