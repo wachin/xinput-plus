@@ -247,7 +247,7 @@ Como **yo soy el upstream** (“upstream” = el proyecto/autor original del sof
 
 ```bash
 # commit de cambios (README, CHANGELOG, etc.)
-git commit -am "Upstream: docs and metadata updates"
+git commit -am "Upstream: example of changes"
 
 # etiquetar release
 git tag -a v6.6.2 -m "Upstream release 6.6.2"
