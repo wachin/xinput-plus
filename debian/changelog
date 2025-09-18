@@ -1,3 +1,9 @@
+xinput-plus (6.6.3-1) unstable; urgency=medium
+
+  * New upstream release 6.6.3. Add docs folder.
+
+ -- Washington Indacochea Delgado <wachin.id@gmail.com>  Wed, 17 Sep 2025 22:18:02 -0500
+
 xinput-plus (6.6.2-1) unstable; urgency=medium
 
   * New upstream release 6.6.2. Sync docs and metadata.

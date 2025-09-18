@@ -249,11 +249,11 @@ Como **yo soy el upstream** (“upstream” = el proyecto/autor original del sof
 # commit de cambios (README, CHANGELOG, etc.)
 git commit -am "Upstream: example of changes"
 
-# etiquetar release
+# etiquetar release. Pero luego cuando hagas algún cambio deberás poner otro número 
 git tag -a v6.6.2 -m "Upstream release 6.6.2"
 git push origin main v6.6.2
 
-# actualizar debian/changelog
+# actualizar debian/changelog Pero luego cuando hagas algún cambio deberás poner otros datos
 dch -v 6.6.2-1 "New upstream release 6.6.2. Sync docs and metadata."
 dch -r
 ```
