@@ -285,12 +285,12 @@ debian/rules clean || true
 debuild -S -sa -k<YOUR_LONG_KEYID>
 ```
 
-Si quieres probar sin firmar:
-
-```bash
-debuild -S -sa -us -uc
-```
-
+> Si quieres probar sin firmar:
+> 
+> ```bash
+> debuild -S -sa -us -uc
+> ```
+ 
 Revisa con `lintian`:
 
 ```bash
@@ -299,7 +299,7 @@ lintian ../xinput-plus_*_source.changes
 
 > ### Errores típicos que podrían pasar si no se hace así
 >
-> * Sin GPG: “No secret key”.
+> * Sin GPG dirá: “No secret key”.
 > * Con GPG nuevo: **subiste** la clave en mentors y la usaste en `-k<KEYID>` → perfecto.
 
 ---
