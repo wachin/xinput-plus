@@ -24,7 +24,7 @@ This program is for **Linux** and allows you to **change the pointer speed** (mo
 Before using it, make sure you have the following installed on your Linux computer:
 
 ```bash
-sudo apt install xinput git python3-pyqt6 libqt6svg6
+sudo apt install xinput git python3-pyqt6 libqt6svg6 python3-all
 ```
 
 1. ⚠️ This program only works on **X11**, not on Wayland.  

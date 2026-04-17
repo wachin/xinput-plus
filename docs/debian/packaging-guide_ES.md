@@ -14,8 +14,10 @@ sudo apt update
 sudo apt install build-essential devscripts debhelper dh-python \
                  pyqt6-dev-tools qt6-tools-dev-tools \
                  lintian appstream appstream-util desktop-file-utils \
-                 uscan quilt
+                 quilt
 ```
+
+uscan 
 
 * **`dh-python`** proporciona `dh-sequence-python3`.
 * **`qt6-tools-dev-tools`** proporciona `lrelease-qt6`/`linguist-qt6`.
