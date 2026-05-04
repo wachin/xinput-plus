@@ -163,6 +163,20 @@ It uses Linux commands with `xinput` to change the device speed in real time. Fo
 
 ---
 
+## Developer documentation
+
+The `docs/debian/` folder contains guides for developers who want to build,
+test, or publish this package:
+
+| Guide | Language | Description |
+|-------|----------|-------------|
+| [compile-and-test-deb.md](docs/debian/compile-and-test-deb.md) | English | How to build the `.deb` locally and test it on your machine |
+| [compilar-y-probar-deb_ES.md](docs/debian/compilar-y-probar-deb_ES.md) | Español | Cómo compilar el `.deb` localmente y probarlo en tu ordenador |
+| [how-to-publish-on-debian.md](docs/debian/how-to-publish-on-debian.md) | English | Full guide to getting the package accepted into packages.debian.org |
+| [como-publicar-en-debian.md](docs/debian/como-publicar-en-debian.md) | Español | Guía completa para publicar el paquete en packages.debian.org |
+
+---
+
 ## Want to improve this program?
 
 This code is made in Python with PyQt6, perfect for students who want to learn about:
