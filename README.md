@@ -8,7 +8,7 @@ This program is for **Linux** and allows you to **change the pointer speed** (mo
 
 ---
 
-## 🎯 What is it for?
+## What is it for?
 
 - ✅ Increase or decrease mouse or touchpad speed.
 - ✅ Save configuration so it doesn't get lost when restarting.
@@ -19,7 +19,7 @@ This program is for **Linux** and allows you to **change the pointer speed** (mo
 
 ---
 
-## 🖥️ Requirements
+## 🖥Requirements
 
 Before using it, make sure you have the following installed on your Linux computer:
 
@@ -33,7 +33,7 @@ sudo apt install xinput git python3-pyqt6 libqt6svg6 python3-all
 
 ---
 
-## 🚀 How to use the program
+## How to use the program
 
 ### **1st OPTION: Download the repository**
 At:
@@ -98,7 +98,7 @@ and it will open:
 
 ---
 
-## 🎛️ How to use it
+## 🎛How to use it
 
 1. When opening the program.
 2. In the left list, **click on your device** (for example: "Logitech K400").
@@ -112,7 +112,7 @@ and it will open:
 
 ---
 
-## 💾 Where is the configuration saved?
+## Where is the configuration saved?
 
 The program saves your settings in this file (don't delete it if you don't want to lose the configuration):
 
@@ -161,13 +161,13 @@ Then log out/in or restart the app.
 
 ---
 
-## 🤓 How does it work internally?
+## How does it work internally?
 
 It uses Linux commands with `xinput` to change the device speed in real time. For standard speed adjustments, it modifies the `libinput Accel Speed` property. For extended speed mode (up to 2.0), it uses the `Coordinate Transformation Matrix` to scale pointer movement, allowing higher sensitivity for devices that need it. The interface does everything for you!
 
 ---
 
-## 🛠️ Want to improve this program?
+## Want to improve this program?
 
 This code is made in Python with PyQt6, perfect for students who want to learn about:
 - Graphical interfaces
@@ -178,7 +178,7 @@ Feel free to modify it, improve it, or use it in your projects!
 
 ---
 
-## 🛑 Troubleshooting
+## Troubleshooting
 
 ### **"Permission denied" errors when running the program**
 
@@ -423,7 +423,7 @@ You should see Spanish UI and, on recent versions, a console line like:
 
 ---
 
-## 🙌 About this program
+## About this program
 
 Created by: **Washington Indacochea Delgado**
 License: **GNU GPL3** (free and open source)
