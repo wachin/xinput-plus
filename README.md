@@ -101,7 +101,7 @@ and it will open:
 3. Use the slider to change the speed:
    - ← Slower (down to -1.0)
    - → Faster (up to 1.0 by default; up to 2.0 in extended CTM mode)
-4. **Enable extended speed (optional)**: Check the box labeled "Extended mode (CTM)" to allow the slider to go up to 2.0, which provides significantly faster cursor movement for devices like the Logitech K400. This mode uses the `Coordinate Transformation Matrix` to scale pointer movement beyond the standard range.
+4. **Enable extra speed (optional)**: Check the box labeled "Extra speed (for slow devices)" to allow the slider to go up to 2.0, which provides significantly faster cursor movement for devices like the Logitech K400. This mode uses the `Coordinate Transformation Matrix` to scale pointer movement beyond the standard range.
 5. The configuration saves automatically as you move the slider — no button press needed.
 
 ✅ Done! The change applies instantly and saves automatically. After restarting your computer, open the program and the saved settings (including extended speed mode) will be applied automatically.
@@ -267,10 +267,33 @@ pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py
   ```
 
 ### 3) Compile `.ts` → `.qm` in `i18n/`
-You can do this from the "Qt Linguist" tool from Qt Creator by clicking on "File - Distribute As" and saving as .qm, or from terminal:
+You can do this from the "Qt Linguist" tool from Qt Creator by clicking on "File - Distribute As" and saving as .qm, or from terminal.
+
+On Debian/MX Linux, `lrelease-qt6` is not installed by default. The package
+`qttools5-dev-tools` installs it simply as `lrelease`, which works perfectly
+for both Qt5 and Qt6 `.ts` files:
 
 ```bash
-# Use whichever lrelease exists on your system:
+sudo apt install qttools5-dev-tools
+```
+
+Then compile:
+
+```bash
+lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
+```
+
+You should see output like:
+
+```
+Updating 'i18n/xinput-plus_es.qm'...
+    Generated 21 translation(s) (21 finished and 0 unfinished)
+```
+
+If for some reason `lrelease` is not found, this fallback finds whichever
+variant is available on your system:
+
+```bash
 LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt5/bin/lrelease)
 $LREL i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
 ```
@@ -302,10 +325,6 @@ python3 xinput-plus.py --lang=pt_BR
 ```
 
 **File naming:** the loader tries common patterns like `xinput-plus_es.qm`, `xinput-plus_es_ES.qm`, and `xinput-plus_es-ES.qm`. Putting `xinput-plus_<lang>.qm` inside `./i18n` is sufficient.
-
----
-
-Here’s a ready-to-paste addition for your **README.md**. It extends the i18n section with filename requirements and safe placeholder translation guidance.
 
 ---
 
@@ -386,10 +405,23 @@ When you open the `.ts` in **Qt Linguist (Qt 5 Linguist)**, be careful with stri
 
 ### 3) Compile after translating
 
-After updating translations in Linguist (and marking them as **Finished**), compile to `.qm`:
+After updating translations in Linguist (and marking them as **Finished**),
+compile to `.qm`. On Debian/MX Linux, use `lrelease` from `qttools5-dev-tools`
+(it handles Qt6 `.ts` files just fine — `lrelease-qt6` is not needed):
 
 ```bash
-# pick whichever lrelease exists on your system
+lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
+```
+
+If `lrelease` is not found, install it first:
+
+```bash
+sudo apt install qttools5-dev-tools
+```
+
+If you need a fallback that works across different systems:
+
+```bash
 LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt5/bin/lrelease)
 $LREL i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
 ```
@@ -417,6 +449,68 @@ You should see Spanish UI and, on recent versions, a console line like:
 ```
 [i18n] Loaded app translation: xinput-plus_es.qm
 ```
+
+---
+
+## 4) Keeping the .ts file clean after source changes
+
+Whenever you rename, remove, or reword a UI string in `xinput-plus.py`,
+the old string becomes **obsolete** in the `.ts` file. Qt Linguist marks
+it as `vanished` but cannot delete it — you have to do that from the
+command line.
+
+**Step 1 — Regenerate the `.ts` and discard obsolete entries:**
+
+```bash
+pylupdate6 --no-obsolete --ts i18n/xinput-plus_es.ts xinput-plus.py
+```
+
+The `--no-obsolete` flag removes any string that no longer exists in the
+source. Without it, `pylupdate6` keeps old entries forever.
+
+You will see a summary like:
+
+```
+Summary of changes to i18n/xinput-plus_es.ts:
+    21 existing messages were found
+    3 obsolete messages were discarded
+```
+
+**Step 2 — Translate any new strings that appeared:**
+
+After regenerating, open the `.ts` in Linguist and look for entries marked
+as **unfinished** (shown in yellow). These are strings that were added or
+changed in the source and have no translation yet. Translate them and mark
+them as **Finished**.
+
+Alternatively, you can add translations directly in the `.ts` file by
+changing:
+
+```xml
+<translation type="unfinished" />
+```
+
+to:
+
+```xml
+<translation>Your translation here</translation>
+```
+
+**Step 3 — Recompile:**
+
+```bash
+lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
+```
+
+The output should show **0 unfinished**:
+
+```
+Updating 'i18n/xinput-plus_es.qm'...
+    Generated 20 translation(s) (20 finished and 0 unfinished)
+```
+
+> **When to do this:** run `pylupdate6 --no-obsolete` before every release,
+> or any time you change a UI string in the Python source.
 
 ---
 

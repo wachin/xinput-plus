@@ -161,6 +161,17 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
   mechanism but the current value is read from the widget in
   `on_speed_changed`.
 
+- [x] **Minor — Checkbox label "Extended mode (CTM)" was confusing.**
+  Renamed to `"Extra speed (for slow devices)"` — a label that explains
+  the purpose to the user without requiring knowledge of what a CTM is.
+  Updated in `xinput-plus.py`, `README.md`, and `i18n/xinput-plus_es.ts`
+  (new Spanish translation: `"Velocidad extra (para dispositivos lentos)"`).
+  Recompiled `i18n/xinput-plus_es.qm` with:
+  ```bash
+  lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
+  ```
+  Result: 21 translations compiled, 0 unfinished.
+
 ---
 
 ## `README.md`
@@ -245,23 +256,46 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
 
 ## `i18n/xinput-plus_es.ts`
 
-- [ ] **Minor — One `vanished` translation entry.**
-  `<translation type="vanished">Modo extendido (CTM)</translation>` is a
-  string removed from the source. Clean it up by re-running:
+- [x] **Minor — One `vanished` translation entry.**
+  The old `"Extended mode (CTM)"` string was marked as vanished after the
+  checkbox was renamed to `"Extra speed (for slow devices)"`. Cleaned up
+  with `--no-obsolete` (3 obsolete entries discarded). The two new
+  unfinished strings (`"Extra speed (for slow devices)"` and the updated
+  About dialog text) were translated and the `.qm` recompiled — result:
+  20 translations, 0 unfinished.
+
+  Commands used:
   ```bash
-  pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py
+  pylupdate6 --no-obsolete --ts i18n/xinput-plus_es.ts xinput-plus.py
+  lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
   ```
-  This will remove vanished entries and update line numbers. The `.ts`
-  file should be regenerated before each release.
 
 ---
 
 ## Summary — Items still requiring manual action
 
-These two items cannot be fixed by editing files alone and require a
-deliberate git operation or tool run by the maintainer:
+### One-time git operation
 
-1. **`i18n/xinput-plus_es.qm` tracked in git** — run
-   `git rm --cached i18n/xinput-plus_es.qm` and commit.
-2. **`i18n/xinput-plus_es.ts` has a vanished entry** — run
-   `pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py` to regenerate.
+**`i18n/xinput-plus_es.qm` is tracked in git** — it should be removed from
+version control and built at package build time instead:
+
+```bash
+git rm --cached i18n/xinput-plus_es.qm
+git commit -m "Remove compiled .qm from version control; built by debian/rules"
+```
+
+### Standing maintenance rule — run before every release
+
+Any time a UI string in `xinput-plus.py` is added, renamed, or removed,
+the `.ts` file must be regenerated and the `.qm` recompiled:
+
+```bash
+# 1. Regenerate .ts and drop obsolete entries
+pylupdate6 --no-obsolete --ts i18n/xinput-plus_es.ts xinput-plus.py
+
+# 2. Translate any new/unfinished strings in Linguist, then recompile
+lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
+```
+
+The full workflow is documented in the README under
+**"Keeping the .ts file clean after source changes"**.

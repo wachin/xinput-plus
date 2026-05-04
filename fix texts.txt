@@ -1,0 +1,25 @@
+
+
+
+
+    def build_ui(self) -> None:
+        """Construct the main layout and bind signals."""
+        layout = QHBoxLayout(self)
+
+        # Device list (left column)
+        self.device_list = QListWidget()
+        self.device_list.itemSelectionChanged.connect(self.on_device_selected)
+        layout.addWidget(self.device_list, 2)
+
+        # Right panel with controls
+        right = QVBoxLayout()
+
+        self.label_device = QLabel(self.tr("Select a device"))
+        right.addWidget(self.label_device)
+
+        self.extended_speed_cb = QCheckBox(self.tr("Extended mode (CTM)"))
+
+
+
+
+

@@ -1,7 +1,7 @@
 Source: xinput-plus
 Section: x11
 Priority: optional
-Maintainer: Washington Indacochea Delgado <wachin.id@gmail.com>
+Maintainer: Washington Indacochea Delgado <linuxfrontier@proton.me>
 Build-Depends:
  debhelper-compat (= 13),
  dh-sequence-python3,
