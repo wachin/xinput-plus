@@ -102,11 +102,11 @@ y se abrirá.
 1. Al abrir el programa.
 2. En la lista de la izquierda, **haz clic en tu dispositivo** (por ejemplo: "Logitech K400").
 3. Usa la barra deslizante para cambiar la velocidad:
-   - ← Más lento
-   - → Más rápido (¡hasta 2 veces más rápido!)
-4. Cuando encuentres la velocidad perfecta, haz clic en **"Guardar configuración"**.
+   - ← Más lento (hasta -1.0)
+   - → Más rápido (hasta 1.0 por defecto; hasta 2.0 en modo extendido CTM)
+4. Cuando encuentres la velocidad perfecta, el cambio se guarda automáticamente.
 
-✅ ¡Listo! El cambio se aplica al instante y se guarda para la próxima vez. Pero una vez que hayas encendido otra vez el ordenador y abierto el programa, debes de darle clic a la ventana del mismo, y clic en el dispositivo que vayas a usar para que se apliquen los cambios guardados.
+✅ ¡Listo! El cambio se aplica al instante y se guarda automáticamente para la próxima vez.
 
 ---
 
@@ -115,7 +115,7 @@ y se abrirá.
 El programa guarda tus ajustes en este archivo (no lo borres si no quieres perder la configuración):
 
 ```
-~/.config/libinput-gui.json
+~/.config/xinput-plus.json
 ```
 
 ---
@@ -151,6 +151,5 @@ Para los que aman X11 y los gestores de ventana minimalistas. 👀💙
 ---
 
 > 🌟 Si te sirvió, dale una estrella ⭐ en GitHub. ¡Ayuda mucho!
-```
 
 Dios te bendiga

@@ -1,3 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: xinput-plus
+Upstream-Contact: Washington Indacochea Delgado <wachin.id@gmail.com>
+Source: https://github.com/wachin/xinput-plus
+
 Files: *
 Copyright:
   2024-2025 Washington Indacochea Delgado <wachin.id@gmail.com>
@@ -5,31 +10,30 @@ License: GPL-3+
  On Debian systems, the full text of the GNU General Public License
  version 3 can be found in /usr/share/common-licenses/GPL-3.
 
-Files: debian/*                                  # packaging files
+Files: debian/*
 Copyright:
   2025 Washington Indacochea Delgado <wachin.id@gmail.com>
 License: GPL-3+
  On Debian systems, the full text of the GNU General Public License
  version 3 can be found in /usr/share/common-licenses/GPL-3.
- 
- Files: debian/xinput-plus.metainfo.xml
+
+Files: debian/xinput-plus.metainfo.xml
 Copyright:
   2025 Washington Indacochea Delgado <wachin.id@gmail.com>
 License: CC0-1.0
  Creative Commons Zero v1.0 Universal (CC0 1.0).
  Full license text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 
-Files: src/emucon.svg                            # the ONLY CC0 file
+Files: src/emucon.svg src/emucon-openclipart.org.txt
 Comment:
-  Derived from “Joystick Icon (OpenEmu icon Yosemite)” on Openclipart.
+  Derived from "Joystick Icon (OpenEmu icon Yosemite)" on Openclipart.
   Title: Joystick Icon
   URL: https://openclipart.org/detail/239389/openemu-icon-yosemite
   Author: toranonly (https://openclipart.org/artist/toranonly)
   Uploaded: 2016-01-31
-  “An old style joystick from playing video games.”
+  "An old style joystick from playing video games."
 Copyright:
   2016 toranonly
 License: CC0-1.0
  Creative Commons Zero v1.0 Universal (CC0 1.0).
  Full license text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
-

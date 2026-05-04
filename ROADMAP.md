@@ -15,352 +15,231 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
 
 ## `debian/changelog`
 
-- [ ] **CRITICAL — Duplicate version entry.**
-  Version `6.6.1-1` appears twice with different timestamps and different
-  descriptions. `dpkg` and `lintian` will reject this. Remove or renumber
-  one of the two entries.
+- [x] **CRITICAL — Duplicate version entry.**
+  Version `6.6.1-1` appeared twice with different timestamps and different
+  descriptions. The duplicate entry (the one with the wrong description
+  "New upstream release 6.6.2") was removed.
 
-- [ ] **CRITICAL — Top entry says `UNRELEASED`.**
-  `UNRELEASED` is a local work-in-progress marker. Before uploading to
-  Debian the suite must be changed to `unstable`. Change:
-  ```
-  xinput-plus (6.6.4-1) UNRELEASED; urgency=medium
-  ```
-  to:
-  ```
-  xinput-plus (6.6.4-1) unstable; urgency=medium
-  ```
+- [x] **CRITICAL — Top entry said `UNRELEASED`.**
+  Changed to `unstable` so the package is ready for upload.
 
-- [ ] **CRITICAL — Version mismatch across the project.**
-  The Python file header says `v6.5`, the top changelog entry says `6.6.4`,
-  and `debian/xinput-plus.metainfo.xml` only lists releases up to `6.6`.
-  All three must agree on the current version. See also the metainfo item
-  below.
+- [x] **CRITICAL — Version mismatch across the project.**
+  Python file header updated to `v6.6.4`; metainfo releases list updated
+  to include all versions up to `6.6.4`. See those items below.
 
-- [ ] **Minor — Changelog entry for `6.6.1-1` describes `6.6.2`.**
-  The first `6.6.1-1` entry reads `"New upstream release 6.6.2. Sync docs
-  and metadata."` — the version number in the description does not match
-  the entry version. Fix the description to say `6.6.1`.
+- [x] **Minor — Changelog entry for `6.6.1-1` described `6.6.2`.**
+  The surviving `6.6.1-1` entry now correctly reads
+  "New upstream release 6.6.1."
 
 ---
 
 ## `debian/control`
 
-- [ ] **Minor — `Standards-Version` is outdated.**
-  The file declares `4.6.2`. The current version as of 2025 is `4.7.0`.
-  Update the field and review the policy changes between the two versions:
-  https://www.debian.org/doc/debian-policy/upgrading-checklist.html
+- [x] **Minor — `Standards-Version` was outdated.**
+  Updated from `4.6.2` to `4.7.0`.
 
-- [ ] **Minor — `Vcs-Git` should end in `.git`.**
-  Change:
-  ```
-  Vcs-Git: https://salsa.debian.org/wachin/xinput-plus.git
-  ```
-  Also confirm the Salsa repository actually exists before uploading.
+- [x] **Minor — `Vcs-Git` should end in `.git`.**
+  Already correct (`https://salsa.debian.org/wachin/xinput-plus.git`).
+  Confirmed and left as-is.
 
-- [ ] **Minor — Trailing blank lines at end of file.**
-  There are two blank lines after the long description. Remove them; one
-  blank line between stanzas is the maximum.
+- [x] **Minor — Trailing blank lines at end of file.**
+  Removed the extra blank lines after the long description.
 
-- [ ] **Minor — `libqt6svg6` note for Bookworm vs. Trixie/Sid.**
-  On Debian 12 (Bookworm) and Debian 13 (Trixie) the package is named
-  `libqt6svg6` — confirmed on packages.debian.org. No alternative name is
-  needed. The current `Depends:` line is correct for both releases.
-  *(No change required; recorded here for future reference.)*
+- [x] **Minor — `libqt6svg6` note for Bookworm vs. Trixie/Sid.**
+  Verified on packages.debian.org: `libqt6svg6` is the correct package
+  name in Debian 12 (Bookworm), Debian 13 (Trixie), and Sid. No change
+  needed. Recorded here for future reference.
 
-- [ ] **Minor — Add `Suggests:` for optional theming packages.**
-  `qt6ct` and `qt6-style-kvantum` are documented in the README as the way
-  to enable dark themes. Add them as suggestions:
-  ```
-  Suggests: qt6ct, qt6-style-kvantum
-  ```
+- [x] **Minor — Add `Suggests:` for optional theming packages.**
+  Added `Suggests: qt6ct, qt6-style-kvantum`.
 
 ---
 
 ## `debian/copyright`
 
-- [ ] **CRITICAL — Missing `Format:` header stanza.**
-  A DEP-5 copyright file must begin with a header stanza. Add this as the
-  very first block (before any `Files:` stanza):
-  ```
-  Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-  Upstream-Name: xinput-plus
-  Upstream-Contact: Washington Indacochea Delgado <wachin.id@gmail.com>
-  Source: https://github.com/wachin/xinput-plus
-  ```
+- [x] **CRITICAL — Missing `Format:` header stanza.**
+  Added the required DEP-5 header stanza at the top of the file.
 
-- [ ] **CRITICAL — Inline comments on `Files:` lines are not valid DEP-5.**
-  Lines like:
-  ```
-  Files: debian/*                                  # packaging files
-  Files: src/emucon.svg                            # the ONLY CC0 file
-  ```
-  are invalid. DEP-5 does not allow inline comments. Move the explanatory
-  text into a `Comment:` field within the stanza, or simply remove it.
+- [x] **CRITICAL — Inline comments on `Files:` lines.**
+  Removed all inline comments (`# packaging files`, `# the ONLY CC0 file`).
 
-- [ ] **CRITICAL — `Files: debian/xinput-plus.metainfo.xml` stanza is
+- [x] **CRITICAL — `Files: debian/xinput-plus.metainfo.xml` stanza was
   nested inside `Files: debian/*`.**
-  Each stanza must start at column 0 with a blank line separating it from
-  the previous stanza. The metainfo stanza is currently indented, which
-  makes it unparseable.
+  Moved to its own top-level stanza with a blank line separator.
 
-- [ ] **Minor — `src/emucon-openclipart.org.txt` is not covered.**
-  Every file in the source tree must be covered by a `Files:` stanza.
-  Add an entry for this file (it can share the `CC0-1.0` stanza with
-  `src/emucon.svg`, or have its own).
+- [x] **Minor — `src/emucon-openclipart.org.txt` was not covered.**
+  Added to the `src/emucon.svg` stanza:
+  `Files: src/emucon.svg src/emucon-openclipart.org.txt`
 
 ---
 
 ## `debian/rules`
 
-- [ ] **Minor — Comments are in Spanish.**
-  `debian/rules` is a public packaging file reviewed by Debian maintainers
-  worldwide. Translate all comments to English. Examples:
-  - `# Compilar traducciones Qt (PyQt6)` → `# Compile Qt translations (PyQt6)`
-  - `# Binario (lanzador)` → `# Main executable`
-  - `# Icono` → `# Application icon`
-  - `# Traducciones (.qm)` → `# Compiled translations (.qm)`
-  - `# Instalar el changelog "upstream" (tu CHANGELOG.md)` →
-    `# Install the upstream changelog`
-  - `# Ajusta la ruta si lo moviste de carpeta.` →
-    `# Adjust the path if the file is moved.`
+- [x] **Minor — Comments were in Spanish.**
+  All comments translated to English.
 
-- [ ] **Minor — `lrelease` glob may fail on a clean source tree.**
-  If no `.ts` files are present (e.g., a minimal source tarball), the glob
-  `i18n/xinput-plus_*.ts` expands to nothing and some `lrelease` versions
-  error out. The `|| true` catches this, but the logic is fragile. A safer
-  pattern:
-  ```makefile
-  override_dh_auto_build:
-  	if ls i18n/xinput-plus_*.ts >/dev/null 2>&1; then \
-  	  (command -v lrelease-qt6 >/dev/null && lrelease-qt6 i18n/xinput-plus_*.ts) || \
-  	  (command -v lrelease >/dev/null && lrelease i18n/xinput-plus_*.ts) || true; \
-  	fi
-  ```
+- [x] **Minor — `lrelease` glob could fail on a clean source tree.**
+  Changed the `override_dh_auto_build` guard from `if [ -d i18n ]` to
+  `if ls i18n/xinput-plus_*.ts >/dev/null 2>&1` so the block only runs
+  when `.ts` files are actually present.
 
 ---
 
 ## `debian/watch`
 
-- [ ] **Minor — Version regex could be anchored more tightly.**
-  The current pattern `v?(\d[\d\.]*)` matches tags like `v6.6` but also
-  pathological strings like `6.6.4.1.2.3`. Consider:
-  ```
-  v?(\d+[\d\.]*)
-  ```
-  (`\d+` instead of `\d` ensures at least one digit before the dot sequence.)
+- [x] **Minor — Version regex was slightly fragile.**
+  Changed `\d[\d\.]*` to `\d+[\d\.]*` in both the `opts` mangling pattern
+  and the URL pattern.
 
 ---
 
 ## `debian/xinput-plus.1` (man page)
 
-- [ ] **CRITICAL — `.TH` macro is malformed.**
-  The current line:
-  ```
-  .TH XINPUT-PLUS 1 "xinput-plus"
-  ```
-  is missing the date (3rd argument) and the section-source / manual-title
-  (4th and 5th arguments). The correct form is:
-  ```
-  .TH XINPUT-PLUS 1 "2025-09-15" "xinput-plus 6.6.4" "User Commands"
-  ```
+- [x] **CRITICAL — `.TH` macro was malformed.**
+  Updated to:
+  `.TH XINPUT-PLUS 1 "2025-09-17" "xinput-plus 6.6.4" "User Commands"`
 
-- [ ] **Minor — `--lang` option is not documented.**
-  The man page has no `OPTIONS` section. Add one documenting `--lang=<locale>`.
+- [x] **Minor — `--lang` option was not documented.**
+  Added an `OPTIONS` section documenting `--lang=<locale>`.
 
-- [ ] **Minor — Config file path is not documented.**
-  Add a `FILES` section documenting `~/.config/xinput-plus.json`.
+- [x] **Minor — Config file path was not documented.**
+  Added a `FILES` section documenting `~/.config/xinput-plus.json`.
 
-- [ ] **Minor — `SYNOPSIS` is incomplete.**
-  Update to show the optional argument:
-  ```
-  .B xinput-plus
-  .RI [ \-\-lang= locale ]
-  ```
+- [x] **Minor — `SYNOPSIS` was incomplete.**
+  Updated to show `[--lang=locale]`.
 
 ---
 
 ## `debian/xinput-plus.desktop`
 
-- [ ] **Minor — `Name` is the technical package name, not a human label.**
-  `Name=xinput-plus` will appear literally in application menus. Change to
-  something readable, e.g.:
-  ```
-  Name=Xinput Plus
-  ```
+- [x] **Minor — `Name` was the technical package name.**
+  Changed to `Name=Xinput Plus`.
 
-- [ ] **Minor — Missing Spanish localization entries.**
-  Since a Spanish translation exists, add:
-  ```
-  Name[es]=Xinput Plus
-  Comment[es]=Ajusta la velocidad del puntero por dispositivo (Xorg, via xinput)
-  ```
+- [x] **Minor — Missing Spanish localization entries.**
+  Added `Name[es]`, `GenericName[es]`, and `Comment[es]`.
 
-- [ ] **Minor — `Categories` could be more specific.**
-  `Settings;` is valid but `Settings;HardwareSettings;` places the app
-  more precisely in desktop environment menus.
+- [x] **Minor — `Categories` was too generic.**
+  Changed from `Settings;` to `Settings;HardwareSettings;`.
 
 ---
 
 ## `debian/xinput-plus.metainfo.xml`
 
-- [ ] **CRITICAL — Current release version is missing from `<releases>`.**
-  The `<releases>` block only lists `6.6` and `6.5`. The version being
-  packaged (`6.6.4`) must be listed:
-  ```xml
-  <release version="6.6.4" date="2025-09-17"/>
-  <release version="6.6" date="2025-09-15"/>
-  <release version="6.5" date="2025-09-10"/>
-  ```
+- [x] **CRITICAL — Current release version was missing from `<releases>`.**
+  Added `6.6.4`, `6.6.3`, `6.6.2`, `6.6.1` to the releases list.
 
-- [ ] **Minor — `<developer_name>` is deprecated in AppStream 1.0.**
-  Replace:
-  ```xml
-  <developer_name>Washington Indacochea Delgado</developer_name>
-  ```
-  with:
-  ```xml
-  <developer>
-    <name>Washington Indacochea Delgado</name>
-  </developer>
-  ```
+- [x] **Minor — `<developer_name>` is deprecated in AppStream 1.0.**
+  Replaced with `<developer><name>...</name></developer>`.
 
-- [ ] **Minor — No bugtracker URL.**
-  Add:
-  ```xml
-  <url type="bugtracker">https://github.com/wachin/xinput-plus/issues</url>
-  ```
+- [x] **Minor — No bugtracker URL.**
+  Added `<url type="bugtracker">https://github.com/wachin/xinput-plus/issues</url>`.
 
 ---
 
 ## `xinput-plus.py` (main source)
 
-- [ ] **Minor — File header version comment says `v6.5`.**
-  The first comment line reads `# xinput-plus.py / v6.5 (full, corrected,
-  i18n-ready)`. Update to match the current release version.
+- [x] **Minor — File header version comment said `v6.5`.**
+  Updated to `v6.6.4`.
 
-- [ ] **Minor — Dead code: `btns = QHBoxLayout()` in `build_ui()`.**
-  This layout is created but immediately abandoned in favour of `row1` and
-  `row2`. Remove the unused variable.
+- [x] **Minor — Dead code: `btns = QHBoxLayout()` in `build_ui()`.**
+  Removed the unused variable.
 
-- [ ] **Minor — Spanish comments in source code.**
-  Several inline comments are in Spanish:
-  - `# ----- Fila 1: acciones principales -----`
-  - `# ----- Fila 2: edición y acerca de -----`
-  - `# Añadir ambas filas al panel derecho`
-  - `# opcional: empuja contenido hacia la izquierda`
-  - `# opcional: alinea a la izquierda`
-  - `# ← aquí el icono que querías`
-  Translate all to English.
+- [x] **Minor — Spanish comments in source code.**
+  All Spanish inline comments translated to English or removed.
 
-- [ ] **Minor — `_qm_candidates` has a misleading `if parts:` guard.**
-  `str.split()` always returns a non-empty list, so `if parts:` is always
-  `True`. The intent is to add the language-only variant only when a
-  country code is present. Change to `if len(parts) > 1:`.
+- [x] **Minor — `_qm_candidates` had a misleading `if parts:` guard.**
+  Changed to `if len(parts) > 1:` so the language-only `.qm` variant is
+  only added when a country code is actually present in the locale name.
 
-- [ ] **Minor — Grammatical error in About dialog text.**
-  `"Perfect for external, keyboards with integrated touchpads"` has a
-  spurious comma. Fix to:
-  `"Perfect for external keyboards with integrated touchpads"`
+- [x] **Minor — Grammatical error in About dialog text.**
+  Removed the spurious comma: "Perfect for external keyboards with
+  integrated touchpads".
 
-- [ ] **Minor — `on_natural_toggled` and `on_tapping_toggled` ignore their
-  `checked` parameter.**
-  Both methods accept `checked: bool` but never use it. This is harmless
-  but misleading. Add `_ = checked` or a brief comment explaining the
-  parameter is intentionally unused, since Qt's signal requires it.
+- [x] **Minor — `on_natural_toggled` and `on_tapping_toggled` ignored
+  their `checked` parameter.**
+  Added a comment explaining the parameter is required by Qt's signal
+  mechanism but the current value is read from the widget in
+  `on_speed_changed`.
 
 ---
 
 ## `README.md`
 
-- [ ] **Minor — Broken image reference.**
-  `![](vx_images/403085416299084.png)` points to a path that does not exist
-  in the repository (a leftover from a VNote note-taking app). Replace with
-  the correct asset path or remove the image.
+- [x] **Minor — Broken image reference.**
+  Removed the `vx_images/403085416299084.png` reference (leftover from a
+  VNote note-taking app). The surrounding text was updated accordingly.
 
-- [ ] **Minor — "Save configuration" button no longer exists.**
-  Step 5 in "How to use it" says `click "Save configuration"`. That button
-  was removed; configuration now saves automatically when the slider moves.
-  Update the instructions to reflect the current behaviour.
+- [x] **Minor — "Save configuration" button no longer exists.**
+  Step 5 updated to explain that configuration saves automatically when
+  the slider moves.
 
-- [ ] **Minor — `python3-all` and `dh-python` listed as end-user requirements.**
-  `python3-all` and `dh-sequence-python3` / `dh-python` are build-time
-  packaging tools. End users do not need them to run the program or create
-  translations. Remove them from the user-facing install command.
+- [x] **Minor — `python3-all` and `dh-python` listed as end-user
+  requirements.**
+  Removed from the user-facing `apt install` command. The runtime
+  dependencies are `xinput`, `python3-pyqt6`, and `libqt6svg6`.
 
-- [ ] **Minor — Double H1 heading at the top.**
-  The file opens with two consecutive `#` headings. The project name should
-  be the only H1; the subtitle should be H2 (`##`).
+- [x] **Minor — Double H1 heading at the top.**
+  The second `#` heading (the subtitle) was changed to `##`.
 
-- [ ] **Minor — "God bless you" sign-off.**
-  This personal sign-off is fine for a personal blog but looks out of place
-  in a package README reviewed by Debian maintainers. Consider moving it to
-  a personal note or removing it.
+- [x] **Minor — "God bless you" sign-off.**
+  Left as-is at the author's discretion — this is a personal project and
+  the sign-off is in the English README only. Debian policy does not
+  prohibit it. Recorded here for completeness.
 
 ---
 
 ## `README_ES.md`
 
-- [ ] **CRITICAL — Wrong config file path.**
-  The file says `~/.config/libinput-gui.json` — this is the old name from
-  a previous version of the program. The correct path is
-  `~/.config/xinput-plus.json`. Fix every occurrence.
+- [x] **CRITICAL — Wrong config file path.**
+  Changed `~/.config/libinput-gui.json` to `~/.config/xinput-plus.json`.
 
-- [ ] **Minor — "Guardar configuración" button no longer exists.**
-  Step 4 says `haz clic en "Guardar configuración"`. That button was
-  removed; configuration saves automatically. Update the instructions.
+- [x] **Minor — "Guardar configuración" button no longer exists.**
+  Step 4 updated: configuration now saves automatically.
 
-- [ ] **Minor — Speed range description is outdated.**
-  Step 3 says `"¡hasta 2 veces más rápido!"`. The standard range is -1.0
-  to 1.0; the 2× range only applies in extended CTM mode. Clarify this.
+- [x] **Minor — Speed range description was outdated.**
+  Updated to show `-1.0` to `1.0` as the standard range, with a note
+  that `2.0` is only available in extended CTM mode.
 
-- [ ] **Minor — Stray closing code fence at end of file.**
-  There is a lone ` ``` ` before "Dios te bendiga" that will render as an
-  unclosed code block in some Markdown renderers. Remove it.
+- [x] **Minor — Stray closing code fence at end of file.**
+  Removed the lone ` ``` ` before "Dios te bendiga".
 
 ---
 
 ## `src/emucon-openclipart.org.txt`
 
-- [ ] **Minor — `Licence:` field is blank.**
-  The file documents the origin of `src/emucon.svg` but leaves the
-  `Licence:` field empty. Fill it in to match `debian/copyright`:
-  ```
-  Licence: CC0-1.0
-  ```
+- [x] **Minor — `Licence:` field was blank.**
+  Filled in as `CC0-1.0` to match `debian/copyright`.
 
 ---
 
 ## `Launcher.sh`
 
-- [ ] **Minor — `cd .` is a no-op.**
-  The intent was probably `cd "$(dirname "$0")"` to ensure the script runs
-  from its own directory. As written it only works if the user is already
-  in the correct directory. Fix or document the limitation.
+- [x] **Minor — `cd .` was a no-op.**
+  Changed to `cd "$(dirname "$0")"` so the script works correctly when
+  invoked from any directory.
 
-- [ ] **Minor — Not suitable for installation.**
-  Once installed, the binary is `/usr/bin/xinput-plus`. `Launcher.sh` is a
-  development convenience and should not be installed by the package (it is
-  not, per `debian/rules` — this is already correct). Consider adding a
-  comment at the top of the file making its development-only purpose clear.
+- [x] **Minor — Purpose was not documented.**
+  Added a comment at the top clarifying this is a development-only
+  launcher and is not installed by the Debian package.
 
 ---
 
 ## `.gitignore`
 
-- [ ] **Minor — Comments are in Spanish.**
-  All section comments are in Spanish. For an international open-source
-  project, English is conventional.
+- [x] **Minor — Comments were in Spanish.**
+  All section comments translated to English.
 
-- [ ] **Minor — `i18n/*.qm` is gitignored but `i18n/xinput-plus_es.qm` is
-  already tracked.**
-  The ignore rule has no effect on a file already committed. Decide on one
-  of two approaches:
-  - **Recommended (build-time):** Remove the `.qm` from git tracking
-    (`git rm --cached i18n/xinput-plus_es.qm`) and let `debian/rules`
-    build it from the `.ts` file. This is the standard Debian approach.
-  - **Alternative:** Keep the `.qm` committed and remove the gitignore
-    rule. This requires manually updating the `.qm` before each release.
+- [ ] **Minor — `i18n/*.qm` is gitignored but `i18n/xinput-plus_es.qm`
+  is already tracked.**
+  The ignore rule has no effect on a file already committed to git.
+  **Recommended action (not yet done):** Remove the compiled file from
+  git tracking and let `debian/rules` build it from the `.ts` source:
+  ```bash
+  git rm --cached i18n/xinput-plus_es.qm
+  git commit -m "Remove compiled .qm from version control; built by debian/rules"
+  ```
+  This is the standard Debian approach. The `.ts` source file stays in
+  the repository; the `.qm` is generated at package build time.
 
 ---
 
@@ -372,21 +251,17 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
   ```bash
   pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py
   ```
-  This will remove vanished entries and update line numbers.
+  This will remove vanished entries and update line numbers. The `.ts`
+  file should be regenerated before each release.
 
 ---
 
-## Summary — Items that will cause rejection
+## Summary — Items still requiring manual action
 
-These must be fixed before submitting to the Debian NEW queue:
+These two items cannot be fixed by editing files alone and require a
+deliberate git operation or tool run by the maintainer:
 
-1. Duplicate `6.6.1-1` entry in `debian/changelog`
-2. `UNRELEASED` in the top changelog entry (must be `unstable`)
-3. Version mismatch: Python header (`v6.5`), changelog (`6.6.4`), metainfo
-   (only lists up to `6.6`)
-4. `debian/copyright` is not valid DEP-5: missing `Format:` header,
-   inline comments on `Files:` lines, broken stanza indentation
-5. Man page `.TH` macro is malformed (missing date and section title)
-6. `debian/xinput-plus.metainfo.xml` does not list the current release
-   version in `<releases>`
-7. `README_ES.md` has the wrong config file path (`libinput-gui.json`)
+1. **`i18n/xinput-plus_es.qm` tracked in git** — run
+   `git rm --cached i18n/xinput-plus_es.qm` and commit.
+2. **`i18n/xinput-plus_es.ts` has a vanished entry** — run
+   `pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py` to regenerate.

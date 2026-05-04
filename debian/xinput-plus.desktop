@@ -1,12 +1,14 @@
 [Desktop Entry]
 Type=Application
-Name=xinput-plus
-GenericName=Pointer speed per device
+Name=Xinput Plus
+Name[es]=Xinput Plus
+GenericName=Pointer Speed Manager
+GenericName[es]=Gestor de velocidad del puntero
 Comment=Adjust mouse and touchpad speed per device (Xorg, via xinput)
+Comment[es]=Ajusta la velocidad del puntero por dispositivo (Xorg, via xinput)
 Exec=xinput-plus
 Icon=xinput-plus
-Categories=Settings;
+Categories=Settings;HardwareSettings;
 Keywords=mouse;touchpad;speed;acceleration;libinput;xinput;
 StartupNotify=true
 Terminal=false
-

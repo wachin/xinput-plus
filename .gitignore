@@ -1,5 +1,5 @@
 # -----------------------------
-# Python / entorno
+# Python / environment
 # -----------------------------
 __pycache__/
 *.py[cod]
@@ -17,9 +17,9 @@ htmlcov/
 # -----------------------------
 # Qt / PyQt / Qt Creator
 # -----------------------------
-# Traducciones compiladas (se generan en el build)
+# Compiled translations (generated at build time)
 i18n/*.qm
-# Archivos temporales de Qt Creator / qmake
+# Qt Creator / qmake temporary files
 *.pro.user
 *.qbs.user
 *.qbs.user.*
@@ -30,16 +30,16 @@ i18n/*.qm
 .qmake.stash
 
 # -----------------------------
-# Artefactos de build Python
+# Python build artefacts
 # -----------------------------
 build/
 dist/
 *.egg-info/
 
 # -----------------------------
-# Debian packaging (artefactos)
+# Debian packaging artefacts
 # -----------------------------
-# Ignorar todo lo generado dentro de debian/...
+# Ignore everything generated inside debian/ during a build:
 debian/.debhelper/
 debian/*-stamp
 debian/debhelper-build-stamp
@@ -48,7 +48,7 @@ debian/files
 debian/*.log
 debian/*.substvars
 debian/*/
-# ...pero conservar archivos fuente de empaquetado:
+# ...but keep the packaging source files:
 !debian/changelog
 !debian/control
 !debian/rules
@@ -61,8 +61,8 @@ debian/*/
 !debian/xinput-plus.1
 
 # -----------------------------
-# UsCan / orig tarballs / Debuild
-# (a veces quedan en el repo por error)
+# uscan / orig tarballs / debuild
+# (sometimes left in the tree by mistake)
 # -----------------------------
 *.orig.tar.*
 *.debian.tar.*
@@ -70,11 +70,11 @@ debian/*/
 *.build
 *.buildinfo
 *.changes
-# Tarball renombrado por uscan en el árbol de trabajo
+# Tarball renamed by uscan in the working tree
 xinput-plus-*.tar.gz
 
 # -----------------------------
-# SO / editores
+# OS / editor files
 # -----------------------------
 .DS_Store
 Thumbs.db
@@ -84,7 +84,6 @@ Thumbs.db
 .vscode/
 
 # -----------------------------
-# Imágenes de README públicas
-# (NO ignores assets/; se recomienda subirlas)
+# README assets (do NOT ignore assets/; commit them)
 # -----------------------------
-# (dejar vacío a propósito)
+# (intentionally empty)

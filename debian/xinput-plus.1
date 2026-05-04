@@ -1,11 +1,24 @@
-.TH XINPUT-PLUS 1 "xinput-plus"
+.TH XINPUT-PLUS 1 "2025-09-17" "xinput-plus 6.6.4" "User Commands"
 .SH NAME
 xinput-plus \- adjust pointer speed per device (Xorg) via xinput
 .SH SYNOPSIS
 .B xinput-plus
+.RI [ \-\-lang= locale ]
 .SH DESCRIPTION
 xinput-plus is a PyQt6 GUI that lets you configure per-device pointer speed.
 It uses xinput on Xorg, supports per-ID and per-name profiles, a whitelist to
 hide virtual devices, and a CTM fallback when "libinput Accel Speed" is not available.
+.SH OPTIONS
+.TP
+.BI \-\-lang= locale
+Force the UI language to
+.IR locale
+(e.g.\& \fBes\fR, \fBpt_BR\fR).
+If omitted, the system locale is used.
+.SH FILES
+.TP
+.I ~/.config/xinput-plus.json
+Per-user configuration file storing device profiles, the whitelist, and
+display preferences.
 .SH SEE ALSO
 xinput(1)

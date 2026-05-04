@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <!-- Use an RDNS-style, globally unique ID (do NOT use the .desktop filename here) -->
+  <!-- RDNS-style globally unique ID; do NOT use the .desktop filename here -->
   <id>io.github.wachin.xinputplus</id>
 
   <name>xinput-plus</name>
@@ -8,18 +8,23 @@
 
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
-  <developer_name>Washington Indacochea Delgado</developer_name>
+
+  <developer>
+    <name>Washington Indacochea Delgado</name>
+  </developer>
+
   <url type="homepage">https://github.com/wachin/xinput-plus</url>
+  <url type="bugtracker">https://github.com/wachin/xinput-plus/issues</url>
 
   <description>
     <p>
       xinput-plus provides a simple PyQt6 GUI to manage per-device pointer acceleration
       on Xorg, with per-ID/name profiles, whitelisting, natural scrolling, tap-to-click,
-      and a CTM fallback when “libinput Accel Speed” is not available.
+      and a CTM fallback when "libinput Accel Speed" is not available.
     </p>
   </description>
 
-  <!-- Keep this: it links the appstream component to your installed desktop file -->
+  <!-- Links the AppStream component to the installed desktop file -->
   <launchable type="desktop-id">xinput-plus.desktop</launchable>
 
   <provides>
@@ -31,13 +36,16 @@
     <category>Settings</category>
   </categories>
 
-  <!-- Add releases to satisfy 'releases-info-missing' -->
   <releases>
+    <release version="6.6.4" date="2025-09-17"/>
+    <release version="6.6.3" date="2025-09-17"/>
+    <release version="6.6.2" date="2025-09-15"/>
+    <release version="6.6.1" date="2025-09-15"/>
     <release version="6.6" date="2025-09-15"/>
     <release version="6.5" date="2025-09-10"/>
   </releases>
 
-  <!-- OARS 1.1 content rating: desktop utility -> all 'none' -->
+  <!-- OARS 1.1 content rating: desktop utility, all attributes none -->
   <content_rating type="oars-1.1">
     <content_attribute id="violence-cartoon">none</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>

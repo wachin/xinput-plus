@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# xinput-plus.py / v6.5 (full, corrected, i18n-ready)
+# xinput-plus.py / v6.6.4
 # PyQt6 GUI to tweak pointer speed via xinput (Xorg only).
 #
 # Key features:
@@ -114,7 +114,7 @@ def _qm_candidates(locale: QLocale) -> List[str]:
     name = locale.name()  # e.g. 'es_ES'
     parts = name.split('_', 1)
     cands = [f"{APP_NAME}_{name}.qm"]
-    if parts:
+    if len(parts) > 1:
         cands.append(f"{APP_NAME}_{parts[0]}.qm")
     # accept dashed variants too
     cands.extend([f"{APP_NAME}-{name}.qm", f"{APP_NAME}-{parts[0]}.qm"])
@@ -306,15 +306,15 @@ class LibinputGUI(QWidget):
 
         self.profile_by_id_cb = QCheckBox(self.tr("Save by ID (specific profile)"))
         right.addWidget(self.profile_by_id_cb)
-        
-        # NEW: Natural scrolling (reverse) toggle
+
+        # Natural scrolling (reverse) toggle
         self.natural_scroll_cb = QCheckBox(self.tr("Natural scrolling (reverse)"))
         self.natural_scroll_cb.toggled.connect(self.on_natural_toggled)
         right.addWidget(self.natural_scroll_cb)
-        
-        # NEW: Tap-to-click (enable left-click on touchpads)
+
+        # Tap-to-click (enable left-click on touchpads)
         self.tapping_cb = QCheckBox(self.tr("Tap to click (enable left-click)"))
-        self.tapping_cb.setChecked(True)  # ← default ON
+        self.tapping_cb.setChecked(True)  # default ON
         self.tapping_cb.toggled.connect(self.on_tapping_toggled)
         right.addWidget(self.tapping_cb)
 
@@ -330,9 +330,7 @@ class LibinputGUI(QWidget):
         right.addWidget(self.slider_speed)
 
         # Buttons row
-        btns = QHBoxLayout()
-        
-        # ----- Fila 1: acciones principales -----
+        # ----- Row 1: main actions -----
         row1 = QHBoxLayout()
 
         self.btn_refresh = QPushButton(self.tr("🔄 Refresh"))
@@ -348,22 +346,22 @@ class LibinputGUI(QWidget):
         self.show_only_whitelist_cb.toggled.connect(self.on_toggle_show_only_whitelist)
         row1.addWidget(self.show_only_whitelist_cb)
 
-        row1.addStretch(1)  # opcional: empuja contenido hacia la izquierda
+        row1.addStretch(1)
 
-        # ----- Fila 2: edición y acerca de -----
+        # ----- Row 2: whitelist editor and about -----
         row2 = QHBoxLayout()
 
         self.btn_edit_whitelist = QPushButton(self.tr("✏️ Edit whitelist"))
         self.btn_edit_whitelist.clicked.connect(self.open_whitelist_dialog)
         row2.addWidget(self.btn_edit_whitelist)
 
-        self.btn_about = QPushButton(self.tr("🛈 About"))  # ← aquí el icono que querías
+        self.btn_about = QPushButton(self.tr("🛈 About"))
         self.btn_about.clicked.connect(self.show_about)
         row2.addWidget(self.btn_about)
 
-        row2.addStretch(1)  # opcional: alinea a la izquierda
+        row2.addStretch(1)
 
-        # Añadir ambas filas al panel derecho
+        # Add both rows to the right panel
         right.addLayout(row1)
         right.addLayout(row2)
         
@@ -716,11 +714,14 @@ class LibinputGUI(QWidget):
         
     def on_natural_toggled(self, checked: bool) -> None:
         """Re-apply settings when toggling natural scrolling."""
-        # Reuse the same persistence/apply path:
+        # Qt signal requires the checked parameter; value is read from the
+        # checkbox widget directly inside on_speed_changed.
         self.on_speed_changed(self.slider_speed.value())
-        
+
     def on_tapping_toggled(self, checked: bool) -> None:
         """Re-apply settings when toggling tap-to-click."""
+        # Qt signal requires the checked parameter; value is read from the
+        # checkbox widget directly inside on_speed_changed.
         self.on_speed_changed(self.slider_speed.value())
 
     def on_toggle_show_only_whitelist(self, checked: bool) -> None:
@@ -751,7 +752,7 @@ class LibinputGUI(QWidget):
         about_html = self.tr(
             "<h2><b>{program}</b></h2>"
             "<p>🖱️ A simple GUI tool for adjusting mouse and touchpad speed in X11 Linux "
-            "window managers like Openbox, JWM, iceWM, and Fluxbox. Perfect for external, "
+            "window managers like Openbox, JWM, iceWM, and Fluxbox. Perfect for external "
             "keyboards with integrated touchpads (like Logitech K400) and laptop touchpads.</p>"
             "<p>&copy; {year} {author}.<br>"
             "{email}<br>"

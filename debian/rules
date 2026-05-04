@@ -5,27 +5,27 @@ export DH_VERBOSE=1
 	dh $@
 
 override_dh_auto_build:
-	# Compilar traducciones Qt (PyQt6)
-	if [ -d i18n ]; then \
+	# Compile Qt translations (PyQt6)
+	if ls i18n/xinput-plus_*.ts >/dev/null 2>&1; then \
 	  (command -v lrelease-qt6 >/dev/null && lrelease-qt6 i18n/xinput-plus_*.ts) || \
 	  (command -v lrelease >/dev/null && lrelease i18n/xinput-plus_*.ts) || true; \
 	fi
 
 override_dh_auto_install:
-	# Binario (lanzador)
+	# Main executable
 	install -D -m0755 xinput-plus.py debian/xinput-plus/usr/bin/xinput-plus
 
-	# Desktop + AppStream
+	# Desktop entry and AppStream metadata
 	install -D -m0644 debian/xinput-plus.desktop \
 	  debian/xinput-plus/usr/share/applications/xinput-plus.desktop
 	install -D -m0644 debian/xinput-plus.metainfo.xml \
 	  debian/xinput-plus/usr/share/metainfo/xinput-plus.metainfo.xml
 
-	# Icono
+	# Application icon
 	install -D -m0644 src/emucon.svg \
 	  debian/xinput-plus/usr/share/icons/hicolor/scalable/apps/xinput-plus.svg
 
-	# Traducciones (.qm)
+	# Compiled translations (.qm)
 	if ls i18n/xinput-plus_*.qm >/dev/null 2>&1; then \
 	  install -d debian/xinput-plus/usr/share/xinput-plus/i18n; \
 	  install -m0644 i18n/xinput-plus_*.qm \
@@ -33,6 +33,6 @@ override_dh_auto_install:
 	fi
 
 override_dh_installchangelogs:
-	# Instalar el changelog "upstream" (tu CHANGELOG.md)
-	# Ajusta la ruta si lo moviste de carpeta.
+	# Install the upstream changelog.
+	# Adjust the path if the file is moved.
 	dh_installchangelogs src/CHANGELOG.md

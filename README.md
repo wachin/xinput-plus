@@ -1,8 +1,6 @@
 # 🖱️ xinput-plus
 
-[![Topic](https://img.shields.io/badge/topic-linux%20x11%20gui-blueviolet)](https://github.com/topics/linux)
-
-# Adjust your mouse or touchpad speed (very easy!)
+## Adjust your mouse or touchpad speed (very easy!)
 
 This program is for **Linux** and allows you to **change the pointer speed** (mouse or touchpad cursor) graphically for use in X11 Window Managers such as: Openbox, JWM, iceWM, Fluxbox, and other minimalist window managers where there's no GUI program to do this, without having to type complicated commands. It's ideal if you use external keyboards that come with **integrated touchpad keyboard**, like the **Logitech K400**, or even for your laptop's touchpad if you feel the cursor moves too slowly.
 
@@ -24,7 +22,7 @@ This program is for **Linux** and allows you to **change the pointer speed** (mo
 Before using it, make sure you have the following installed on your Linux computer:
 
 ```bash
-sudo apt install xinput git python3-pyqt6 libqt6svg6 python3-all
+sudo apt install xinput python3-pyqt6 libqt6svg6
 ```
 
 1. ⚠️ This program only works on **X11**, not on Wayland.  
@@ -76,9 +74,7 @@ Make sure the `Launcher.sh` script is executable, in the file manager right-clic
 
 Double-click the `Launcher.sh` script and click `Execute`
 
-👉 A window will open with two controls:
-
-![](vx_images/403085416299084.png)
+👉 A window will open:
 
 ## Running xinput-plus
 
@@ -104,11 +100,11 @@ and it will open:
 2. In the left list, **click on your device** (for example: "Logitech K400").
 3. Use the slider to change the speed:
    - ← Slower (down to -1.0)
-   - → Faster (up to 1.0 by default)
-4. **Enable extended speed (optional)**: Check the box labeled "Enable extended speed (up to 2.0)" to allow the slider to go up to 2.0, which provides significantly faster cursor movement for devices like the Logitech K400. This mode uses the `Coordinate Transformation Matrix` to scale pointer movement beyond the standard range.
-5. When you find the perfect speed, click **"Save configuration"**.
+   - → Faster (up to 1.0 by default; up to 2.0 in extended CTM mode)
+4. **Enable extended speed (optional)**: Check the box labeled "Extended mode (CTM)" to allow the slider to go up to 2.0, which provides significantly faster cursor movement for devices like the Logitech K400. This mode uses the `Coordinate Transformation Matrix` to scale pointer movement beyond the standard range.
+5. The configuration saves automatically as you move the slider — no button press needed.
 
-✅ Done! The change applies instantly and is saved for next time. The program remembers whether extended speed mode is enabled for each device. After restarting your computer, open the program, select your device, and the saved settings (including extended speed mode) will be applied automatically.
+✅ Done! The change applies instantly and saves automatically. After restarting your computer, open the program and the saved settings (including extended speed mode) will be applied automatically.
 
 ---
 
@@ -219,7 +215,6 @@ This app supports translations with Qt **`.ts` → `.qm`** files. Follow these s
 
 * **Qt Creator** installed on your Linux OS
 * **PyQt6 dev tools** (provides `pylupdate6`)
-* **dh-sequence-python3**
 
 ```bash
 sudo apt install pyqt6-dev-tools
@@ -228,11 +223,6 @@ sudo apt install pyqt6-dev-tools
 
 ```bash
 sudo apt install qttools5-dev-tools
-```
-* dh-sequence-python3 lo proporciona el paquete dh-python
-
-```bash
-sudo apt install dh-python
 ```
 
 * Create the translations folder:
