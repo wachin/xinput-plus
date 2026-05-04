@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  xinput-plus application icon
+  Concept: mouse pointer cursor with a speed slider beneath it,
+  representing per-device pointer speed adjustment.
+  Designed for use at 16×16 through 512×512 (scalable).
+  License: GPL-3+
+  Author: xinput-plus project
+-->
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     width="64" height="64">
+
+  <defs>
+    <!-- Background circle gradient: deep blue to indigo -->
+    <radialGradient id="bgGrad" cx="40%" cy="35%" r="65%">
+      <stop offset="0%"   stop-color="#3a6fd8"/>
+      <stop offset="100%" stop-color="#1a2f6e"/>
+    </radialGradient>
+
+    <!-- Cursor body gradient: white to light grey -->
+    <linearGradient id="cursorGrad" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%"   stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#d0d8f0"/>
+    </linearGradient>
+
+    <!-- Speed accent gradient: cyan to bright blue -->
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#0090ff"/>
+    </linearGradient>
+
+    <!-- Drop shadow filter for the cursor -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="1" dy="2" stdDeviation="1.5"
+                    flood-color="#000d2e" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- ── Background circle ── -->
+  <circle cx="32" cy="32" r="30" fill="url(#bgGrad)"/>
+
+  <!-- ── Subtle inner ring (depth) ── -->
+  <circle cx="32" cy="32" r="29"
+          fill="none" stroke="#ffffff" stroke-width="0.4" opacity="0.15"/>
+
+  <!-- ══════════════════════════════════════
+       CURSOR  (classic arrow pointer)
+       Tip at (20, 10); body extends down-right
+       ══════════════════════════════════════ -->
+  <g filter="url(#shadow)">
+    <!-- Cursor fill -->
+    <path d="M 20 10
+             L 20 38
+             L 25.5 32
+             L 30.5 42
+             L 33.5 40.5
+             L 28.5 30.5
+             L 36 30.5
+             Z"
+          fill="url(#cursorGrad)"
+          stroke="#1a2f6e" stroke-width="1.2"
+          stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+
+  <!-- ══════════════════════════════════════
+       SPEED SLIDER  (horizontal track + knob)
+       Positioned in the lower portion of the icon
+       ══════════════════════════════════════ -->
+
+  <!-- Track background (full width, rounded) -->
+  <rect x="10" y="50" width="44" height="4"
+        rx="2" ry="2"
+        fill="#0d1f55" opacity="0.7"/>
+
+  <!-- Active track (left portion — shows current speed ~65%) -->
+  <rect x="10" y="50" width="29" height="4"
+        rx="2" ry="2"
+        fill="url(#accentGrad)"/>
+
+  <!-- Knob (circle at the active track end) -->
+  <circle cx="39" cy="52" r="5"
+          fill="#ffffff"
+          stroke="#0090ff" stroke-width="1.5"/>
+
+  <!-- Knob inner dot (gives it a tactile feel) -->
+  <circle cx="39" cy="52" r="1.8"
+          fill="#0090ff"/>
+
+  <!-- ══════════════════════════════════════
+       SPEED LINES  (motion lines beside cursor tip)
+       Three short horizontal lines suggesting movement
+       ══════════════════════════════════════ -->
+  <g stroke="url(#accentGrad)" stroke-linecap="round" opacity="0.85">
+    <line x1="37" y1="14" x2="44" y2="14" stroke-width="1.8"/>
+    <line x1="38" y1="18.5" x2="44" y2="18.5" stroke-width="1.4"/>
+    <line x1="39.5" y1="23" x2="44" y2="23" stroke-width="1.0"/>
+  </g>
+
+</svg>

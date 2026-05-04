@@ -22,7 +22,7 @@ override_dh_auto_install:
 	  debian/xinput-plus/usr/share/metainfo/xinput-plus.metainfo.xml
 
 	# Application icon
-	install -D -m0644 src/emucon.svg \
+	install -D -m0644 src/xinput-plus.svg \
 	  debian/xinput-plus/usr/share/icons/hicolor/scalable/apps/xinput-plus.svg
 
 	# Man page
