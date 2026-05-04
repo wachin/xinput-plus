@@ -21,5 +21,7 @@
 
 
 
+--
 
+I have one question, What is "Extended Mode (CTM)" used for?
 

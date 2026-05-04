@@ -308,87 +308,70 @@ The full workflow is documented in the README under
 All original review issues are fixed. The remaining work before submitting
 to Debian falls into three phases.
 
-### Phase 1 — Final local cleanup (do this first)
+### Phase 1 — Final local cleanup ✅ DONE
 
-These are quick tasks you can do right now:
+1. ~~**Remove the compiled `.qm` from git tracking.**~~
+   Already done — only `xinput-plus_es.ts` is tracked; the `.qm` is
+   built at package build time by `debian/rules`.
 
-1. **Remove the compiled `.qm` from git tracking.**
-   The `.qm` is a build artefact and should not be in version control.
-   `debian/rules` already builds it automatically at package build time.
-   ```bash
-   git rm --cached i18n/xinput-plus_es.qm
-   git commit -m "chore: remove compiled .qm from version control; built by debian/rules"
-   ```
+2. ~~**Update `debian/control` Standards-Version to `4.7.3`.**~~
+   Done.
 
-2. **Update `debian/control` Standards-Version to `4.7.3`.**
-   The current value is `4.7.0`. The latest Debian Policy as of early 2026
-   is `4.7.3`. Check the upgrading checklist for any relevant changes:
-   https://www.debian.org/doc/debian-policy/upgrading-checklist.html
+3. ~~**Git tag `v6.6.4` exists.**~~
+   Tag already present. Note: `v6.6.5` also exists in git but only
+   contains a documentation edit with `UNRELEASED` in the changelog —
+   it does not represent a real upstream release.
 
-3. **Create a versioned git tag for the current release.**
-   Debian's `uscan` and the `debian/watch` file expect tags like `v6.6.4`:
-   ```bash
-   git tag -a v6.6.4 -m "Release 6.6.4"
-   git push origin v6.6.4
-   ```
+4. ~~**Man page not installed by `debian/rules`.**~~
+   Fixed — added `install -D -m0644 debian/xinput-plus.1` to
+   `override_dh_auto_install`. Lintian `no-manual-page` warning is gone.
 
-4. **Push everything to GitHub** so the Salsa repository and the watch
-   file can find the source tarball.
+5. ~~**`debian/changelog` top entry had a minimal description.**~~
+   Expanded to document all packaging changes made during this review
+   session (Standards-Version bump, copyright fix, rules improvements,
+   desktop/metainfo updates, source fixes, i18n updates).
 
-### Phase 2 — Build and validate the package
+### Phase 2 — Build and validate ✅ DONE
 
-5. **Do a full local build and lintian check:**
-   ```bash
-   debuild -us -uc
-   lintian --pedantic ../xinput-plus_6.6.4-1_all.deb
-   ```
-   Target: zero `E:` errors, zero `W:` warnings.
+- `debuild -us -uc -b` — **builds cleanly**.
+- `lintian --pedantic` — **zero errors, zero warnings**.
 
-6. **Test in a clean pbuilder chroot** to catch any undeclared build
-   dependencies:
-   ```bash
-   sudo pbuilder create --distribution unstable
-   debuild -us -uc -S
-   sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
-   ```
-   If pbuilder fails but debuild succeeds, a `Build-Depends:` entry is
-   missing in `debian/control`.
+Remaining optional step (recommended before sponsorship request):
 
-7. **Install and smoke-test the resulting `.deb`:**
-   ```bash
-   sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
-   xinput-plus
-   xinput-plus --lang=es
-   man xinput-plus
-   sudo apt purge xinput-plus
-   ```
+- [ ] **Test in a clean pbuilder unstable chroot** to catch any
+  undeclared build dependencies:
+  ```bash
+  sudo pbuilder create --distribution unstable
+  debuild -us -uc -S
+  sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
+  ```
 
 ### Phase 3 — Submit to Debian
 
-8. **Create a Salsa account** (if not done yet) and push the repository
-   there. The `Vcs-Git` and `Vcs-Browser` fields in `debian/control` must
-   point to a reachable Salsa URL before upload.
+- [ ] **Create a Salsa account** and push the repository there. The
+  `Vcs-Git` and `Vcs-Browser` fields in `debian/control` must point to
+  a reachable Salsa URL before upload.
 
-9. **File an ITP bug** against the `wnpp` pseudo-package:
-   ```bash
-   reportbug wnpp
-   ```
-   Choose ITP, fill in the package details, and note the bug number you
-   receive. Add it to the top `debian/changelog` entry:
-   ```
-   * Initial release. (Closes: #XXXXXXX)
-   ```
+- [ ] **File an ITP bug** against the `wnpp` pseudo-package:
+  ```bash
+  reportbug wnpp
+  ```
+  Choose ITP, fill in the package details, and note the bug number.
+  Add it to the top `debian/changelog` entry:
+  ```
+  * Initial release. (Closes: #XXXXXXX)
+  ```
 
-10. **Sign and upload to mentors.debian.net:**
-    ```bash
-    debuild -sa
-    dput mentors ../xinput-plus_6.6.4-1_amd64.changes
-    ```
+- [ ] **Sign and upload to mentors.debian.net:**
+  ```bash
+  debuild -sa
+  dput mentors ../xinput-plus_6.6.4-1_amd64.changes
+  ```
 
-11. **Post an RFS (Request for Sponsorship)** to
-    `debian-mentors@lists.debian.org`. A Debian Developer will review the
-    package and upload it to the official archive on your behalf.
+- [ ] **Post an RFS (Request for Sponsorship)** to
+  `debian-mentors@lists.debian.org`. A Debian Developer will review the
+  package and upload it to the official archive on your behalf.
 
-Full details for phases 2 and 3 are in
+Full details for Phase 3 are in
 [docs/debian/how-to-publish-on-debian.md](docs/debian/how-to-publish-on-debian.md)
 ([español](docs/debian/como-publicar-en-debian.md)).

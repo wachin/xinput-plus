@@ -25,6 +25,10 @@ override_dh_auto_install:
 	install -D -m0644 src/emucon.svg \
 	  debian/xinput-plus/usr/share/icons/hicolor/scalable/apps/xinput-plus.svg
 
+	# Man page
+	install -D -m0644 debian/xinput-plus.1 \
+	  debian/xinput-plus/usr/share/man/man1/xinput-plus.1
+
 	# Compiled translations (.qm)
 	if ls i18n/xinput-plus_*.qm >/dev/null 2>&1; then \
 	  install -d debian/xinput-plus/usr/share/xinput-plus/i18n; \

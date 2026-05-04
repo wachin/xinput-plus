@@ -1,6 +1,24 @@
 xinput-plus (6.6.4-1) unstable; urgency=medium
 
   * New upstream release 6.6.4.
+  * debian/control: bump Standards-Version to 4.7.3 (no changes required).
+  * debian/control: add Suggests: qt6ct, qt6-style-kvantum.
+  * debian/copyright: fix DEP-5 format — add Format: header, remove inline
+    comments, fix stanza indentation, cover all source files.
+  * debian/rules: install man page; translate comments to English; tighten
+    lrelease glob guard to check for .ts files before invoking lrelease.
+  * debian/watch: tighten version regex (\d+ instead of \d).
+  * debian/xinput-plus.1: fix .TH macro (add date, version, section title);
+    add OPTIONS and FILES sections; complete SYNOPSIS.
+  * debian/xinput-plus.desktop: use human-readable Name; add Spanish
+    localization entries; set Categories=Settings;HardwareSettings;
+  * debian/xinput-plus.metainfo.xml: add missing releases; replace
+    deprecated <developer_name> with <developer>; add bugtracker URL.
+  * xinput-plus.py: rename confusing "Extended mode (CTM)" checkbox to
+    "Extra speed (for slow devices)"; fix _qm_candidates logic bug; remove
+    dead code and Spanish comments; fix grammatical error in About text.
+  * i18n/xinput-plus_es.ts: update Spanish translations for renamed
+    checkbox and updated About dialog text; remove obsolete entries.
 
  -- Washington Indacochea Delgado <wachin.id@gmail.com>  Wed, 17 Sep 2025 22:37:19 -0500
 
