@@ -328,7 +328,14 @@ servidor oficial de Debian.
 
 ```bash
 sudo apt install pbuilder
-sudo pbuilder create --distribution bookworm
+```
+
+Crea un chroot para la distribución objetivo. Usa `unstable` si estás
+preparando un paquete para Debian (recomendado), o `bookworm` si solo
+quieres probar localmente en Debian 12:
+
+```bash
+sudo pbuilder create --distribution unstable
 ```
 
 Esto descarga un sistema Debian mínimo y lo guarda como imagen. Tarda unos
@@ -336,19 +343,50 @@ minutos la primera vez.
 
 ### Construir con pbuilder
 
-Primero necesitas el paquete fuente (no solo el binario). Compílalo así:
+Ejecuta estos comandos desde dentro del directorio del proyecto
+(p. ej. `~/Dev/xinput-plus-dev/xinput-plus`):
 
 ```bash
+# 1. Crear el tarball orig upstream (requerido por el formato de fuentes 3.0 (quilt))
+tar --exclude=./debian --exclude=./.git -czf ../xinput-plus_6.6.4.orig.tar.gz .
+
+# 2. Construir el paquete fuente
 debuild -us -uc -S
+
+# 3. Construir el paquete binario dentro del chroot limpio
+sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
 ```
 
-Esto crea el archivo `.dsc` en el directorio padre. Luego:
+Tras una compilación exitosa el directorio padre contendrá:
+
+```
+xinput-plus_6.6.4-1.dsc
+xinput-plus_6.6.4-1.debian.tar.xz
+xinput-plus_6.6.4-1_source.build
+xinput-plus_6.6.4-1_source.buildinfo
+xinput-plus_6.6.4-1_source.changes
+xinput-plus_6.6.4.orig.tar.gz
+```
+
+El `.deb` construido y los archivos relacionados se colocan en el directorio
+de resultados de pbuilder:
+
+```
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.buildinfo
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.changes
+/var/cache/pbuilder/result/xinput-plus_6.6.4.orig.tar.gz
+```
+
+Instala y prueba el resultado:
 
 ```bash
-sudo pbuilder build ../xinput-plus_6.6.4-1.dsc
+sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+xinput-plus
+xinput-plus --lang=es
+man xinput-plus
+sudo apt purge xinput-plus
 ```
-
-El `.deb` resultante aparece en `/var/cache/pbuilder/result/`.
 
 ### ¿Por qué usar pbuilder?
 
@@ -356,6 +394,11 @@ Si `pbuilder` falla pero `debuild` funciona, significa que te falta declarar
 alguna dependencia en `Build-Depends:` de `debian/control`. Esto es
 exactamente el tipo de error que el equipo de Debian detectaría al revisar
 tu paquete, así que es mejor encontrarlo tú primero.
+
+> **Nota sobre el tarball orig:** El paso con `tar` es necesario porque
+> `debian/source/format` es `3.0 (quilt)`, que requiere un tarball upstream
+> separado. Sin él, `debuild -S` fallará con:
+> `dpkg-source: error: can't build with source format '3.0 (quilt)'`.
 
 ---
 

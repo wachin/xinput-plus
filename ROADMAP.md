@@ -347,18 +347,56 @@ to Debian falls into three phases.
 
 - [x] **`lintian --pedantic` — zero errors, zero warnings.**
 
-- [ ] **Test in a clean pbuilder unstable chroot.**
+- [x] **Test in a clean pbuilder unstable chroot.**
   Recommended before asking for a sponsor. Builds the package in a
   minimal isolated environment, exactly as Debian's build servers would.
   If it fails here but not with `debuild`, a build dependency is missing
   from `debian/control`.
+
+  Run these commands from inside the project directory
+  (`~/Dev/xinput-plus-dev/xinput-plus`):
+
   ```bash
+  # 1. Create the pbuilder unstable chroot (only needed once)
   sudo pbuilder create --distribution unstable
+
+  # 2. Create the upstream orig tarball (required by 3.0 (quilt) format)
+  tar --exclude=./debian --exclude=./.git -czf ../xinput-plus_6.6.4.orig.tar.gz .
+
+  # 3. Build the source package
   debuild -us -uc -S
+
+  # 4. Build the binary package inside the clean chroot
   sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
   ```
 
-- [ ] **Install and smoke-test the `.deb` from pbuilder.**
+  After a successful build the parent directory
+  (`~/Dev/xinput-plus-dev/`) will contain:
+
+  ```
+  xinput-plus/                        ← source tree
+  xinput-plus_6.6.4-1.dsc
+  xinput-plus_6.6.4-1.debian.tar.xz
+  xinput-plus_6.6.4-1_source.build
+  xinput-plus_6.6.4-1_source.buildinfo
+  xinput-plus_6.6.4-1_source.changes
+  xinput-plus_6.6.4.orig.tar.gz
+  ```
+
+  The built `.deb` and related files are placed under pbuilder's result
+  directory:
+
+  ```
+  /var/cache/pbuilder/result/xinput-plus_6.6.4-1.dsc
+  /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+  /var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.buildinfo
+  /var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.changes
+  /var/cache/pbuilder/result/xinput-plus_6.6.4-1.debian.tar.xz
+  /var/cache/pbuilder/result/xinput-plus_6.6.4-1_source.changes
+  /var/cache/pbuilder/result/xinput-plus_6.6.4.orig.tar.gz
+  ```
+
+- [x] **Install and smoke-test the `.deb` from pbuilder.**
   ```bash
   sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
   xinput-plus
@@ -366,6 +404,8 @@ to Debian falls into three phases.
   man xinput-plus
   sudo apt purge xinput-plus
   ```
+  All four commands passed: the program launched correctly, the Spanish
+  UI worked, and the man page displayed as expected.
 
 ---
 

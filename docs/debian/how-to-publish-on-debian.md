@@ -384,23 +384,29 @@ problems before a sponsor does.
 Set up pbuilder once:
 
 ```bash
-sudo pbuilder create --distribution bookworm
+sudo pbuilder create --distribution unstable
 ```
 
-Then build your package inside it:
+Then build your package inside it. Run these commands from inside the
+project directory (e.g. `~/Dev/xinput-plus-dev/xinput-plus`):
 
 ```bash
-sudo pbuilder build ../xinput-plus_6.6.4-1.dsc
+# 1. Create the upstream orig tarball (required by the 3.0 (quilt) source format)
+tar --exclude=./debian --exclude=./.git -czf ../xinput-plus_6.6.4.orig.tar.gz .
+
+# 2. Build the source package
+debuild -us -uc -S
+
+# 3. Build the binary package inside the clean chroot
+sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
 ```
 
 The resulting `.deb` is placed in `/var/cache/pbuilder/result/`.
 
-If you want to test against `unstable` (which is what Debian uses):
-
-```bash
-sudo pbuilder create --distribution unstable
-sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
-```
+> **Note on the orig tarball:** The `tar` step is needed because
+> `debian/source/format` is `3.0 (quilt)`, which requires a separate
+> upstream tarball. Without it, `debuild -S` will fail with:
+> `dpkg-source: error: can't build with source format '3.0 (quilt)'`.
 
 ### 3.4 Install and test the `.deb` manually
 

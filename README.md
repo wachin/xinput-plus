@@ -163,6 +163,95 @@ It uses Linux commands with `xinput` to change the device speed in real time. Fo
 
 ---
 
+## Building and testing the .deb with pbuilder
+
+`pbuilder` builds the package inside a clean, minimal Debian unstable chroot —
+the same way Debian's build servers do. If the build passes here, you can be
+confident no build dependency is missing from `debian/control`.
+
+### Install pbuilder
+
+```bash
+sudo apt install pbuilder
+```
+
+### Build steps
+
+Run these commands from inside the project directory
+(`~/Dev/xinput-plus-dev/xinput-plus`):
+
+```bash
+# 1. Create the pbuilder unstable chroot (only needed once)
+sudo pbuilder create --distribution unstable
+
+# 2. Create the upstream orig tarball (required by the 3.0 (quilt) source format)
+tar --exclude=./debian --exclude=./.git -czf ../xinput-plus_6.6.4.orig.tar.gz .
+
+# 3. Build the source package
+debuild -us -uc -S
+
+# 4. Build the binary package inside the clean chroot
+sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
+```
+
+After a successful build the parent directory (`~/Dev/xinput-plus-dev/`) will
+contain:
+
+```
+xinput-plus/                        ← source tree
+xinput-plus_6.6.4-1.dsc
+xinput-plus_6.6.4-1.debian.tar.xz
+xinput-plus_6.6.4-1_source.build
+xinput-plus_6.6.4-1_source.buildinfo
+xinput-plus_6.6.4-1_source.changes
+xinput-plus_6.6.4.orig.tar.gz
+```
+
+The built `.deb` and related files are placed under pbuilder's result
+directory:
+
+```
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1.dsc
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.buildinfo
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.changes
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1.debian.tar.xz
+/var/cache/pbuilder/result/xinput-plus_6.6.4-1_source.changes
+/var/cache/pbuilder/result/xinput-plus_6.6.4.orig.tar.gz
+```
+
+### Install and test
+
+```bash
+sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+```
+
+Run the program:
+
+```bash
+xinput-plus
+```
+
+Force a specific language (e.g. Spanish):
+
+```bash
+xinput-plus --lang=es
+```
+
+Read the man page:
+
+```bash
+man xinput-plus
+```
+
+Uninstall:
+
+```bash
+sudo apt purge xinput-plus
+```
+
+---
+
 ## Developer documentation
 
 The `docs/debian/` folder contains guides for developers who want to build,
