@@ -308,69 +308,130 @@ The full workflow is documented in the README under
 All original review issues are fixed. The remaining work before submitting
 to Debian falls into three phases.
 
-### Phase 1 — Final local cleanup ✅ DONE
+---
 
-1. ~~**Remove the compiled `.qm` from git tracking.**~~
-   Already done — only `xinput-plus_es.ts` is tracked; the `.qm` is
-   built at package build time by `debian/rules`.
+### Phase 1 — Final local cleanup
 
-2. ~~**Update `debian/control` Standards-Version to `4.7.3`.**~~
-   Done.
+- [x] **Remove the compiled `.qm` from git tracking.**
+  Only `xinput-plus_es.ts` is tracked; the `.qm` is built at package
+  build time by `debian/rules`.
 
-3. ~~**Git tag `v6.6.4` exists.**~~
-   Tag already present. Note: `v6.6.5` also exists in git but only
-   contains a documentation edit with `UNRELEASED` in the changelog —
-   it does not represent a real upstream release.
+- [x] **Update `debian/control` Standards-Version to `4.7.3`.**
+  Done.
 
-4. ~~**Man page not installed by `debian/rules`.**~~
-   Fixed — added `install -D -m0644 debian/xinput-plus.1` to
-   `override_dh_auto_install`. Lintian `no-manual-page` warning is gone.
+- [x] **Git tag `v6.6.4` exists.**
+  Tag already present. Note: `v6.6.5` also exists in git but only
+  contains a documentation edit with `UNRELEASED` in the changelog —
+  it does not represent a real upstream release.
 
-5. ~~**`debian/changelog` top entry had a minimal description.**~~
-   Expanded to document all packaging changes made during this review
-   session (Standards-Version bump, copyright fix, rules improvements,
-   desktop/metainfo updates, source fixes, i18n updates).
+- [x] **Man page not installed by `debian/rules`.**
+  Fixed — added `install -D -m0644 debian/xinput-plus.1` to
+  `override_dh_auto_install`. Lintian `no-manual-page` warning is gone.
 
-### Phase 2 — Build and validate ✅ DONE
+- [x] **`debian/changelog` top entry had a minimal description.**
+  Expanded to document all packaging changes made during this review
+  session (Standards-Version bump, copyright fix, rules improvements,
+  desktop/metainfo updates, source fixes, i18n updates).
 
-- `debuild -us -uc -b` — **builds cleanly**.
-- `lintian --pedantic` — **zero errors, zero warnings**.
+- [x] **New application icon created.**
+  `src/xinput-plus.svg` designed (cursor + speed slider + motion lines).
+  `debian/rules` and `xinput-plus.py` updated to use the new icon.
+  The old `src/emucon.svg` (joystick) remains in the repo for reference
+  but is no longer used.
 
-Remaining optional step (recommended before sponsorship request):
+---
 
-- [ ] **Test in a clean pbuilder unstable chroot** to catch any
-  undeclared build dependencies:
+### Phase 2 — Build and validate
+
+- [x] **Local build with `debuild -us -uc -b` — builds cleanly.**
+
+- [x] **`lintian --pedantic` — zero errors, zero warnings.**
+
+- [ ] **Test in a clean pbuilder unstable chroot.**
+  Recommended before asking for a sponsor. Builds the package in a
+  minimal isolated environment, exactly as Debian's build servers would.
+  If it fails here but not with `debuild`, a build dependency is missing
+  from `debian/control`.
   ```bash
   sudo pbuilder create --distribution unstable
   debuild -us -uc -S
   sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
   ```
 
+- [ ] **Install and smoke-test the `.deb` from pbuilder.**
+  ```bash
+  sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+  xinput-plus
+  xinput-plus --lang=es
+  man xinput-plus
+  sudo apt purge xinput-plus
+  ```
+
+---
+
 ### Phase 3 — Submit to Debian
 
-- [ ] **Create a Salsa account** and push the repository there. The
-  `Vcs-Git` and `Vcs-Browser` fields in `debian/control` must point to
-  a reachable Salsa URL before upload.
+- [ ] **Create a Salsa account and push the repository there.**
+  Register at https://salsa.debian.org/users/sign_up, create a project
+  named `xinput-plus`, and push. The `Vcs-Git` and `Vcs-Browser` fields
+  in `debian/control` already point to the correct Salsa URL — the
+  repository just needs to exist there.
 
-- [ ] **File an ITP bug** against the `wnpp` pseudo-package:
+- [ ] **Create a GPG key and upload it to the keyserver.**
+  Every upload to Debian must be signed. If you don't have a key yet:
+  ```bash
+  gpg --full-generate-key        # choose RSA 4096, set expiry 1-2 years
+  gpg --list-secret-keys --keyid-format LONG   # note your key ID
+  gpg --keyserver keyserver.ubuntu.com --send-keys YOUR_KEY_ID
+  ```
+
+- [ ] **File an ITP bug against the `wnpp` pseudo-package.**
+  This tells the Debian community you are working on this package and
+  prevents duplicate effort. You will receive a bug number by email.
   ```bash
   reportbug wnpp
+  # Choose: ITP
+  # Package name: xinput-plus
+  # Short description: PyQt6 GUI to adjust pointer speed per device (Xorg, via xinput)
+  # License: GPL-3+
+  # URL: https://github.com/wachin/xinput-plus
   ```
-  Choose ITP, fill in the package details, and note the bug number.
-  Add it to the top `debian/changelog` entry:
+  Then add the bug number to the top of `debian/changelog`:
   ```
   * Initial release. (Closes: #XXXXXXX)
   ```
 
-- [ ] **Sign and upload to mentors.debian.net:**
+- [ ] **Configure `dput` for mentors.debian.net.**
+  Create or edit `~/.dput.cf`:
+  ```ini
+  [mentors]
+  fqdn = mentors.debian.net
+  incoming = /upload
+  method = https
+  allow_unsigned_uploads = 0
+  progress_indicator = 2
+  ```
+
+- [ ] **Sign and upload to mentors.debian.net.**
   ```bash
   debuild -sa
   dput mentors ../xinput-plus_6.6.4-1_amd64.changes
   ```
+  On success you will receive a confirmation email and the package will
+  appear at https://mentors.debian.net/package/xinput-plus
 
-- [ ] **Post an RFS (Request for Sponsorship)** to
-  `debian-mentors@lists.debian.org`. A Debian Developer will review the
-  package and upload it to the official archive on your behalf.
+- [ ] **Post an RFS (Request for Sponsorship) to the debian-mentors list.**
+  Send an email to `debian-mentors@lists.debian.org` with subject:
+  ```
+  RFS: xinput-plus/6.6.4-1 -- PyQt6 GUI to adjust pointer speed per device
+  ```
+  Include: what the program does, the ITP bug number, the mentors.debian.net
+  URL, and a note that lintian is clean and pbuilder builds successfully.
+  A Debian Developer will review the package and upload it to the official
+  archive on your behalf. This step requires patience — responses can take
+  days or weeks.
+
+---
 
 Full details for Phase 3 are in
 [docs/debian/how-to-publish-on-debian.md](docs/debian/how-to-publish-on-debian.md)
