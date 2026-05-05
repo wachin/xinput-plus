@@ -62,8 +62,8 @@ def get_app_icon() -> QIcon:
         Path("/usr/share/icons/hicolor/scalable/apps/xinput-plus.svg"),
         Path("/usr/share/pixmaps/xinput-plus.svg"),
         Path(sys.prefix) / "share" / "icons" / "hicolor" / "scalable" / "apps" / "xinput-plus.svg",
-        # 3) Dev fallback (your repo path)
-        Path(__file__).resolve().parent / "src" / "emucon.svg",
+        # 3) Dev fallback (repo path)
+        Path(__file__).resolve().parent / "src" / "xinput-plus.svg",
     ]
     for p in candidates:
         if p.exists():
