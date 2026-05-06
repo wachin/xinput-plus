@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.6.5] - 2026-05-06
+### Added
+- **Translations**: added UI translations for German (de), Russian (ru),
+  Japanese (ja), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW),
+  French (fr), Portuguese Brazilian (pt_BR), Italian (it), Polish (pl),
+  Arabic (ar), Turkish (tr), and Korean (ko).
+- **Docs**: updated pbuilder build instructions in all four
+  `docs/debian/` guides (EN and ES) to include the orig tarball creation
+  step required by the `3.0 (quilt)` source format; added pbuilder section
+  to README.md.
+
+### Removed
+- `src/emucon.svg` (old joystick icon, no longer used) and its attribution
+  file `src/emucon-openclipart.org.txt`.
+
 ## [6.6] - 2025-09-15
 ### Added
 - **Natural scrolling (reverse)**: per-device checkbox; persists by **ID** or **Name** and reapplies on startup.

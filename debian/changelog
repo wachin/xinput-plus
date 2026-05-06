@@ -1,3 +1,23 @@
+xinput-plus (6.6.5-1) unstable; urgency=medium
+
+  * Remove unused src/emucon.svg (old joystick icon) and its attribution
+    file src/emucon-openclipart.org.txt; remove their stanza from
+    debian/copyright.
+  * i18n: add translations for German (de), Russian (ru), Japanese (ja),
+    Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), French (fr),
+    Portuguese Brazilian (pt_BR), Italian (it), Polish (pl), Arabic (ar),
+    Turkish (tr), and Korean (ko).
+  * docs/debian: update pbuilder instructions in compile-and-test-deb.md,
+    compilar-y-probar-deb_ES.md, how-to-publish-on-debian.md, and
+    como-publicar-en-debian.md to include the orig tarball creation step
+    required by the 3.0 (quilt) source format.
+  * README.md: add pbuilder build and test section with full command
+    sequence and output file locations.
+  * ROADMAP.md: mark pbuilder test and smoke-test items as done; document
+    exact commands and output paths.
+
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 06 May 2026 10:00:00 -0500
+
 xinput-plus (6.6.4-1) unstable; urgency=medium
 
   * New upstream release 6.6.4.
@@ -20,25 +40,25 @@ xinput-plus (6.6.4-1) unstable; urgency=medium
   * i18n/xinput-plus_es.ts: update Spanish translations for renamed
     checkbox and updated About dialog text; remove obsolete entries.
 
- -- Washington Indacochea Delgado <wachin.id@gmail.com>  Wed, 17 Sep 2025 22:37:19 -0500
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 17 Sep 2025 22:37:19 -0500
 
 xinput-plus (6.6.3-1) unstable; urgency=medium
 
   * New upstream release 6.6.3. Add docs folder.
 
- -- Washington Indacochea Delgado <wachin.id@gmail.com>  Wed, 17 Sep 2025 22:18:02 -0500
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 17 Sep 2025 22:18:02 -0500
 
 xinput-plus (6.6.2-1) unstable; urgency=medium
 
   * New upstream release 6.6.2. Sync docs and metadata.
 
- -- Washington Indacochea Delgado <wachin.id@gmail.com>  Mon, 15 Sep 2025 19:03:49 -0500
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Mon, 15 Sep 2025 19:03:49 -0500
 
 xinput-plus (6.6.1-1) unstable; urgency=medium
 
   * New upstream release 6.6.1. Sync docs and metadata.
 
- -- Washington Indacochea Delgado <wachin.id@gmail.com>  Mon, 15 Sep 2025 18:00:21 -0500
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Mon, 15 Sep 2025 18:00:21 -0500
 
 xinput-plus (6.6-1) unstable; urgency=medium
 
@@ -51,4 +71,4 @@ xinput-plus (6.6-1) unstable; urgency=medium
   * AppStream: use RDNS ID, add releases and OARS rating.
   * Packaging: clarify i18n workflow and canonical filename for pylupdate6.
 
- -- Washington Indacochea Delgado <wachin.id@gmail.com>  Mon, 15 Sep 2025 00:00:00 +0000
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Mon, 15 Sep 2025 00:00:00 +0000
