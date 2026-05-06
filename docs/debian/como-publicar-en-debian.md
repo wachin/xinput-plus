@@ -99,14 +99,34 @@ verificar tus subidas.
 
 ### 1.4 Crear una cuenta en Salsa
 
-Salsa es la instancia GitLab de Debian en https://salsa.debian.org.
+Salsa es la instancia GitLab de Debian en [https://salsa.debian.org](https://salsa.debian.org).
 Necesitas una cuenta para alojar allí tu repositorio de empaquetado
 (requerido por los campos `Vcs-Git` y `Vcs-Browser` en `debian/control`).
 
-1. Regístrate en https://salsa.debian.org/users/sign_up
+1. Regístrate en [https://salsa.debian.org/users/sign_up](https://salsa.debian.org/users/sign_up)
 2. Crea un nuevo proyecto con el nombre de tu paquete (p. ej. `xinput-plus`).
 3. Añade la huella digital de tu clave GPG a tu perfil de Salsa en
    **Preferences → GPG Keys**.
+
+---
+
+### 1.5 Si ya tenías una cuenta y un repositorio
+
+Si ya habías creado una cuenta y si ya habías creado el repositorio, entra e inicia sesión en [https://salsa.debian.org](https://salsa.debian.org)
+
+Allí ve a la sección:
+
+`Personal Projects`
+
+Dale clic a tu proyecto y copia su url, en este caso:
+
+[https://salsa.debian.org/wachin/xinput-plus](https://salsa.debian.org/wachin/xinput-plus)
+
+y luego clonalo:
+
+```bash
+git clone https://salsa.debian.org/wachin/xinput-plus
+```
 
 ---
 
@@ -378,12 +398,12 @@ lintian --pedantic ../xinput-plus_6.6.4-1_amd64.changes
 
 Etiquetas comunes de lintian y su significado:
 
-| Etiqueta | Significado |
-|----------|-------------|
-| `E:` | Error — causará rechazo. Hay que corregirlo. |
-| `W:` | Warning — hay que corregirlo. Los patrocinadores preguntarán. |
-| `I:` | Info — problema menor. Corregir si es fácil. |
-| `P:` | Pedantic — sugerencia de estilo. Opcional. |
+| Etiqueta |                          Significado                          |
+| -------- | ------------------------------------------------------------- |
+| `E:`     | Error — causará rechazo. Hay que corregirlo.                  |
+| `W:`     | Warning — hay que corregirlo. Los patrocinadores preguntarán. |
+| `I:`     | Info — problema menor. Corregir si es fácil.                  |
+| `P:`     | Pedantic — sugerencia de estilo. Opcional.                    |
 
 Para consultar qué significa cualquier etiqueta:
 
