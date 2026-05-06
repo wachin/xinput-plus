@@ -70,6 +70,9 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
 - [x] **Minor — `src/emucon-openclipart.org.txt` was not covered.**
   Added to the `src/emucon.svg` stanza:
   `Files: src/emucon.svg src/emucon-openclipart.org.txt`
+  Note: `src/emucon.svg` has since been removed from the repository as it
+  is no longer used. `src/emucon-openclipart.org.txt` was removed along
+  with it.
 
 ---
 
@@ -221,6 +224,8 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
 
 - [x] **Minor — `Licence:` field was blank.**
   Filled in as `CC0-1.0` to match `debian/copyright`.
+  Note: both `src/emucon.svg` and `src/emucon-openclipart.org.txt` have
+  since been removed from the repository as they are no longer used.
 
 ---
 
@@ -336,8 +341,7 @@ to Debian falls into three phases.
 - [x] **New application icon created.**
   `src/xinput-plus.svg` designed (cursor + speed slider + motion lines).
   `debian/rules` and `xinput-plus.py` updated to use the new icon.
-  The old `src/emucon.svg` (joystick) remains in the repo for reference
-  but is no longer used.
+  The old `src/emucon.svg` (joystick) has been removed from the repository.
 
 ---
 
