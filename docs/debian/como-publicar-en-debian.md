@@ -122,11 +122,13 @@ Dale clic a tu proyecto y copia su url, en este caso:
 
 [https://salsa.debian.org/wachin/xinput-plus](https://salsa.debian.org/wachin/xinput-plus)
 
-y luego clonalo:
+y luego busca una carpeta en tu ordenador donde puedas tener proyectos en salsa.debian.org y clonalo allí:
 
 ```bash
 git clone https://salsa.debian.org/wachin/xinput-plus
 ```
+
+
 
 ---
 
