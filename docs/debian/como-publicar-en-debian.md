@@ -156,7 +156,7 @@ xinput-plus (6.6.4-1) unstable; urgency=medium
 
   * New upstream release 6.6.4.
 
- -- Washington Indacochea Delgado <wachin.id@gmail.com>  Wed, 17 Sep 2025 22:37:19 -0500
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 17 Sep 2025 22:37:19 -0500
 ```
 
 Reglas:
@@ -188,7 +188,7 @@ binario:
 Source: xinput-plus
 Section: x11
 Priority: optional
-Maintainer: Washington Indacochea Delgado <wachin.id@gmail.com>
+Maintainer: Washington Indacochea Delgado <linuxfrontier@proton.me>
 Build-Depends:
  debhelper-compat (= 13),
  dh-sequence-python3,
@@ -246,19 +246,19 @@ Un ejemplo mínimo correcto:
 ```
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: xinput-plus
-Upstream-Contact: Washington Indacochea Delgado <wachin.id@gmail.com>
+Upstream-Contact: Washington Indacochea Delgado <linuxfrontier@proton.me>
 Source: https://github.com/wachin/xinput-plus
 
 Files: *
 Copyright:
-  2024-2025 Washington Indacochea Delgado <wachin.id@gmail.com>
+  2024-2025 Washington Indacochea Delgado <linuxfrontier@proton.me>
 License: GPL-3+
  On Debian systems, the full text of the GNU General Public License
  version 3 can be found in /usr/share/common-licenses/GPL-3.
 
 Files: debian/*
 Copyright:
-  2025 Washington Indacochea Delgado <wachin.id@gmail.com>
+  2025 Washington Indacochea Delgado <linuxfrontier@proton.me>
 License: GPL-3+
  On Debian systems, the full text of the GNU General Public License
  version 3 can be found in /usr/share/common-licenses/GPL-3.
@@ -465,7 +465,7 @@ xinput-plus (6.6.4-1) unstable; urgency=medium
 
   * Initial release. (Closes: #1234567)
 
- -- Washington Indacochea Delgado <wachin.id@gmail.com>  Wed, 17 Sep 2025 22:37:19 -0500
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 17 Sep 2025 22:37:19 -0500
 ```
 
 La sintaxis `Closes: #NNNNNN` cierra automáticamente el bug ITP cuando tu
