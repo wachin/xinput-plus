@@ -22,7 +22,7 @@ Este programa es para **Linux** y te permite **cambiar la velocidad del puntero*
 Antes de usarlo, asegúrate de tener instalado lo siguiente en tu computadora con Linux:
 
 ```bash
-sudo apt install xinput git libinput-tools python3-pyqt6
+sudo apt install xinput libinput-tools python3-pyqt6 python3-pyqt6.qtsvg
 ```
 
 1. ⚠️ Este programa solo funciona en **X11**, no en Wayland.  
