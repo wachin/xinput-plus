@@ -167,9 +167,8 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
 - [x] **Minor — Checkbox label "Extended mode (CTM)" was confusing.**
   Renamed to `"Extra speed (for slow devices)"` — a label that explains
   the purpose to the user without requiring knowledge of what a CTM is.
-  Updated in `xinput-plus.py`, `README.md`, and `i18n/xinput-plus_es.ts`
-  (new Spanish translation: `"Velocidad extra (para dispositivos lentos)"`).
-  Verified working in the Spanish UI. Recompiled `i18n/xinput-plus_es.qm`:
+  Updated in `xinput-plus.py`, `README.md`, and `i18n/xinput-plus_es.ts`,
+  then verified it in the localized UI. Recompiled `i18n/xinput-plus_es.qm`:
   ```bash
   pylupdate6 --no-obsolete --ts i18n/xinput-plus_es.ts xinput-plus.py
   lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
@@ -203,12 +202,12 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
 
 ---
 
-## `README_ES.md`
+## Former localized README
 
 - [x] **CRITICAL — Wrong config file path.**
   Changed `~/.config/libinput-gui.json` to `~/.config/xinput-plus.json`.
 
-- [x] **Minor — "Guardar configuración" button no longer exists.**
+- [x] **Minor — The localized "Save configuration" button no longer exists.**
   Step 4 updated: configuration now saves automatically.
 
 - [x] **Minor — Speed range description was outdated.**
@@ -216,7 +215,7 @@ rejection in the NEW queue or by `lintian`) to minor (style / quality).
   that `2.0` is only available in extended CTM mode.
 
 - [x] **Minor — Stray closing code fence at end of file.**
-  Removed the lone ` ``` ` before "Dios te bendiga".
+  Removed the lone closing fence before the sign-off.
 
 ---
 
@@ -478,5 +477,4 @@ to Debian falls into three phases.
 ---
 
 Full details for Phase 3 are in
-[docs/debian/how-to-publish-on-debian.md](docs/debian/how-to-publish-on-debian.md)
-([español](docs/debian/como-publicar-en-debian.md)).
+[docs/debian/how-to-publish-on-debian.md](docs/debian/how-to-publish-on-debian.md).

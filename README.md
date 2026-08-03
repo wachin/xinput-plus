@@ -257,12 +257,15 @@ sudo apt purge xinput-plus
 The `docs/debian/` folder contains guides for developers who want to build,
 test, or publish this package:
 
-| Guide | Language | Description |
-|-------|----------|-------------|
-| [compile-and-test-deb.md](docs/debian/compile-and-test-deb.md) | English | How to build the `.deb` locally and test it on your machine |
-| [compilar-y-probar-deb_ES.md](docs/debian/compilar-y-probar-deb_ES.md) | Español | Cómo compilar el `.deb` localmente y probarlo en tu ordenador |
-| [how-to-publish-on-debian.md](docs/debian/how-to-publish-on-debian.md) | English | Full guide to getting the package accepted into packages.debian.org |
-| [como-publicar-en-debian.md](docs/debian/como-publicar-en-debian.md) | Español | Guía completa para publicar el paquete en packages.debian.org |
+| Guide | Description |
+|-------|-------------|
+| [compile-and-test-deb.md](docs/debian/compile-and-test-deb.md) | How to build the `.deb` locally and test it on your machine |
+| [how-to-publish-on-debian.md](docs/debian/how-to-publish-on-debian.md) | Full guide to getting the package accepted into packages.debian.org |
+| [local-build.md](docs/debian/local-build.md) | Quick reference for local Debian builds |
+| [packaging-guide.md](docs/debian/packaging-guide.md) | Debian packaging, mentors, and Salsa workflow |
+| [watch-explained.md](docs/debian/watch-explained.md) | How `debian/watch` and `uscan` discover releases |
+| [gpg-keys.md](docs/debian/gpg-keys.md) | GPG key setup for signing packages |
+| [changelog-files-explained.md](docs/debian/changelog-files-explained.md) | The roles of the project and Debian changelogs |
 
 ---
 
@@ -447,21 +450,21 @@ When you open the `.ts` in **Qt Linguist (Qt 5 Linguist)**, be careful with stri
 
 **Examples:**
 
-* Source:
+* Source text:
 
   ```
   Device: {name} (id {id})
   ```
 
-  ✅ Correct Spanish:
+  ✅ Correct translation pattern:
 
   ```
-  Dispositivo: {name} (id {id})
+  [Translated word]: {name} (id {id})
   ```
   
 ![](assets/images/03-Qt-5-Linguist-when-you-go-to-translate-the-program-to-the-spanish.png)
 
-  (translate only “Device” → “Dispositivo”; keep `{name}` and `{id}` exactly as they are)
+  (translate only “Device”; keep `{name}` and `{id}` exactly as they are)
 
 * Source:
 
@@ -469,10 +472,10 @@ When you open the `.ts` in **Qt Linguist (Qt 5 Linguist)**, be careful with stri
   Device: {name}
   ```
 
-  ✅ Correct Spanish:
+  ✅ Correct translation pattern:
 
   ```
-  Dispositivo: {name}
+  [Translated word]: {name}
   ```
 
 * Source:
@@ -481,10 +484,10 @@ When you open the `.ts` in **Qt Linguist (Qt 5 Linguist)**, be careful with stri
   Speed: {val:.2f}
   ```
 
-  ✅ Correct Spanish:
+  ✅ Correct translation pattern:
 
   ```
-  Velocidad: {val:.2f}
+  [Translated word]: {val:.2f}
   ```
 
 > **Never change** the content inside `{ ... }` (names, formats, punctuation).
