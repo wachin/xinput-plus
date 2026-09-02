@@ -166,7 +166,109 @@ It uses Linux commands with `xinput` to change the device speed in real time. Fo
 
 ---
 
-## Building and testing the .deb with pbuilder
+## Building the .deb yourself (quick local method)
+
+You can build the package directly on your Debian system (works on
+Debian 12/13, MX Linux and derivatives). No chroot, no orig tarball —
+one command builds the `.deb` and compiles the translations for you.
+
+### 1) Install the build tools (once)
+
+```bash
+sudo apt install build-essential devscripts debhelper dh-python qt6-l10n-tools
+```
+
+What each package is for:
+
+| Package | Purpose |
+|---------|---------|
+| `build-essential` | Compiler toolchain and `dpkg-buildpackage` |
+| `devscripts` | Provides `debuild`, `dch`, `uscan` |
+| `debhelper` | The helper suite that `debian/rules` drives |
+| `dh-python` | Provides the `dh-sequence-python3` addon (`${python3:Depends}`) |
+| `qt6-l10n-tools` | Provides the Qt 6 `lrelease`, which compiles the `.ts` → `.qm` translations during the build |
+
+> Alternatively, with `deb-src` enabled in your sources, run
+> `sudo apt build-dep .` from the project root and apt will install
+> whatever `debian/control` declares.
+
+### 2) Build the binary package
+
+From the project root (the folder that contains `debian/`):
+
+```bash
+debuild -us -uc -b
+```
+
+- `-us -uc` — no GPG signing (fine for local use),
+- `-b` — binary-only build; the orig tarball is **not** needed for this.
+
+During the build you will see `lrelease` compiling the thirteen
+`i18n/*.qm` translation files automatically. If everything goes well,
+the last lines say:
+
+```
+dpkg-deb: building package 'xinput-plus' in '../xinput-plus_6.6.5-1_all.deb'.
+```
+
+The `.deb` is created **in the parent directory** (one level above the
+project folder).
+
+### 3) Check it with lintian (optional but recommended)
+
+```bash
+lintian -iIE --pedantic ../xinput-plus_6.6.5-1_all.deb
+```
+
+The goal is zero `E:` (error) lines. Until the ITP bug number replaces
+the `#NNNNNNN` placeholder in `debian/changelog`, you will see two
+known warnings about it — that is expected.
+
+### 4) Install and test
+
+```bash
+# Install (apt resolves the dependencies automatically)
+sudo apt install ../xinput-plus_6.6.5-1_all.deb
+
+# Run it
+xinput-plus
+
+# Force a language, e.g. Spanish
+xinput-plus --lang=es
+
+# Read the man page
+man xinput-plus
+
+# Uninstall when done testing
+sudo apt purge xinput-plus
+```
+
+### Rebuilding after changes
+
+```bash
+debian/rules clean
+debuild -us -uc -b
+```
+
+If you change packaging files and want a new Debian revision number:
+
+```bash
+dch -v 6.6.5-2 "Describe your local change here."
+debuild -us -uc -b
+```
+
+> **Why not `python3 xinput-plus.py` from the repo?** That works too and
+> is documented above for users. The `.deb` installs the program as
+> `/usr/bin/xinput-plus` (no `.py` extension, Debian Policy §10.4),
+> compiles the translations, installs the icon, the `.desktop` entry,
+> the AppStream metadata and the man page — and guarantees the
+> dependencies are present. See
+> [docs/where-python-programs-live-in-debian.md](docs/where-python-programs-live-in-debian.md)
+> for the details of how Debian installs Python programs.
+
+---
+
+## Building and testing the .deb with pbuilder (clean chroot)
 
 `pbuilder` builds the package inside a clean, minimal Debian unstable chroot —
 the same way Debian's build servers do. If the build passes here, you can be
