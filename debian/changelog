@@ -1,74 +1,23 @@
 xinput-plus (6.6.5-1) unstable; urgency=medium
 
-  * Remove unused src/emucon.svg (old joystick icon) and its attribution
-    file src/emucon-openclipart.org.txt; remove their stanza from
-    debian/copyright.
-  * i18n: add translations for German (de), Russian (ru), Japanese (ja),
-    Chinese Simplified (zh_CN), Chinese Traditional (zh_TW), French (fr),
-    Portuguese Brazilian (pt_BR), Italian (it), Polish (pl), Arabic (ar),
-    Turkish (tr), and Korean (ko).
-  * docs/debian: update pbuilder instructions in compile-and-test-deb.md,
-    compilar-y-probar-deb_ES.md, how-to-publish-on-debian.md, and
-    como-publicar-en-debian.md to include the orig tarball creation step
-    required by the 3.0 (quilt) source format.
-  * README.md: add pbuilder build and test section with full command
-    sequence and output file locations.
-  * ROADMAP.md: mark pbuilder test and smoke-test items as done; document
-    exact commands and output paths.
+  * Initial release. (Closes: #NNNNNNN)
+  * debian/control: drop the redundant source Priority field; bump
+    Standards-Version to 4.7.4; add Multi-Arch: foreign; fix
+    Build-Depends by replacing qt6-tools-dev-tools with qt6-l10n-tools
+    (the package that actually ships the Qt 6 lrelease); depend on
+    qt6-svg-plugins for SVG icon rendering instead of libqt6svg6.
+  * debian/rules: add override_dh_auto_clean; fail the build when no
+    lrelease is available instead of silently shipping without
+    translations.
+  * debian/copyright: add an explicit GPL-3+ stanza for the self-designed
+    application icon src/xinput-plus.svg.
+  * Add debian/upstream/metadata and an autopkgtest smoke test
+    (debian/tests/).
+  * debian/xinput-plus.metainfo.xml: use the io.github.wachin.xinput-plus
+    component id; add a description to every <release>.
+  * debian/xinput-plus.desktop: add StartupWMClass.
+  * debian/xinput-plus.1: add AUTHORS and BUGS sections.
+  * xinput-plus.py: switch to the /usr/bin/python3 shebang and honor
+    XDG_CONFIG_HOME.
 
- -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 06 May 2026 10:00:00 -0500
-
-xinput-plus (6.6.4-1) unstable; urgency=medium
-
-  * New upstream release 6.6.4.
-  * debian/control: bump Standards-Version to 4.7.3 (no changes required).
-  * debian/control: add Suggests: qt6ct, qt6-style-kvantum.
-  * debian/copyright: fix DEP-5 format — add Format: header, remove inline
-    comments, fix stanza indentation, cover all source files.
-  * debian/rules: install man page; translate comments to English; tighten
-    lrelease glob guard to check for .ts files before invoking lrelease.
-  * debian/watch: tighten version regex (\d+ instead of \d).
-  * debian/xinput-plus.1: fix .TH macro (add date, version, section title);
-    add OPTIONS and FILES sections; complete SYNOPSIS.
-  * debian/xinput-plus.desktop: use human-readable Name; add Spanish
-    localization entries; set Categories=Settings;HardwareSettings;
-  * debian/xinput-plus.metainfo.xml: add missing releases; replace
-    deprecated <developer_name> with <developer>; add bugtracker URL.
-  * xinput-plus.py: rename confusing "Extended mode (CTM)" checkbox to
-    "Extra speed (for slow devices)"; fix _qm_candidates logic bug; remove
-    dead code and Spanish comments; fix grammatical error in About text.
-  * i18n/xinput-plus_es.ts: update Spanish translations for renamed
-    checkbox and updated About dialog text; remove obsolete entries.
-
- -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 17 Sep 2025 22:37:19 -0500
-
-xinput-plus (6.6.3-1) unstable; urgency=medium
-
-  * New upstream release 6.6.3. Add docs folder.
-
- -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 17 Sep 2025 22:18:02 -0500
-
-xinput-plus (6.6.2-1) unstable; urgency=medium
-
-  * New upstream release 6.6.2. Sync docs and metadata.
-
- -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Mon, 15 Sep 2025 19:03:49 -0500
-
-xinput-plus (6.6.1-1) unstable; urgency=medium
-
-  * New upstream release 6.6.1. Sync docs and metadata.
-
- -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Mon, 15 Sep 2025 18:00:21 -0500
-
-xinput-plus (6.6-1) unstable; urgency=medium
-
-  * New upstream release 6.6.
-    - Natural scrolling (reverse) per device.
-    - Tap to click per device (default ON for new devices).
-    - About dialog (translatable).
-    - UI: two rows of actions; Edit whitelist + About on row 2.
-    - Docs: Qt6 + Kvantum (qt6ct) dark theme section.
-  * AppStream: use RDNS ID, add releases and OARS rating.
-  * Packaging: clarify i18n workflow and canonical filename for pylupdate6.
-
- -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Mon, 15 Sep 2025 00:00:00 +0000
+ -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Tue, 01 Sep 2026 15:30:00 -0500

@@ -1,14 +1,11 @@
 Source: xinput-plus
 Section: x11
-Priority: optional
 Maintainer: Washington Indacochea Delgado <linuxfrontier@proton.me>
 Build-Depends:
  debhelper-compat (= 13),
  dh-sequence-python3,
- python3-all,
- pyqt6-dev-tools,
- qt6-tools-dev-tools
-Standards-Version: 4.7.3
+ qt6-l10n-tools
+Standards-Version: 4.7.4
 Rules-Requires-Root: no
 Homepage: https://github.com/wachin/xinput-plus
 Vcs-Git: https://salsa.debian.org/wachin/xinput-plus.git
@@ -16,7 +13,8 @@ Vcs-Browser: https://salsa.debian.org/wachin/xinput-plus
 
 Package: xinput-plus
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt6, xinput, libqt6svg6
+Multi-Arch: foreign
+Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt6, xinput, qt6-svg-plugins
 Recommends: qt6-translations-l10n
 Suggests: qt6ct, qt6-style-kvantum
 Description: PyQt6 GUI to adjust pointer speed per device (Xorg, via xinput)

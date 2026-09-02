@@ -70,9 +70,9 @@ chmod +x xinput-plus.py
 
 ## Running with Launcher.sh
 
-Make sure the `Launcher.sh` script is executable, in the file manager right-click on it and in the "**Permissions**" tab make sure "**is executable**" is checked
+Make sure the `scripts/Launcher.sh` script is executable, in the file manager right-click on it and in the "**Permissions**" tab make sure "**is executable**" is checked
 
-Double-click the `Launcher.sh` script and click `Execute`
+Double-click the `scripts/Launcher.sh` script and click `Execute`
 
 👉 A window will open:
 
@@ -115,6 +115,9 @@ The program saves your settings in this file (don't delete it if you don't want 
 ```
 ~/.config/xinput-plus.json
 ```
+
+If the `XDG_CONFIG_HOME` environment variable is set, the file is stored as
+`$XDG_CONFIG_HOME/xinput-plus.json` instead.
 
 ---
 
@@ -185,13 +188,13 @@ Run these commands from inside the project directory
 sudo pbuilder create --distribution unstable
 
 # 2. Create the upstream orig tarball (required by the 3.0 (quilt) source format)
-tar --exclude=./debian --exclude=./.git -czf ../xinput-plus_6.6.4.orig.tar.gz .
+tar --exclude=./debian --exclude=./.git --exclude=./__pycache__ --exclude="*.qm" --exclude="fix texts.txt" -czf ../xinput-plus_6.6.5.orig.tar.gz .
 
 # 3. Build the source package
 debuild -us -uc -S
 
 # 4. Build the binary package inside the clean chroot
-sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
+sudo pbuilder build --distribution unstable ../xinput-plus_6.6.5-1.dsc
 ```
 
 After a successful build the parent directory (`~/Dev/xinput-plus-dev/`) will
@@ -199,31 +202,31 @@ contain:
 
 ```
 xinput-plus/                        ← source tree
-xinput-plus_6.6.4-1.dsc
-xinput-plus_6.6.4-1.debian.tar.xz
-xinput-plus_6.6.4-1_source.build
-xinput-plus_6.6.4-1_source.buildinfo
-xinput-plus_6.6.4-1_source.changes
-xinput-plus_6.6.4.orig.tar.gz
+xinput-plus_6.6.5-1.dsc
+xinput-plus_6.6.5-1.debian.tar.xz
+xinput-plus_6.6.5-1_source.build
+xinput-plus_6.6.5-1_source.buildinfo
+xinput-plus_6.6.5-1_source.changes
+xinput-plus_6.6.5.orig.tar.gz
 ```
 
 The built `.deb` and related files are placed under pbuilder's result
 directory:
 
 ```
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1.dsc
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.buildinfo
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.changes
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1.debian.tar.xz
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1_source.changes
-/var/cache/pbuilder/result/xinput-plus_6.6.4.orig.tar.gz
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1.dsc
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1_all.deb
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1_amd64.buildinfo
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1_amd64.changes
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1.debian.tar.xz
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1_source.changes
+/var/cache/pbuilder/result/xinput-plus_6.6.5.orig.tar.gz
 ```
 
 ### Install and test
 
 ```bash
-sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.5-1_all.deb
 ```
 
 Run the program:
@@ -325,10 +328,10 @@ This app supports translations with Qt **`.ts` → `.qm`** files. Follow these s
 ```bash
 sudo apt install pyqt6-dev-tools
 ```
-* Qt Linguist & lrelease from Qt5 (work fine for app translations):
+* Qt Linguist & lrelease (Qt 6 versions; the Qt 5 tools also work for `.ts` files):
 
 ```bash
-sudo apt install qttools5-dev-tools
+sudo apt install qt6-l10n-tools
 ```
 
 * Create the translations folder:
@@ -361,12 +364,10 @@ pylupdate6 --ts i18n/xinput-plus_es.ts xinput-plus.py
 ### 3) Compile `.ts` → `.qm` in `i18n/`
 You can do this from the "Qt Linguist" tool from Qt Creator by clicking on "File - Distribute As" and saving as .qm, or from terminal.
 
-On Debian/MX Linux, `lrelease-qt6` is not installed by default. The package
-`qttools5-dev-tools` installs it simply as `lrelease`, which works perfectly
-for both Qt5 and Qt6 `.ts` files:
+The package `qt6-l10n-tools` installs `lrelease` for Qt 6 (in `/usr/lib/qt6/bin/lrelease`):
 
 ```bash
-sudo apt install qttools5-dev-tools
+sudo apt install qt6-l10n-tools
 ```
 
 Then compile:
@@ -386,7 +387,7 @@ If for some reason `lrelease` is not found, this fallback finds whichever
 variant is available on your system:
 
 ```bash
-LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt5/bin/lrelease)
+LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt6/bin/lrelease)
 $LREL i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
 ```
 

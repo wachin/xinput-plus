@@ -113,7 +113,7 @@ are:
 6. **AppStream metainfo with `metadata_license=CC0-1.0` but the
    referenced icon (`xinput-plus.svg`) is distributed without a
    declared license** — the `src/xinput-plus.svg` copyright stanza
-   is missing and the SVG license has not been verified (§3.4).
+   is missing and the SVG license has not been verified (§3.4). The license is for your own design, you should put it like that.
 7. **No `debian/upstream/changelog` nor `debian/upstream/metadata`**
    — the `Watch file` points at GitHub tags, which is fine, but
    reviewers usually ask for `debian/upstream/metadata` with at

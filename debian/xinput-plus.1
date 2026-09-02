@@ -1,4 +1,4 @@
-.TH XINPUT-PLUS 1 "2025-09-17" "xinput-plus 6.6.4" "User Commands"
+.TH XINPUT-PLUS 1 "2026-09-01" "xinput-plus 6.6.5" "User Commands"
 .SH NAME
 xinput-plus \- adjust pointer speed per device (Xorg) via xinput
 .SH SYNOPSIS
@@ -19,6 +19,14 @@ If omitted, the system locale is used.
 .TP
 .I ~/.config/xinput-plus.json
 Per-user configuration file storing device profiles, the whitelist, and
-display preferences.
+display preferences. If the
+.B XDG_CONFIG_HOME
+environment variable is set, the file is
+.IR $XDG_CONFIG_HOME/xinput\-plus.json
+instead.
+.SH AUTHORS
+Washington Indacochea Delgado <linuxfrontier@proton.me>
+.SH BUGS
+Report bugs at https://github.com/wachin/xinput-plus/issues
 .SH SEE ALSO
 xinput(1)

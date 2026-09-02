@@ -1,0 +1,3 @@
+# Keep compiled Qt translations and Python bytecode out of the packaging
+# diff when the working tree has been built from an upstream orig tarball.
+extend-diff-ignore = (^|/)i18n/.*\.qm$|(^|/)__pycache__/

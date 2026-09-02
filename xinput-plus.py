@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# xinput-plus.py / v6.6.4
+#!/usr/bin/python3
+# xinput-plus.py / v6.6.5
 # PyQt6 GUI to tweak pointer speed via xinput (Xorg only).
 #
 # Key features:
@@ -11,7 +11,7 @@
 # - Applies saved configs automatically on startup (after a short delay).
 # - English source strings with self.tr(...) for i18n; QTranslator loader keeps references.
 #
-# Config file (~/.config/xinput-plus.json):
+# Config file (~/.config/xinput-plus.json; honors $XDG_CONFIG_HOME):
 # {
 #   "by_name": { "<name>": {"speed": float, "extended": bool} },
 #   "by_id":   { "<id>":   {"speed": float, "extended": bool} },
@@ -25,6 +25,7 @@
 import sys
 import subprocess
 import json
+import os
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Tuple, Set
 
@@ -38,7 +39,14 @@ from PyQt6.QtCore import (
 )
 from PyQt6.QtGui import QIcon
 
-CONFIG_PATH = Path.home() / ".config" / "xinput-plus.json"
+def _base_config_dir() -> Path:
+    """Per-user config dir: $XDG_CONFIG_HOME when absolute, else ~/.config."""
+    xdg = os.environ.get("XDG_CONFIG_HOME", "")
+    if xdg and Path(xdg).is_absolute():
+        return Path(xdg)
+    return Path.home() / ".config"
+
+CONFIG_PATH = _base_config_dir() / "xinput-plus.json"
 APP_NAME = "xinput-plus"  # used for i18n and data dirs
 
 
@@ -741,10 +749,10 @@ class LibinputGUI(QWidget):
 
     def show_about(self) -> None:
         """Show an About dialog with translatable HTML content."""
-        program = "xinput-plus.py"
-        year = "2025"
+        program = "xinput-plus"
+        year = "2024-2026"
         author = "Washington Indacochea Delgado"
-        email = "wachin.id@gmail.com"
+        email = "linuxfrontier@proton.me"
         license_text = self.tr("GPL-3 License")
         url = "https://github.com/wachin/xinput-plus"
 

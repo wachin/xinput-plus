@@ -125,7 +125,7 @@ Additional files that are strongly recommended (and required for GUI apps):
 ```
 debian/
   xinput-plus.desktop   — application menu entry
-  xinput-plus.metainfo.xml — AppStream metadata
+  io.github.wachin.xinput-plus.metainfo.xml — AppStream metadata
   xinput-plus.1         — man page
   watch                 — tells uscan where to find new upstream releases
 ```
@@ -144,9 +144,9 @@ This is the most strictly formatted file in the whole package. Every entry
 must follow this exact layout — spacing, dashes, and all:
 
 ```
-xinput-plus (6.6.4-1) unstable; urgency=medium
+xinput-plus (6.6.5-1) unstable; urgency=medium
 
-  * New upstream release 6.6.4.
+  * New upstream release 6.6.5.
 
  -- Washington Indacochea Delgado <linuxfrontier@proton.me>  Wed, 17 Sep 2025 22:37:19 -0500
 ```
@@ -178,15 +178,12 @@ This file has two stanzas: one for the **source package** and one for each
 ```
 Source: xinput-plus
 Section: x11
-Priority: optional
 Maintainer: Washington Indacochea Delgado <linuxfrontier@proton.me>
 Build-Depends:
  debhelper-compat (= 13),
  dh-sequence-python3,
- python3-all,
- pyqt6-dev-tools,
- qt6-tools-dev-tools
-Standards-Version: 4.7.3
+ qt6-l10n-tools
+Standards-Version: 4.7.4
 Rules-Requires-Root: no
 Homepage: https://github.com/wachin/xinput-plus
 Vcs-Git: https://salsa.debian.org/wachin/xinput-plus.git
@@ -194,7 +191,8 @@ Vcs-Browser: https://salsa.debian.org/wachin/xinput-plus
 
 Package: xinput-plus
 Architecture: all
-Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt6, xinput, libqt6svg6
+Multi-Arch: foreign
+Depends: ${python3:Depends}, ${misc:Depends}, python3-pyqt6, xinput, qt6-svg-plugins
 Recommends: qt6-translations-l10n
 Suggests: qt6ct, qt6-style-kvantum
 Description: PyQt6 GUI to adjust pointer speed per device (Xorg, via xinput)
@@ -208,10 +206,16 @@ Description: PyQt6 GUI to adjust pointer speed per device (Xorg, via xinput)
 
 Key points:
 - `Standards-Version` must match the current Debian Policy version. Check
-  https://www.debian.org/doc/debian-policy/ for the latest. As of early
-  2026 it is `4.7.3`.
+  https://www.debian.org/doc/debian-policy/ for the latest. As of
+  September 2026 it is `4.7.4`.
+- The `Priority` field is omitted: since Policy 4.7.3 the default source
+  priority is `optional`, so the field is only written when it differs
+  from the default.
 - `Architecture: all` means the package is architecture-independent (pure
   Python, shell scripts, etc.). Use `any` for compiled binaries.
+- `Multi-Arch: foreign` marks the package as co-installable across
+  architectures for end-user tools (its interface does not change per
+  architecture).
 - `${python3:Depends}` and `${misc:Depends}` are substitution variables
   filled in automatically by `dh-python` and `debhelper` at build time.
   Always include them for Python packages.
@@ -304,7 +308,7 @@ The minimum required sections are `NAME`, `SYNOPSIS`, `DESCRIPTION`, and
 `SEE ALSO`. The `.TH` macro at the top must include the date and version:
 
 ```nroff
-.TH XINPUT-PLUS 1 "2025-09-17" "xinput-plus 6.6.4" "User Commands"
+.TH XINPUT-PLUS 1 "2025-09-17" "xinput-plus 6.6.5" "User Commands"
 .SH NAME
 xinput-plus \- adjust pointer speed per device (Xorg) via xinput
 .SH SYNOPSIS
@@ -340,11 +344,11 @@ debuild -us -uc
 during local testing. This produces several files one directory up:
 
 ```
-../xinput-plus_6.6.4-1.dsc
-../xinput-plus_6.6.4.orig.tar.gz
-../xinput-plus_6.6.4-1.debian.tar.xz
-../xinput-plus_6.6.4-1_all.deb
-../xinput-plus_6.6.4-1_amd64.changes
+../xinput-plus_6.6.5-1.dsc
+../xinput-plus_6.6.5.orig.tar.gz
+../xinput-plus_6.6.5-1.debian.tar.xz
+../xinput-plus_6.6.5-1_all.deb
+../xinput-plus_6.6.5-1_amd64.changes
 ```
 
 If the build fails, read the output carefully — `debhelper` is verbose and
@@ -356,7 +360,7 @@ usually tells you exactly what went wrong.
 ideally zero warnings before asking for a sponsor:
 
 ```bash
-lintian --pedantic ../xinput-plus_6.6.4-1_amd64.changes
+lintian --pedantic ../xinput-plus_6.6.5-1_amd64.changes
 ```
 
 Common lintian tags and what they mean:
@@ -392,13 +396,13 @@ project directory (e.g. `~/Dev/xinput-plus-dev/xinput-plus`):
 
 ```bash
 # 1. Create the upstream orig tarball (required by the 3.0 (quilt) source format)
-tar --exclude=./debian --exclude=./.git -czf ../xinput-plus_6.6.4.orig.tar.gz .
+tar --exclude=./debian --exclude=./.git --exclude=./__pycache__ --exclude="*.qm" --exclude="fix texts.txt" -czf ../xinput-plus_6.6.5.orig.tar.gz .
 
 # 2. Build the source package
 debuild -us -uc -S
 
 # 3. Build the binary package inside the clean chroot
-sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
+sudo pbuilder build --distribution unstable ../xinput-plus_6.6.5-1.dsc
 ```
 
 The resulting `.deb` is placed in `/var/cache/pbuilder/result/`.
@@ -411,7 +415,7 @@ The resulting `.deb` is placed in `/var/cache/pbuilder/result/`.
 ### 3.4 Install and test the `.deb` manually
 
 ```bash
-sudo dpkg -i /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+sudo dpkg -i /var/cache/pbuilder/result/xinput-plus_6.6.5-1_all.deb
 # Check it runs:
 xinput-plus
 # Check the man page installed correctly:
@@ -444,7 +448,7 @@ receive a bug number back (e.g. `#1234567`). Add this number to your
 `debian/changelog` entry:
 
 ```
-xinput-plus (6.6.4-1) unstable; urgency=medium
+xinput-plus (6.6.5-1) unstable; urgency=medium
 
   * Initial release. (Closes: #1234567)
 
@@ -490,7 +494,7 @@ progress_indicator = 2
 ### 5.3 Upload
 
 ```bash
-dput mentors ../xinput-plus_6.6.4-1_amd64.changes
+dput mentors ../xinput-plus_6.6.5-1_amd64.changes
 ```
 
 If the upload succeeds, you will receive a confirmation email and your
@@ -519,7 +523,7 @@ week before posting so you understand the tone and expectations.
 Post to `debian-mentors@lists.debian.org` with a subject like:
 
 ```
-RFS: xinput-plus/6.6.4-1 -- PyQt6 GUI to adjust pointer speed per device
+RFS: xinput-plus/6.6.5-1 -- PyQt6 GUI to adjust pointer speed per device
 ```
 
 RFS stands for **Request for Sponsorship**. Your email should include:
@@ -533,7 +537,7 @@ Example:
 
 ```
 Package: xinput-plus
-Version: 6.6.4-1
+Version: 6.6.5-1
 ITP: https://bugs.debian.org/1234567
 mentors: https://mentors.debian.net/package/xinput-plus
 License: GPL-3+

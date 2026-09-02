@@ -344,6 +344,148 @@ to Debian falls into three phases.
 
 ---
 
+## Second review round (September 2026, from REVIEW_DEBIAN_POLICY.md)
+
+All items below were verified against the live archive (dpkg/apt) before
+acting; several claims in the review report were corrected in the process.
+
+- [x] **CRITICAL — Shebang `#!/usr/bin/env python3`.**
+  Changed to `#!/usr/bin/python3` in `xinput-plus.py` (Debian Python
+  policy for scripts installed in `/usr/bin`).
+
+- [x] **CRITICAL — `Priority: optional` in the Source stanza.**
+  Removed from `debian/control` (Policy 4.7.3, §5.6.6: default is
+  optional and binary packages inherit it).
+
+- [x] **CRITICAL — `Standards-Version: 4.7.3` outdated.**
+  Raised to `4.7.4`. Note: the local lintian 2.122 (trixie) only knows
+  up to 4.7.2, so it emits a *newer-standards-version* warning — this is
+  a local false positive; sid's lintian knows 4.7.4.
+
+- [x] **CRITICAL — binary installed with `.py` extension.**
+  Verified NOT an issue: `debian/rules` already installs
+  `/usr/bin/xinput-plus` (no extension). The upstream source file keeps
+  the `xinput-plus.py` name because `pylupdate6` refuses extension-less
+  `.py` inputs (tested). Report item §2.1 was based on a misreading.
+
+- [x] **Build-Depends: `qt6-tools-dev-tools` does NOT ship lrelease.**
+  Verified with `dpkg -L` on a live trixie system: the Qt 6 `lrelease`
+  lives in **`qt6-l10n-tools`**. Replaced in `debian/control`. This was
+  a real, previously hidden bug: in a clean chroot the `.qm` files were
+  never compiled and the `|| true` masked it.
+
+- [x] **`lrelease ... || true` hid translation build failures.**
+  `override_dh_auto_build` now uses the real Qt 6 path
+  (`/usr/lib/qt6/bin/lrelease`) first and exits with an error if no
+  lrelease is available. Verified: the rebuilt package ships 13 `.qm`
+  files compiled during the build.
+
+- [x] **`python3-all` in Build-Depends unnecessary.**
+  Removed (no Python modules are built; `dh-sequence-python3` suffices
+  for `${python3:Depends}`).
+
+- [x] **SVG icon engine dependency wrong.**
+  The runtime `QIcon.fromTheme("xinput-plus")` (SVG icon) needs the
+  `qsvgicon` plugin, shipped by **`qt6-svg-plugins`**, not
+  `libqt6svg6` (which is only the library). Changed the `Depends:`.
+  `python3-pyqt6.qtsvg` was never a runtime dependency of this app.
+
+- [x] **Missing `Multi-Arch: foreign`.**
+  Added to the binary stanza (convention for `Architecture: all`
+  end-user tools).
+
+- [x] **Missing `override_dh_auto_clean` / `debian/clean`.**
+  Added `override_dh_auto_clean` removing `debian/xinput-plus/` and the
+  generated `i18n/*.qm`, plus `debian/source/options` with an
+  `extend-diff-ignore` for generated files.
+
+- [x] **Missing `debian/upstream/metadata`.**
+  Created with `Name`, `Contact`, `Repository`, `Repository-Browse`,
+  `Bug-Database`, `Bug-Submit`.
+
+- [x] **SVG icon license not declared per-file.**
+  Added an explicit `src/xinput-plus.svg` stanza (own design, GPL-3+,
+  matching the license declared in the SVG header comment).
+
+- [x] **AppStream component id `io.github.wachin.xinputplus`.**
+  Changed to `io.github.wachin.xinput-plus` (hyphenated, GitHub
+  convention). As a consequence the metainfo file itself was renamed to
+  `debian/io.github.wachin.xinput-plus.metainfo.xml` — required because
+  `appstreamcli validate-tree` flags a filename/component-id mismatch.
+
+- [x] **AppStream `<release>` entries had no `<description>`.**
+  Added a description to each release (content from `src/CHANGELOG.md`).
+  Also added the release for `6.6.5`, a `<developer id=...>`,
+  capitalized the description lead, and replaced the invalid OARS
+  attribute `social-camera` (not part of OARS 1.1) with an empty
+  `<content_rating type="oars-1.1"/>`, which means "all none".
+  `appstreamcli validate` now passes cleanly.
+
+- [x] **Desktop file missing `StartupWMClass`.**
+  Added (`StartupWMClass=xinput-plus`). `X-Ubuntu-Gettext-Domain` is a
+  Ubuntu/Debian patch-system convention, not used by this project's
+  .desktop (translations ship via Qt .qm), so it was not added.
+
+- [x] **Man page missing AUTHORS and BUGS.**
+  Added both sections; also documented the `XDG_CONFIG_HOME` override
+  in FILES.
+
+- [x] **No autopkgtest.**
+  Added `debian/tests/control` (`Tests: smoke`, `Depends: @`) and
+  `debian/tests/smoke` (checks installed files, the 13 compiled `.qm`
+  files, and that the installed program imports cleanly under
+  `QT_QPA_PLATFORM=offscreen`).
+
+- [x] **`changelog` had future-dated / rewritten entries.**
+  Regenerated with a single `6.6.5-1` initial-release entry dated
+  2026-09-01, with the `Closes: #NNNNNNN` placeholder for the ITP.
+  Lintian will keep warning (`initial-upload-closes-no-bugs`,
+  `wrong-bug-number-in-closes`) until the real ITP bug number replaces
+  it — expected and documented here.
+
+- [x] **`Launcher.sh` in the orig tarball root.**
+  Moved to `scripts/Launcher.sh` (development file, not shipped).
+
+- [x] **`fix texts.txt` (personal notes) in the source tree.**
+  Removed from git tracking and moved outside the repository (kept as
+  `../fix-texts-notes.txt`), because `dpkg-source` refuses to build when
+  a file exists in the working tree but not in the orig tarball.
+
+- [x] **Docs recommended wrong build tools.**
+  `qt6-tools-dev-tools` (does not ship lrelease) and
+  `qttools5-dev-tools` (Qt 5) references replaced with
+  `qt6-l10n-tools` in README and all `docs/debian/` guides; example
+  `debian/control` snippets updated to the final fields; orig-tarball
+  `tar` commands now exclude `__pycache__`, `*.qm` and personal notes.
+
+- [x] **Report items that no longer applied (already fixed upstream):**
+  `i18n/README.md` does not exist (README is at the root), the `.qm`
+  files are no longer tracked in git, and the Salsa repository
+  **exists** (`git ls-remote https://salsa.debian.org/wachin/xinput-plus.git`
+  succeeds), so the `Vcs-Git`/`Vcs-Browser` fields are valid as-is.
+
+- [x] **Watch file report recommendation (§3.11) rejected.**
+  `uscan` in trixie/sid has no `mode=github` support (the recommended
+  module `Devscripts/Uscan/github.pm` does not ship in the standard
+  uscan); the existing classic GitHub tags pattern works and reports
+  "up to date". Left unchanged.
+
+- [x] **XDG_CONFIG_HOME support.**
+  `CONFIG_PATH` now honors `$XDG_CONFIG_HOME` (absolute paths only),
+  falling back to `~/.config` — the freedesktop default.
+
+- [x] **Full build + lintian verification (2026-09-01).**
+  `dpkg-buildpackage -us -uc -b` and `-S` both succeed. Lintian on the
+  source changes reports only: `newer-standards-version` and
+  `recommended-field Priority` (both local-lintian false positives, see
+  above) plus the two ITP-placeholder warnings; pedantic
+  `maintainer-desktop-entry`/`maintainer-manual-page` are informational.
+  `desktop-file-validate` and `appstreamcli validate` pass. Smoke test
+  executed against the extracted `.deb`: module imports cleanly and
+  13 `.qm` translations are shipped.
+
+---
+
 ### Phase 2 — Build and validate
 
 - [x] **Local build with `debuild -us -uc -b` — builds cleanly.**

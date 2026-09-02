@@ -1,0 +1,23 @@
+#!/bin/sh
+# Smoke test: installed files exist and the installed program imports cleanly.
+set -e
+
+test -x /usr/bin/xinput-plus
+test -f /usr/share/applications/xinput-plus.desktop
+test -f /usr/share/metainfo/io.github.wachin.xinput-plus.metainfo.xml
+test -f /usr/share/icons/hicolor/scalable/apps/xinput-plus.svg
+ls /usr/share/xinput-plus/i18n/*.qm >/dev/null
+
+QT_QPA_PLATFORM=offscreen python3 - <<'EOF'
+import importlib.machinery
+import importlib.util
+import sys
+
+loader = importlib.machinery.SourceFileLoader("xinput_plus_smoke", "/usr/bin/xinput-plus")
+spec = importlib.util.spec_from_loader("xinput_plus_smoke", loader)
+mod = importlib.util.module_from_spec(spec)
+sys.modules["xinput_plus_smoke"] = mod
+spec.loader.exec_module(mod)
+assert mod.APP_NAME == "xinput-plus"
+print("smoke: OK — module imports cleanly")
+EOF

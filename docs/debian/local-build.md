@@ -22,11 +22,11 @@ sudo apt update
 
 ```bash
 sudo apt install build-essential devscripts debhelper dh-python \
-                 pyqt6-dev-tools qt6-tools-dev-tools
+                 pyqt6-dev-tools qt6-l10n-tools
 ```
 
 > `dh-python` provides `dh-sequence-python3`.
-> `qt6-tools-dev-tools` provides `lrelease-qt6` and `linguist-qt6`.
+> `qt6-l10n-tools` provides the Qt 6 `lrelease`.
 
 ## 2) (Optional) Install build-dependencies from your control file
 

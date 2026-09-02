@@ -11,4 +11,5 @@ Icon=xinput-plus
 Categories=Settings;HardwareSettings;
 Keywords=mouse;touchpad;speed;acceleration;libinput;xinput;
 StartupNotify=true
+StartupWMClass=xinput-plus
 Terminal=false

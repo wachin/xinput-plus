@@ -4,22 +4,34 @@ export DH_VERBOSE=1
 %:
 	dh $@
 
+override_dh_auto_clean:
+	rm -rf debian/xinput-plus
+	rm -f i18n/xinput-plus_*.qm
+
 override_dh_auto_build:
-	# Compile Qt translations (PyQt6)
+	# Compile Qt translations (PyQt6); fail the build if lrelease is missing.
 	if ls i18n/xinput-plus_*.ts >/dev/null 2>&1; then \
-	  (command -v lrelease-qt6 >/dev/null && lrelease-qt6 i18n/xinput-plus_*.ts) || \
-	  (command -v lrelease >/dev/null && lrelease i18n/xinput-plus_*.ts) || true; \
+	  if [ -x /usr/lib/qt6/bin/lrelease ]; then \
+	    /usr/lib/qt6/bin/lrelease i18n/xinput-plus_*.ts; \
+	  elif command -v lrelease-qt6 >/dev/null 2>&1; then \
+	    lrelease-qt6 i18n/xinput-plus_*.ts; \
+	  elif command -v lrelease >/dev/null 2>&1; then \
+	    lrelease i18n/xinput-plus_*.ts; \
+	  else \
+	    echo "ERROR: lrelease not found (Build-Depends: qt6-l10n-tools)" >&2; \
+	    exit 1; \
+	  fi; \
 	fi
 
 override_dh_auto_install:
-	# Main executable
+	# Main executable: installed without the .py extension (Policy 10.4).
 	install -D -m0755 xinput-plus.py debian/xinput-plus/usr/bin/xinput-plus
 
 	# Desktop entry and AppStream metadata
 	install -D -m0644 debian/xinput-plus.desktop \
 	  debian/xinput-plus/usr/share/applications/xinput-plus.desktop
-	install -D -m0644 debian/xinput-plus.metainfo.xml \
-	  debian/xinput-plus/usr/share/metainfo/xinput-plus.metainfo.xml
+	install -D -m0644 debian/io.github.wachin.xinput-plus.metainfo.xml \
+	  debian/xinput-plus/usr/share/metainfo/io.github.wachin.xinput-plus.metainfo.xml
 
 	# Application icon
 	install -D -m0644 src/xinput-plus.svg \

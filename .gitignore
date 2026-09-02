@@ -57,8 +57,12 @@ debian/*/
 !debian/source/format
 !debian/watch
 !debian/xinput-plus.desktop
-!debian/xinput-plus.metainfo.xml
+!debian/io.github.wachin.xinput-plus.metainfo.xml
 !debian/xinput-plus.1
+!debian/tests/
+!debian/tests/*
+!debian/upstream/
+!debian/upstream/*
 
 # -----------------------------
 # uscan / orig tarballs / debuild
@@ -82,6 +86,11 @@ Thumbs.db
 *.swo
 .idea/
 .vscode/
+
+# -----------------------------
+# Personal maintainer notes (never ship in the orig tarball)
+# -----------------------------
+fix texts.txt
 
 # -----------------------------
 # README assets (do NOT ignore assets/; commit them)

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <!-- RDNS-style globally unique ID; do NOT use the .desktop filename here -->
+  <id>io.github.wachin.xinput-plus</id>
+
+  <name>Xinput Plus</name>
+  <summary>Adjust pointer speed per device (Xorg) via xinput</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <developer id="wachin.github.io">
+    <name>Washington Indacochea Delgado</name>
+  </developer>
+
+  <url type="homepage">https://github.com/wachin/xinput-plus</url>
+  <url type="bugtracker">https://github.com/wachin/xinput-plus/issues</url>
+
+  <description>
+    <p>
+      Xinput-plus provides a simple PyQt6 GUI to manage per-device pointer acceleration
+      on Xorg, with per-ID/name profiles, whitelisting, natural scrolling, tap-to-click,
+      and a CTM fallback when "libinput Accel Speed" is not available.
+    </p>
+  </description>
+
+  <!-- Links the AppStream component to the installed desktop file -->
+  <launchable type="desktop-id">xinput-plus.desktop</launchable>
+
+  <provides>
+    <binary>xinput-plus</binary>
+  </provides>
+
+  <categories>
+    <category>Utility</category>
+    <category>Settings</category>
+  </categories>
+
+  <releases>
+    <release version="6.6.5" date="2026-05-06">
+      <description>
+        <p>
+          Added UI translations for twelve more languages (German, Russian, Japanese,
+          Chinese Simplified and Traditional, French, Brazilian Portuguese, Italian,
+          Polish, Arabic, Turkish and Korean). Removed the unused legacy icon and
+          documented the orig-tarball step in the build guides.
+        </p>
+      </description>
+    </release>
+    <release version="6.6.4" date="2025-09-17">
+      <description>
+        <p>
+          Renamed the extended-mode checkbox to "Extra speed (for slow devices)",
+          fixed the translation-file lookup logic, refreshed the Spanish
+          translation and completed the man page.
+        </p>
+      </description>
+    </release>
+    <release version="6.6.3" date="2025-09-17">
+      <description>
+        <p>Added the docs folder with Debian packaging guides.</p>
+      </description>
+    </release>
+    <release version="6.6.2" date="2025-09-15">
+      <description>
+        <p>Documentation and metadata sync.</p>
+      </description>
+    </release>
+    <release version="6.6.1" date="2025-09-15">
+      <description>
+        <p>Documentation and metadata sync.</p>
+      </description>
+    </release>
+    <release version="6.6" date="2025-09-15">
+      <description>
+        <p>
+          Natural scrolling and tap-to-click per device, translatable About
+          dialog, two-row action layout, and AppStream metadata with an
+          OARS rating.
+        </p>
+      </description>
+    </release>
+    <release version="6.5" date="2025-09-10">
+      <description>
+        <p>
+          End-to-end internationalization: all UI strings translatable, a
+          robust runtime translator loader and the --lang option.
+        </p>
+      </description>
+    </release>
+  </releases>
+
+  <!-- OARS 1.1 content rating: desktop utility, all attributes none -->
+  <content_rating type="oars-1.1"/>
+</component>

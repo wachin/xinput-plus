@@ -33,7 +33,7 @@ sudo apt install \
   debhelper \
   dh-python \
   pyqt6-dev-tools \
-  qt6-tools-dev-tools \
+  qt6-l10n-tools \
   lintian
 ```
 
@@ -46,7 +46,7 @@ What each package does:
 | `debhelper` | The build system used by `debian/rules` |
 | `dh-python` | Python packaging support (`dh-sequence-python3`) |
 | `pyqt6-dev-tools` | Provides `pylupdate6` to extract translation strings |
-| `qt6-tools-dev-tools` | Provides `lrelease-qt6` to compile `.qm` translation files |
+| `qt6-l10n-tools` | Provides the Qt 6 `lrelease` to compile `.qm` translation files |
 | `lintian` | Automated Debian policy checker |
 
 ---
@@ -121,9 +121,8 @@ If you prefer to install the dependencies manually without touching
 sudo apt install \
   debhelper \
   dh-python \
-  python3-all \
   pyqt6-dev-tools \
-  qt6-tools-dev-tools
+  qt6-l10n-tools
 ```
 
 ---
@@ -147,7 +146,7 @@ You will see a lot of output in the terminal. If everything goes well, the
 last lines will look something like:
 
 ```
-dpkg-deb: building package 'xinput-plus' in '../xinput-plus_6.6.4-1_all.deb'.
+dpkg-deb: building package 'xinput-plus' in '../xinput-plus_6.6.5-1_all.deb'.
 ...
 dpkg-buildpackage: info: binary-only upload (no source included)
 ```
@@ -157,7 +156,7 @@ repository:
 
 ```bash
 ls ../xinput-plus_*.deb
-# ../xinput-plus_6.6.4-1_all.deb
+# ../xinput-plus_6.6.5-1_all.deb
 ```
 
 ### What to do if the build fails
@@ -165,9 +164,9 @@ ls ../xinput-plus_*.deb
 Read the error message carefully. The most common errors are:
 
 **"command not found: lrelease-qt6"**
-Install `qt6-tools-dev-tools`:
+Install `qt6-l10n-tools` (it provides the Qt 6 `lrelease`):
 ```bash
-sudo apt install qt6-tools-dev-tools
+sudo apt install qt6-l10n-tools
 ```
 
 **"dh: error: unable to load addon python3"**
@@ -194,7 +193,7 @@ echo "3.0 (quilt)" > debian/source/format
 `lintian` analyses the `.deb` for Debian policy violations. Run:
 
 ```bash
-lintian --pedantic ../xinput-plus_6.6.4-1_all.deb
+lintian --pedantic ../xinput-plus_6.6.5-1_all.deb
 ```
 
 The output uses these letters to indicate severity:
@@ -231,7 +230,7 @@ Install the package with `apt` (recommended because it resolves
 dependencies automatically):
 
 ```bash
-sudo apt install ../xinput-plus_6.6.4-1_all.deb
+sudo apt install ../xinput-plus_6.6.5-1_all.deb
 ```
 
 > If `apt` says it cannot find the file, make sure you are using the
@@ -284,7 +283,7 @@ When you modify the code and want to test a new version, the usual flow is:
 **2. Add a changelog entry:**
 
 ```bash
-dch -v 6.6.4-2 "Brief description of what you changed."
+dch -v 6.6.5-2 "Brief description of what you changed."
 ```
 
 This opens your editor with the new entry ready to fill in. Save and close.
@@ -310,7 +309,7 @@ debuild -us -uc -b
 **6. Install the new version:**
 
 ```bash
-sudo apt install ../xinput-plus_6.6.4-2_all.deb
+sudo apt install ../xinput-plus_6.6.5-2_all.deb
 ```
 
 `apt` will detect that a version is already installed and upgrade it
@@ -349,40 +348,40 @@ Run these commands from inside the project directory
 
 ```bash
 # 1. Create the upstream orig tarball (required by the 3.0 (quilt) source format)
-tar --exclude=./debian --exclude=./.git -czf ../xinput-plus_6.6.4.orig.tar.gz .
+tar --exclude=./debian --exclude=./.git --exclude=./__pycache__ --exclude="*.qm" --exclude="fix texts.txt" -czf ../xinput-plus_6.6.5.orig.tar.gz .
 
 # 2. Build the source package
 debuild -us -uc -S
 
 # 3. Build the binary package inside the clean chroot
-sudo pbuilder build --distribution unstable ../xinput-plus_6.6.4-1.dsc
+sudo pbuilder build --distribution unstable ../xinput-plus_6.6.5-1.dsc
 ```
 
 After a successful build the parent directory will contain:
 
 ```
-xinput-plus_6.6.4-1.dsc
-xinput-plus_6.6.4-1.debian.tar.xz
-xinput-plus_6.6.4-1_source.build
-xinput-plus_6.6.4-1_source.buildinfo
-xinput-plus_6.6.4-1_source.changes
-xinput-plus_6.6.4.orig.tar.gz
+xinput-plus_6.6.5-1.dsc
+xinput-plus_6.6.5-1.debian.tar.xz
+xinput-plus_6.6.5-1_source.build
+xinput-plus_6.6.5-1_source.buildinfo
+xinput-plus_6.6.5-1_source.changes
+xinput-plus_6.6.5.orig.tar.gz
 ```
 
 The built `.deb` and related files are placed under pbuilder's result
 directory:
 
 ```
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.buildinfo
-/var/cache/pbuilder/result/xinput-plus_6.6.4-1_amd64.changes
-/var/cache/pbuilder/result/xinput-plus_6.6.4.orig.tar.gz
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1_all.deb
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1_amd64.buildinfo
+/var/cache/pbuilder/result/xinput-plus_6.6.5-1_amd64.changes
+/var/cache/pbuilder/result/xinput-plus_6.6.5.orig.tar.gz
 ```
 
 Install and test the result:
 
 ```bash
-sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.4-1_all.deb
+sudo apt install /var/cache/pbuilder/result/xinput-plus_6.6.5-1_all.deb
 xinput-plus
 xinput-plus --lang=es
 man xinput-plus
@@ -408,7 +407,7 @@ package, so it is much better to find it yourself first.
 ```bash
 # 1. Install tools (once)
 sudo apt install build-essential devscripts debhelper dh-python \
-                 pyqt6-dev-tools qt6-tools-dev-tools lintian
+                 pyqt6-dev-tools qt6-l10n-tools lintian
 
 # 2. Clone the repository
 git clone https://github.com/wachin/xinput-plus
@@ -421,10 +420,10 @@ sudo apt build-dep .
 debuild -us -uc -b
 
 # 5. Check with lintian
-lintian --pedantic ../xinput-plus_6.6.4-1_all.deb
+lintian --pedantic ../xinput-plus_6.6.5-1_all.deb
 
 # 6. Install and test
-sudo apt install ../xinput-plus_6.6.4-1_all.deb
+sudo apt install ../xinput-plus_6.6.5-1_all.deb
 xinput-plus
 
 # 7. Uninstall when done

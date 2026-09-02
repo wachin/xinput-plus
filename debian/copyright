@@ -5,21 +5,30 @@ Source: https://github.com/wachin/xinput-plus
 
 Files: *
 Copyright:
-  2024-2025 Washington Indacochea Delgado <linuxfrontier@proton.me>
+  2024-2026 Washington Indacochea Delgado <linuxfrontier@proton.me>
 License: GPL-3+
  On Debian systems, the full text of the GNU General Public License
  version 3 can be found in /usr/share/common-licenses/GPL-3.
+
+Files: src/xinput-plus.svg
+Copyright:
+  2025-2026 Washington Indacochea Delgado <linuxfrontier@proton.me>
+License: GPL-3+
+ Own design (cursor with speed slider, declared as GPL-3+ in the SVG
+ header comment); the full text of the GNU General Public License
+ version 3 can be found on Debian systems in
+ /usr/share/common-licenses/GPL-3.
 
 Files: debian/*
 Copyright:
-  2025 Washington Indacochea Delgado <linuxfrontier@proton.me>
+  2025-2026 Washington Indacochea Delgado <linuxfrontier@proton.me>
 License: GPL-3+
  On Debian systems, the full text of the GNU General Public License
  version 3 can be found in /usr/share/common-licenses/GPL-3.
 
-Files: debian/xinput-plus.metainfo.xml
+Files: debian/io.github.wachin.xinput-plus.metainfo.xml
 Copyright:
-  2025 Washington Indacochea Delgado <linuxfrontier@proton.me>
+  2025-2026 Washington Indacochea Delgado <linuxfrontier@proton.me>
 License: CC0-1.0
  Creative Commons Zero v1.0 Universal (CC0 1.0).
  Full license text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

@@ -10,10 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Japanese (ja), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW),
   French (fr), Portuguese Brazilian (pt_BR), Italian (it), Polish (pl),
   Arabic (ar), Turkish (tr), and Korean (ko).
+- **XDG support**: the configuration file now honors `$XDG_CONFIG_HOME`
+  (absolute paths), falling back to `~/.config` as before.
 - **Docs**: updated pbuilder build instructions in all four
   `docs/debian/` guides (EN and ES) to include the orig tarball creation
   step required by the `3.0 (quilt)` source format; added pbuilder section
   to README.md.
+
+### Changed
+- **Shebang**: switched to `#!/usr/bin/python3` (Debian policy for
+  programs installed into `/usr/bin`).
 
 ### Removed
 - `src/emucon.svg` (old joystick icon, no longer used) and its attribution
