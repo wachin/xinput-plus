@@ -22,10 +22,18 @@ This program is for **Linux** and allows you to **change the pointer speed** (mo
 Before using it, make sure you have the following installed on your Linux computer:
 
 ```bash
-sudo apt install xinput libinput-tools python3-pyqt6 python3-pyqt6.qtsvg
+sudo apt install xinput python3-pyqt6 qt6-svg-plugins
 ```
 
-1. ⚠️ This program only works on **X11**, not on Wayland.  
+* `xinput` — the underlying command the program drives
+* `python3-pyqt6` — the GUI toolkit
+* `qt6-svg-plugins` — lets Qt render the application icon (SVG)
+
+> If you install the `.deb` package instead of running from source, you
+> don't need to type any of this: the package declares these dependencies
+> and `apt` installs them for you automatically.
+
+1. ⚠️ This program only works on **X11**, not on Wayland.
 2. It's only for X11 WM like Openbox, JWM, iceWM, Fluxbox, Xubuntu, etc
 3. In 2025, for example in GNOME, KDE, before logging in you can select X11 to enter instead of Wayland.
 
@@ -359,7 +367,7 @@ sudo apt purge xinput-plus
 
 ## Developer documentation
 
-The `docs/debian/` folder contains guides for developers who want to build,
+The `docs/` folder contains guides for developers who want to build,
 test, or publish this package:
 
 | Guide | Description |
@@ -371,6 +379,7 @@ test, or publish this package:
 | [watch-explained.md](docs/debian/watch-explained.md) | How `debian/watch` and `uscan` discover releases |
 | [gpg-keys.md](docs/debian/gpg-keys.md) | GPG key setup for signing packages |
 | [changelog-files-explained.md](docs/debian/changelog-files-explained.md) | The roles of the project and Debian changelogs |
+| [where-python-programs-live-in-debian.md](docs/where-python-programs-live-in-debian.md) | Why Debian installs some Python programs in `dist-packages` and others directly in `/usr/bin` |
 
 ---
 
@@ -601,27 +610,27 @@ When you open the `.ts` in **Qt Linguist (Qt 5 Linguist)**, be careful with stri
 ### 3) Compile after translating
 
 After updating translations in Linguist (and marking them as **Finished**),
-compile to `.qm`. On Debian/MX Linux, use `lrelease` from `qttools5-dev-tools`
-(it handles Qt6 `.ts` files just fine — `lrelease-qt6` is not needed):
+compile to `.qm`. On Debian/MX Linux, install the Qt 6 tools first:
+
+```bash
+sudo apt install qt6-l10n-tools
+```
+
+Then compile:
 
 ```bash
 lrelease i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
 ```
 
-If `lrelease` is not found, install it first:
+If `lrelease` is not found in `PATH`, this fallback finds whichever
+variant is available on your system:
 
 ```bash
-sudo apt install qttools5-dev-tools
-```
-
-If you need a fallback that works across different systems:
-
-```bash
-LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt5/bin/lrelease)
+LREL=$(command -v lrelease-qt6 || command -v lrelease || echo /usr/lib/qt6/bin/lrelease)
 $LREL i18n/xinput-plus_es.ts -qm i18n/xinput-plus_es.qm
 ```
 
-or you can compile from Qt 5 Linguist  
+or you can compile from Qt Linguist
 
 File - Distribute as...
 
@@ -639,10 +648,12 @@ also you can launch in other languages, example:
 python3 xinput-plus.py --lang=en
 ```
 
-You should see Spanish UI and, on recent versions, a console line like:
+You should see Spanish UI and, on recent versions, console lines like:
 
 ```
-[i18n] Loaded app translation: xinput-plus_es.qm
+[i18n] locale: es (forced=es)
+[i18n] Qt base @ /usr/share/qt6/translations -> ok
+[i18n] app qm: /path/to/xinput-plus/i18n/xinput-plus_es.qm
 ```
 
 ---
