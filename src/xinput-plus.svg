@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!--
-  xinput-plus application icon
-  Concept: mouse pointer cursor with a speed slider beneath it,
-  representing per-device pointer speed adjustment.
-  Designed for use at 16×16 through 512×512 (scalable).
-  License: GPL-3+
-  Author: xinput-plus project
--->
-
 <svg
    viewBox="0 0 64 64"
    width="64"
@@ -21,6 +12,14 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <!--
+    xinput-plus application icon
+    Concept: mouse pointer cursor with a speed slider beneath it,
+    representing per-device pointer speed adjustment.
+    Designed for use at 16x16 through 512x512 (scalable).
+    License: GPL-3+
+    Author: xinput-plus project
+  -->
   <sodipodi:namedview
      id="namedview590"
      pagecolor="#ffffff"

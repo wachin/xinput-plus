@@ -484,6 +484,22 @@ acting; several claims in the review report were corrected in the process.
   executed against the extracted `.deb`: module imports cleanly and
   13 `.qm` translations are shipped.
 
+- [x] **CRITICAL — Application icon not shown in GTK application menus
+  (2026-09-05).**
+  After installing the built `.deb`, the icon appeared in the taskbar
+  (Qt renders it) but GTK menus showed a generic fallback icon. Root
+  cause, isolated by bisection: the SVG carried its license/copyright
+  comment **before** the `<svg>` root element, and the gdk-pixbuf SVG
+  sniffer only recognizes files where `<svg` appears within roughly the
+  first 256 bytes — a longer leading comment makes GTK classify the file
+  as "unknown image format". `rsvg-convert` and Qt accept it either way,
+  which is why the icon worked in some places and not others. Fix: the
+  comment was moved **inside** the `<svg>` element (equally valid XML,
+  license notice preserved, and out of the sniffing window). Verified
+  after the fix with GdkPixbuf at 16/24/32/48/64 px, `rsvg-convert` and
+  Qt — all load the icon correctly. Rule for this repo: in shipped SVG
+  assets, keep any comment **after** the opening `<svg>` tag.
+
 ---
 
 ### Phase 2 — Build and validate
