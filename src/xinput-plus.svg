@@ -15,7 +15,7 @@
    version="1.1"
    id="svg588"
    sodipodi:docname="xinput-plus.svg"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -31,11 +31,11 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="4.2381734"
-     inkscape:cx="56.392219"
-     inkscape:cy="25.12875"
+     inkscape:zoom="11.987365"
+     inkscape:cx="49.510465"
+     inkscape:cy="45.089143"
      inkscape:window-width="1360"
-     inkscape:window-height="726"
+     inkscape:window-height="713"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -51,7 +51,7 @@
        fx="26"
        fy="23"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.067794,0,0,1.067794,-1.9334566,-2.1002989)">
+       gradientTransform="matrix(1.052064,0,0,1.052064,-1.4300951,-1.5969374)">
       <stop
          offset="0%"
          stop-color="#3a6fd8"
@@ -134,7 +134,7 @@
        y1="134.62912"
        x2="14.484236"
        y2="134.62912"
-       gradientTransform="matrix(2.8751232,0,0,0.39656873,-1.9334566,-2.1002989)"
+       gradientTransform="matrix(2.8327688,0,0,0.39072674,-1.4300951,-1.5969374)"
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
@@ -181,18 +181,18 @@
   <circle
      cx="32.23595"
      cy="32.069107"
-     r="32.033821"
+     r="31.56192"
      fill="url(#bgGrad)"
      id="circle564"
-     style="fill:url(#bgGrad);stroke-width:1.06779" />
+     style="fill:url(#bgGrad);stroke-width:1.05206" />
   <!-- ── Subtle inner ring (depth) ── -->
   <circle
      cx="32.23595"
      cy="32.069107"
-     r="30.966026"
+     r="30.509855"
      fill="none"
      stroke="#ffffff"
-     stroke-width="0.427118"
+     stroke-width="0.420826"
      opacity="0.15"
      id="circle566" />
   <!-- ══════════════════════════════════════
@@ -202,7 +202,7 @@
   <g
      filter="url(#shadow)"
      id="g570"
-     transform="matrix(1.067794,0,0,1.067794,-1.9334566,-2.1002989)">
+     transform="matrix(1.052064,0,0,1.052064,-1.4300951,-1.5969374)">
     <!-- Cursor fill -->
     <path
        d="m 20,10 v 28 l 5.5,-6 5,10 3,-1.5 -5,-10 H 36 Z"
@@ -220,44 +220,44 @@
        ══════════════════════════════════════ -->
   <!-- Track background (full width, rounded) -->
   <rect
-     x="8.744483"
-     y="51.289398"
-     width="46.982937"
-     height="4.2711759"
-     rx="2.1355879"
-     ry="2.1355879"
+     x="9.0905437"
+     y="51.006256"
+     width="46.290813"
+     height="4.2082558"
+     rx="2.1041279"
+     ry="2.1041279"
      fill="#0d1f55"
      opacity="0.7"
      id="rect572"
-     style="opacity:1;fill:#999999;stroke-width:1.06779" />
+     style="opacity:1;fill:#999999;stroke-width:1.05206" />
   <!-- Active track (left portion — shows current speed ~65%) -->
   <rect
-     x="8.744483"
-     y="51.289398"
-     width="30.966026"
-     height="4.2711759"
-     rx="2.1355879"
-     ry="2.1355879"
+     x="9.0905437"
+     y="51.006256"
+     width="30.509855"
+     height="4.2082558"
+     rx="2.1041279"
+     ry="2.1041279"
      fill="url(#accentGrad)"
      id="rect574"
-     style="fill:url(#linearGradient1320);stroke-width:1.06779" />
+     style="fill:url(#linearGradient1320);stroke-width:1.05206" />
   <!-- Knob (circle at the active track end) -->
   <circle
-     cx="39.71051"
-     cy="53.424988"
-     r="5.3389697"
+     cx="39.600399"
+     cy="53.110386"
+     r="5.2603197"
      fill="#ffffff"
      stroke="#0090ff"
-     stroke-width="1.60169"
+     stroke-width="1.57809"
      id="circle576" />
   <!-- Knob inner dot (gives it a tactile feel) -->
   <circle
-     cx="39.71051"
-     cy="53.424988"
-     r="1.9220291"
+     cx="39.600399"
+     cy="53.110386"
+     r="1.893715"
      fill="#0090ff"
      id="circle578"
-     style="stroke-width:1.06779" />
+     style="stroke-width:1.05206" />
   <!-- ══════════════════════════════════════
        SPEED LINES  (motion lines beside cursor tip)
        Three short horizontal lines suggesting movement
@@ -268,7 +268,7 @@
      opacity="0.85"
      id="g586"
      style="stroke:url(#linearGradient1328)"
-     transform="matrix(1.067794,0,0,1.067794,-1.9334566,-2.1002989)">
+     transform="matrix(1.052064,0,0,1.052064,-1.4300951,-1.5969374)">
     <line
        x1="37"
        y1="14"
@@ -295,7 +295,7 @@
        style="stroke:url(#linearGradient1326)" />
   </g>
   <g
-     transform="matrix(1.3613137,0,0,1.3613137,30.745939,25.793404)"
+     transform="matrix(1.3412597,0,0,1.3412597,30.767889,25.885854)"
      id="g381"
      style="fill:none;stroke:#ffffff;stroke-width:2.1741;stroke-dasharray:none;stroke-opacity:1">
     <linearGradient
