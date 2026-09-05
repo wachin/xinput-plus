@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [6.6.5] - 2026-05-06
+## [6.6.5] - 2026-09-05
 ### Added
 - **Translations**: added UI translations for German (de), Russian (ru),
   Japanese (ja), Chinese Simplified (zh_CN), Chinese Traditional (zh_TW),
@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **Shebang**: switched to `#!/usr/bin/python3` (Debian policy for
   programs installed into `/usr/bin`).
+- **Icon**: moved the SVG license comment inside the `<svg>` root
+  element so GTK menus (gdk-pixbuf) can render the icon — previously
+  only Qt-based surfaces (taskbar) showed it.
 
 ### Removed
 - `src/emucon.svg` (old joystick icon, no longer used) and its attribution

@@ -37,13 +37,13 @@
   </categories>
 
   <releases>
-    <release version="6.6.5" date="2026-05-06">
+    <release version="6.6.5" date="2026-09-05">
       <description>
         <p>
           Added UI translations for twelve more languages (German, Russian, Japanese,
           Chinese Simplified and Traditional, French, Brazilian Portuguese, Italian,
-          Polish, Arabic, Turkish and Korean). Removed the unused legacy icon and
-          documented the orig-tarball step in the build guides.
+          Polish, Arabic, Turkish and Korean), XDG_CONFIG_HOME support, and a fixed
+          application icon that now renders in GTK menus as well.
         </p>
       </description>
     </release>
